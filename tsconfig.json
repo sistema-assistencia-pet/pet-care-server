@@ -9,11 +9,10 @@
     "target": "es2017",
     "typeRoots": [
       "./node_modules/@types",
-      "./src/@types"
+      "./src/types"
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "@types"
+    "src/**/*.ts"
   ]
 }

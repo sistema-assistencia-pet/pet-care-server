@@ -54,4 +54,6 @@ const httpLogger = pinoHttp({
   }
 })
 
+global.logger = logger
+
 export { logger, httpLogger }

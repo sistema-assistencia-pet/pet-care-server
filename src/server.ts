@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+import 'express-async-errors'
 
 import { app } from './app'
 

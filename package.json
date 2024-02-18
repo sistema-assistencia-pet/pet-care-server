@@ -7,7 +7,7 @@
     "build": "tsc -p .",
     "dev": "tsx watch ./src/server.ts",
     "lint": "eslint . --ext .ts",
-    "start": "tsx ./build/server.ts",
+    "start": "tsx ./build/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Lucas Cardoso Loureiro Souto",
