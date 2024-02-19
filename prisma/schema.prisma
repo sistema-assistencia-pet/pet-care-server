@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  cpf       String   @unique
+  name      String   @map("nome")
+  email     String   @unique
+  password  String   @map("senha")
+  statusId  Int      @map("id_status")
+  createdAt DateTime @default(now()) @map("data_de_criacao")
+  updatedAt DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
+
+  // Relation
+  status Status @relation(fields: [statusId], references: [id])
+
+  @@index(name)
+  @@map("usuario")
+}
+
+model Client {
+  id                 String   @id @default(uuid())
+  cnpj               String   @unique
+  corporateName      String   @map("razao_social")
+  fantasyName        String   @map("nome_fantasia")
+  segment            String   @map("segmento")
+  address            String   @map("endereco")
+  state              String   @map("estado")
+  city               String   @map("cidade")
+  managerName        String   @map("nome_do_responsavel")
+  managerPhoneNumber String   @map("telefone_do_responsavel")
+  managerEmail       String   @map("email_do_responsavel")
+  lumpSum            Float?   @map("valor_fixo")
+  unitValue          Float?   @map("valor_unitario")
+  totalSavings       Float    @map("economia_total")
+  statusId           Int      @map("id_status")
+  createdAt          DateTime @default(now()) @map("data_de_criacao")
+  updatedAt          DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
+
+  // Relation
+  status Status @relation(fields: [statusId], references: [id])
+
+  @@index(fantasyName)
+  @@map("cliente")
+}
+
+model Member {
+  id           String   @id @default(uuid())
+  cpf          String   @unique
+  name         String   @map("nome")
+  phoneNumber  String   @map("telefone")
+  email        String
+  birthDate    Int      @map("data_de_nascimento")
+  totalSavings Float    @map("economia_total")
+  statusId     Int      @map("id_status")
+  createdAt    DateTime @default(now()) @map("data_de_criacao")
+  updatedAt    DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
+
+  // Relation
+  status Status @relation(fields: [statusId], references: [id])
+
+  @@index(name)
+  @@map("associado")
+}
+
+model Order {
+  id            String   @id @default(uuid())
+  medicineName  String   @map("nome_do_medicamento")
+  medicineType  String   @map("tipo_do_medicamento")
+  quantity      Int      @map("quantidade")
+  listPrice     Float    @map("preco_de_tabela")
+  discountPrice Float    @map("preco_com_desconto")
+  statusId      Int      @map("id_status")
+  createdAt     DateTime @default(now()) @map("data_de_criacao")
+  updatedAt     DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
+
+  // Relation
+  status Status @relation(fields: [statusId], references: [id])
+
+  @@map("pedido")
+}
+
+model Status {
+  id          Int    @id @default(autoincrement())
+  name        String @map("nome")
+  translation String @map("traducao")
+
+  // Relation
+  user   User[]
+  client Client[]
+  member Member[]
+  order  Order[]
+
+  @@map("status")
+}
