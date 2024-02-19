@@ -6,14 +6,14 @@ import { HttpStatusCode } from 'axios'
 
 import { errorMiddleware } from './middlewares/error.middleware'
 import { httpLogger } from './logger'
-import { BadRequestError } from './errors' // TODO: remover
 
 const API_RUNNING = 'API em execução.'
 const URL_NOT_FOUND = 'URL não encontrada. Por favor, verifique a URL da requisição e tente novamente.'
 
 dotenv.config()
 
-// future imports
+import { authRouter } from './domains/auth/routes'
+import { userRouter } from './domains/user/routes'
 
 const app = express()
 
@@ -22,6 +22,9 @@ app.use(cors({ exposedHeaders: 'x-total-count' }))
 app.use(express.json())
 app.use(helmet())
 app.use(httpLogger)
+
+app.use('/api/auth', authRouter)
+app.use('/api/user', userRouter)
 
 app.get('/api/health-check', (_req: Request, res: Response) => {
   res.status(HttpStatusCode.Ok).json(API_RUNNING)
