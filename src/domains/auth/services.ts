@@ -45,7 +45,10 @@ const login = async (cpf: string, password: string): Promise<ILoginResponse> => 
 
   return { 
     accessToken,
-    user
+    user: {
+      id: user.id,
+      name: user.name
+    }
   }
 }
 

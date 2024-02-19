@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 import { BadRequestError, GenericError } from '../../errors'
 
-const validateLoginPayload = (req: Request, _res: Response, next: NextFunction) => {
+const validateLoginPayload = (req: Request, _res: Response, next: NextFunction): void => {
   const loginPayloadSchema = z.object({
     cpf: z
       .string({
