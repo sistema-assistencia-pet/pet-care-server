@@ -14,14 +14,27 @@ model User {
   email     String   @unique
   password  String   @map("senha")
   statusId  Int      @map("id_status")
+  roleId    Int      @map("id_cargo")
   createdAt DateTime @default(now()) @map("data_de_criacao")
   updatedAt DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
   status Status @relation(fields: [statusId], references: [id])
+  role   Role   @relation(fields: [roleId], references: [id])
 
   @@index(name)
   @@map("usuario")
+}
+
+model Role {
+  id          Int    @id @default(autoincrement())
+  name        String @map("nome")
+  translation String @map("traducao")
+
+  // Relation
+  user User[]
+
+  @@map("cargo")
 }
 
 model Client {

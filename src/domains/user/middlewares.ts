@@ -40,6 +40,18 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
       .min(8, {
         message: '"password" deve ter no mínimo 8 caracteres.',
       }),
+
+    roleId: z
+      .number({
+        invalid_type_error: '"roleId" deve ser um number.',
+        required_error: '"roleId" é obrigatório.',
+      })
+      .gte(1, {
+        message: '"roleId" deve ser 1 ou 2.',
+      })
+      .lte(2, {
+        message: '"roleId" deve ser 1 ou 2.',
+      })
   })
 
   try {
@@ -48,6 +60,7 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
       email: req.body.email,
       name: req.body.name,
       password: req.body.password,
+      roleId: req.body.roleId
     })
   } catch (error) {
     if (error instanceof z.ZodError) {

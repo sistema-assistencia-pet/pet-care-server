@@ -11,7 +11,8 @@ const createOne = async (req: Request, res: Response): Promise<Response> => {
     cpf: req.body.cpf,
     email: req.body.email,
     name: req.body.name,
-    password: req.body.password
+    password: req.body.password,
+    roleId: req.body.roleId
   }
 
   const userId = await userService.createOne(userToBeCreated)

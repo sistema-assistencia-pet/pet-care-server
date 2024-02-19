@@ -1,10 +1,10 @@
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import prismaClient from '../../database/connection'
-import { BadRequestError, DatabaseError } from '../../errors'
-
-import { status } from '../../utils/statusEnum'
-import { UserLoggedIn, UserToBeCreated } from './interfaces'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { User } from '@prisma/client'
+
+import { BadRequestError, DatabaseError } from '../../errors'
+import { status } from '../../enums/statusEnum'
+import { UserLoggedIn, UserToBeCreated } from './interfaces'
 
 const createOne = async (userToBeCreated: UserToBeCreated): Promise<Pick<User, 'id'>> => {
   try {
@@ -33,7 +33,8 @@ const findOneByCpf = async (cpf: string): Promise<UserLoggedIn | null> => {
     select: {
       id: true,
       name: true,
-      password: true
+      password: true,
+      roleId: true
     }
   })
 

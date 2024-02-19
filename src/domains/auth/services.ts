@@ -7,14 +7,14 @@ import { getEnvironmentVariable } from '../../utils/getEnvironmentVariable'
 import { UnauthorizedError } from '../../errors'
 import userRepositories from '../user/repositories'
 
-const generateAccessToken = async (id: string): Promise<string> => {
+const generateAccessToken = async (id: string, roleId: number): Promise<string> => {
   const JWT_SECRET = getEnvironmentVariable('JWT_SECRET')
   const JWT_ISSUER = getEnvironmentVariable('JWT_ISSUER')
   const JWT_AUDIENCE = getEnvironmentVariable('JWT_AUDIENCE')
 
   const secretKey = createSecretKey(JWT_SECRET, 'utf8')
 
-  const accessToken = await new SignJWT({ id })
+  const accessToken = await new SignJWT({ id, roleId })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setIssuer(JWT_ISSUER)
@@ -41,13 +41,14 @@ const login = async (cpf: string, password: string): Promise<ILoginResponse> => 
 
   if (!isPasswordValid) throw new UnauthorizedError(BAD_CREDENTIALS)
 
-  const accessToken = await generateAccessToken(user.id)
+  const accessToken = await generateAccessToken(user.id, user.roleId)
 
   return { 
     accessToken,
     user: {
       id: user.id,
-      name: user.name
+      name: user.name,
+      roleId: user.roleId
     }
   }
 }

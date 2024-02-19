@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import pino from 'pino'
 import { pinoHttp } from 'pino-http'
 
-const TERMINAL_LOG_LEVEL = 'info'
+const TERMINAL_LOG_LEVEL = 'debug'
 const FILE_LOG_LEVEL = 'silent'
 const HTTP_LOG_LEVEL = 'silent'
 
@@ -34,7 +34,7 @@ const logger = pino(
       },
       {
         target: 'pino-http-print',
-        level: 'info',
+        level: TERMINAL_LOG_LEVEL,
         options: {
           all: true,
           colorize: true
