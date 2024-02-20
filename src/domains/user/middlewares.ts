@@ -16,8 +16,8 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
 
     email: z
       .string({
-        invalid_type_error: '"password" deve ser uma string.',
-        required_error: '"password" é obrigatório.',
+        invalid_type_error: '"email" deve ser uma string.',
+        required_error: '"email" é obrigatório.',
       })
       .email({
         message: '"email" deve ser um e-mail válido.',

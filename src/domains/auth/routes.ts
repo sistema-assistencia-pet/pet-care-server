@@ -6,8 +6,27 @@ import authMiddlewares from './middlewares'
 const authRouter: Router = Router()
 
 authRouter.post(
-  '/login',
+  '/login-admin',
   authMiddlewares.validateLoginPayload,
-  authController.login
+  authController.loginAdmin
 )
+
+authRouter.post(
+  '/login-member',
+  authMiddlewares.validateLoginPayload,
+  authController.loginMember
+)
+
+authRouter.post(
+  '/member-first-access',
+  authMiddlewares.validateMemberFirstAccessPayload,
+  authController.createMemberFirstAccess
+)
+
+authRouter.post(
+  '/member-first-password',
+  authMiddlewares.validateMemberFirstPasswordPayload,
+  authController.createMemberFirstPassword
+)
+
 export { authRouter }

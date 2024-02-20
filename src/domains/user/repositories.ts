@@ -4,7 +4,7 @@ import { User } from '@prisma/client'
 
 import { BadRequestError, DatabaseError } from '../../errors'
 import { status } from '../../enums/statusEnum'
-import { UserLoggedIn, UserToBeCreated } from './interfaces'
+import { UserToBeCreated } from './interfaces'
 
 const createOne = async (userToBeCreated: UserToBeCreated): Promise<Pick<User, 'id'>> => {
   try {
@@ -27,18 +27,16 @@ const createOne = async (userToBeCreated: UserToBeCreated): Promise<Pick<User, '
 
 }
 
-const findOneByCpf = async (cpf: string): Promise<UserLoggedIn | null> => {
-  const user = await prismaClient.user.findUnique({
-    where: { cpf, statusId: status.ACTIVE },
-    select: {
-      id: true,
-      name: true,
-      password: true,
-      roleId: true
-    }
-  })
+const findOneByCpf = async (cpf: string): Promise<User | null> => {
+  try {
+    const user = await prismaClient.user.findUnique({
+      where: { cpf, statusId: status.ACTIVE }
+    })
 
-  return user
+    return user
+  } catch (error) {
+    throw new DatabaseError(error)
+  }
 }
 
 export default { createOne, findOneByCpf }

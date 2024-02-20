@@ -49,9 +49,10 @@ model Client {
   managerName        String   @map("nome_do_responsavel")
   managerPhoneNumber String   @map("telefone_do_responsavel")
   managerEmail       String   @map("email_do_responsavel")
+  financePhoneNumber String   @map("telefone_do_financeiro")
   lumpSum            Float?   @map("valor_fixo")
   unitValue          Float?   @map("valor_unitario")
-  totalSavings       Float    @map("economia_total")
+  totalSavings       Float    @default(0) @map("economia_total")
   statusId           Int      @map("id_status")
   createdAt          DateTime @default(now()) @map("data_de_criacao")
   updatedAt          DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
@@ -64,22 +65,38 @@ model Client {
 }
 
 model Member {
-  id           String   @id @default(uuid())
-  cpf          String   @unique
-  name         String   @map("nome")
-  phoneNumber  String   @map("telefone")
-  email        String
-  birthDate    Int      @map("data_de_nascimento")
-  totalSavings Float    @map("economia_total")
-  statusId     Int      @map("id_status")
-  createdAt    DateTime @default(now()) @map("data_de_criacao")
-  updatedAt    DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
+  id              String   @id @default(uuid())
+  cpf             String   @unique
+  name            String   @map("nome")
+  phoneNumber     String   @map("telefone")
+  email           String
+  birthDate       String   @map("data_de_nascimento")
+  cep             String
+  password        String?  @map("senha")
+  createdPassword Boolean  @map("criou_senha")
+  totalSavings    Float    @default(0) @map("economia_total")
+  statusId        Int      @map("id_status")
+  createdAt       DateTime @default(now()) @map("data_de_criacao")
+  updatedAt       DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
-  status Status @relation(fields: [statusId], references: [id])
+  status               Status                 @relation(fields: [statusId], references: [id])
+  memberFirstAcessCode MemberFirstAcessCode[]
 
   @@index(name)
   @@map("associado")
+}
+
+model MemberFirstAcessCode {
+  memberId        String   @id @map("id_associado")
+  firstAccessCode String   @map("codigo_primeiro_acesso")
+  createdAt       DateTime @default(now()) @map("data_de_criacao")
+  updatedAt       DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
+
+  // Relation
+  member Member @relation(fields: [memberId], references: [id])
+
+  @@map("codigo_primeiro_acesso")
 }
 
 model Order {

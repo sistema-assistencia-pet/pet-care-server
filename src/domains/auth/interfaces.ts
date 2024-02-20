@@ -1,6 +1,6 @@
-import { UserLoggedIn } from '../user/interfaces'
+import { User } from '@prisma/client'
 
 export interface ILoginResponse {
   accessToken: string
-  user: Omit<UserLoggedIn, 'password'>
+  user: Pick<User, `id` | `name` | `roleId`>
 }
