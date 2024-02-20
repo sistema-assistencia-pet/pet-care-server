@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { checkIfIsAdmin } from '../../middlewares/authorization.middleware'
+import { checkIfIsAdmin, checkIfIsAdminOrMember } from '../../middlewares/authorization.middleware'
 import memberController from './controllers'
 import memberMiddlewares from './middlewares'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
@@ -13,6 +13,14 @@ memberRouter.post(
   checkIfIsAdmin,
   memberMiddlewares.validateCreateOnePayload,
   memberController.createOne
+)
+
+memberRouter.get(
+  '/:id',
+  verifyAccessToken,
+  checkIfIsAdminOrMember,
+  memberMiddlewares.validatefindOneByIdPayload,
+  memberController.findOneById
 )
 
 export { memberRouter }

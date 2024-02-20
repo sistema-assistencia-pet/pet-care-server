@@ -40,6 +40,18 @@ const findOneByCpf = async (cpf: string): Promise<Member | null> => {
   }
 }
 
+const findOneById = async (id: string): Promise<Member | null> => {
+  try {
+    const member = await prismaClient.member.findUnique({
+      where: { id, statusId: status.ACTIVE }
+    })
+
+    return member
+  } catch (error) {
+    throw new DatabaseError(error)
+  }
+}
+
 const updateOne = async (id: string, data: Partial<Member>): Promise<void> => {
   const MEMBER_NOT_FOUND = 'Associado não encontrado.'
   
@@ -85,6 +97,7 @@ const upsertOneFirstAccessCode = async (memberId: string, firstAccessCode: strin
 export default {
   createOne,
   findOneByCpf,
+  findOneById,
   findOneFirstAccessCode,
   updateOne,
   upsertOneFirstAccessCode
