@@ -24,7 +24,6 @@ const createOne = async (userToBeCreated: UserToBeCreated): Promise<Pick<User, '
 
     throw new DatabaseError(error)
   }
-
 }
 
 const findOneByCpf = async (cpf: string): Promise<User | null> => {

@@ -1,8 +1,32 @@
 import { Member, MemberFirstAcessCode } from '@prisma/client'
 import prismaClient from '../../database/connection'
 
-import { DatabaseError } from '../../errors'
+import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
 import { status } from '../../enums/statusEnum'
+import { MemberToBeCreated } from './interfaces'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
+import { prismaErrors } from '../../enums/prismaErrors'
+
+const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<Pick<Member, 'id'>> => {
+  const MEMBER_ALREADY_EXISTS = 'CPF ou e-mail já cadastrado.'
+  try {
+    const member = await prismaClient.member.create({
+      data: { ...memberToBeCreated, statusId: status.ACTIVE },
+      select: {
+        id: true,
+      }
+    })
+  
+    return member
+  } catch (error) {
+    if (
+      (error instanceof PrismaClientKnownRequestError) &&
+      (error.code === prismaErrors.ALREADY_EXITS)
+    ) throw new BadRequestError(MEMBER_ALREADY_EXISTS)
+
+    throw new DatabaseError(error)
+  }
+}
 
 const findOneByCpf = async (cpf: string): Promise<Member | null> => {
   try {
@@ -16,14 +40,21 @@ const findOneByCpf = async (cpf: string): Promise<Member | null> => {
   }
 }
 
-const updateOne = async (memberId: string, data: Partial<Member>): Promise<void> => {
+const updateOne = async (id: string, data: Partial<Member>): Promise<void> => {
+  const MEMBER_NOT_FOUND = 'Associado não encontrado.'
+  
   try {
     await prismaClient.member.update({
       data,
-      where: { id: memberId }
+      where: { id }
     })
   } catch (error) {
-    
+    if (
+      (error instanceof PrismaClientKnownRequestError) &&
+      (error.code === prismaErrors.NOT_FOUND)
+    ) throw new NotFoundError(MEMBER_NOT_FOUND)
+
+    throw new DatabaseError(error)
   }
 }
 
@@ -52,6 +83,7 @@ const upsertOneFirstAccessCode = async (memberId: string, firstAccessCode: strin
 }
 
 export default {
+  createOne,
   findOneByCpf,
   findOneFirstAccessCode,
   updateOne,

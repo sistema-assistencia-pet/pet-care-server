@@ -19,8 +19,8 @@ model User {
   updatedAt DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
-  status Status @relation(fields: [statusId], references: [id])
   role   Role   @relation(fields: [roleId], references: [id])
+  status Status @relation(fields: [statusId], references: [id])
 
   @@index(name)
   @@map("usuario")
@@ -58,7 +58,9 @@ model Client {
   updatedAt          DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
-  status Status @relation(fields: [statusId], references: [id])
+  status Status   @relation(fields: [statusId], references: [id])
+  member Member[]
+  order  Order[]
 
   @@index(fantasyName)
   @@map("cliente")
@@ -66,6 +68,7 @@ model Client {
 
 model Member {
   id              String   @id @default(uuid())
+  clientId        String   @map("id_cliente")
   cpf             String   @unique
   name            String   @map("nome")
   phoneNumber     String   @map("telefone")
@@ -73,15 +76,17 @@ model Member {
   birthDate       String   @map("data_de_nascimento")
   cep             String
   password        String?  @map("senha")
-  createdPassword Boolean  @map("criou_senha")
+  createdPassword Boolean  @default(false) @map("criou_senha")
   totalSavings    Float    @default(0) @map("economia_total")
   statusId        Int      @map("id_status")
   createdAt       DateTime @default(now()) @map("data_de_criacao")
   updatedAt       DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
+  client               Client                 @relation(fields: [clientId], references: [id])
   status               Status                 @relation(fields: [statusId], references: [id])
   memberFirstAcessCode MemberFirstAcessCode[]
+  order                Order[]
 
   @@index(name)
   @@map("associado")
@@ -101,6 +106,8 @@ model MemberFirstAcessCode {
 
 model Order {
   id            String   @id @default(uuid())
+  memberId      String   @map("id_associado")
+  clientId      String   @map("id_cliente")
   medicineName  String   @map("nome_do_medicamento")
   medicineType  String   @map("tipo_do_medicamento")
   quantity      Int      @map("quantidade")
@@ -111,6 +118,8 @@ model Order {
   updatedAt     DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
+  client Client @relation(fields: [clientId], references: [id])
+  member Member @relation(fields: [memberId], references: [id])
   status Status @relation(fields: [statusId], references: [id])
 
   @@map("pedido")
@@ -122,10 +131,10 @@ model Status {
   translation String @map("traducao")
 
   // Relation
-  user   User[]
   client Client[]
   member Member[]
   order  Order[]
+  user   User[]
 
   @@map("status")
 }

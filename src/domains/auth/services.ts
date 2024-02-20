@@ -2,13 +2,13 @@ import * as bcrypt from 'bcrypt'
 import { createSecretKey, randomBytes } from 'crypto'
 import { SignJWT } from 'jose'
 
+import { BadRequestError, UnauthorizedError } from '../../errors'
 import { getEnvironmentVariable } from '../../utils/getEnvironmentVariable'
 import { ILoginResponse } from './interfaces'
 import memberRepositories from '../member/repositories'
-import { BadRequestError, UnauthorizedError } from '../../errors'
-import userRepositories from '../user/repositories'
-import { sendEmail } from '../../utils/mailer'
 import { role } from '../../enums/roleEnum'
+import { sendEmail } from '../../utils/mailer'
+import userRepositories from '../user/repositories'
 
 const generateAccessToken = async (id: string, roleId: number): Promise<string> => {
   const JWT_SECRET = getEnvironmentVariable('JWT_SECRET')
