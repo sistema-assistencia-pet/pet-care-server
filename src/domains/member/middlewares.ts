@@ -109,7 +109,7 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
   next()
 }
 
-const validatefindManyByIdPayload = (req: Request, _res: Response, next: NextFunction): void => {
+const validatefindManyPayload = (req: Request, _res: Response, next: NextFunction): void => {
   const createOnePayloadSchema = z.object({
     clientCnpj: z
       .string({
@@ -158,8 +158,8 @@ const validatefindManyByIdPayload = (req: Request, _res: Response, next: NextFun
         invalid_type_error: '"skip" deve ser um number.',
         required_error: '"skip" é obrigatório.',
       })
-      .gte(1, {
-        message: '"skip" deve ser maior que 0.',
+      .gte(0, {
+        message: '"skip" deve ser maior ou igual a 0.',
       }),
 
     statusId: z
@@ -173,16 +173,17 @@ const validatefindManyByIdPayload = (req: Request, _res: Response, next: NextFun
       .lte(3, {
         message: '"statusId" deve ser 1, 2 ou 3.',
       })
+      .optional()
   })
 
   try {
     createOnePayloadSchema.parse({
       clientCnpj: req.query['clientCnpj'],
       cpf: req.query['cpf'],
-      take: parseInt(req.query['take'] as string),
+      take: typeof req.query['take'] === 'string' ? parseInt(req.query['take']) : undefined,
       name: req.query['name'],
-      skip: parseInt(req.query['skip'] as string),
-      statusId: parseInt(req.query['statusId'] as string)
+      skip: typeof req.query['skip'] === 'string' ? parseInt(req.query['skip']) : undefined,
+      statusId: typeof req.query['statusId'] === 'string' ? parseInt(req.query['statusId']) : undefined
     })
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -195,7 +196,7 @@ const validatefindManyByIdPayload = (req: Request, _res: Response, next: NextFun
   next()
 }
 
-const validatefindOneByIdPayload = (req: Request, _res: Response, next: NextFunction): void => {
+const validateMemberIdParam = (req: Request, _res: Response, next: NextFunction): void => {
   const createOnePayloadSchema = z.object({
     id: z
       .string({
@@ -222,4 +223,4 @@ const validatefindOneByIdPayload = (req: Request, _res: Response, next: NextFunc
   next()
 }
 
-export default { validateCreateOnePayload, validatefindManyByIdPayload, validatefindOneByIdPayload }
+export default { validateCreateOnePayload, validatefindManyPayload, validateMemberIdParam }

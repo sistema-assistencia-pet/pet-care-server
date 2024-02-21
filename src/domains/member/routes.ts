@@ -7,6 +7,7 @@ import { verifyAccessToken } from '../../middlewares/authentication.middleware'
 
 const memberRouter: Router = Router()
 
+// Criar associado
 memberRouter.post(
   '/',
   verifyAccessToken,
@@ -15,20 +16,49 @@ memberRouter.post(
   memberController.createOne
 )
 
+// Detalhes de um associado
 memberRouter.get(
   '/:id',
   verifyAccessToken,
   checkIfIsAdminOrMember,
-  memberMiddlewares.validatefindOneByIdPayload,
+  memberMiddlewares.validateMemberIdParam,
   memberController.findOneById
 )
 
+// Listar associados
 memberRouter.get(
   '/',
   verifyAccessToken,
   checkIfIsAdmin,
-  memberMiddlewares.validatefindManyByIdPayload,
+  memberMiddlewares.validatefindManyPayload,
   memberController.findMany
+)
+
+// Ativar associado 
+memberRouter.patch(
+  '/:id/activate',
+  verifyAccessToken,
+  checkIfIsAdmin,
+  memberMiddlewares.validateMemberIdParam,
+  memberController.activateOne
+)
+
+// Inativar associado 
+memberRouter.patch(
+  '/:id/inactivate',
+  verifyAccessToken,
+  checkIfIsAdmin,
+  memberMiddlewares.validateMemberIdParam,
+  memberController.inactivateOne
+)
+
+// Excluir associado
+memberRouter.patch(
+  '/:id/delete',
+  verifyAccessToken,
+  checkIfIsAdmin,
+  memberMiddlewares.validateMemberIdParam,
+  memberController.deleteOne
 )
 
 export { memberRouter }

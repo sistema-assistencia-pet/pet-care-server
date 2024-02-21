@@ -1,4 +1,5 @@
 import { BadRequestError, NotFoundError } from '../../errors'
+import { FindManyResponse } from '../../interfaces'
 import clientRepositories from '../client/repositories'
 import { FindManyMembersQueryParams, MemberToBeCreated, MemberToBeReturned } from './interfaces'
 import memberRepositories from './repositories'
@@ -15,14 +16,16 @@ const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<string> 
   return member.id
 }
 
-const findMany = async (queryParams: FindManyMembersQueryParams): Promise<MemberToBeReturned[]> => {
+const findMany = async (queryParams: FindManyMembersQueryParams): Promise<FindManyResponse<MemberToBeReturned>> => {
   const MEMBERS_NOT_FOUND = 'Associados não encontrados.'
 
   const members = await memberRepositories.findMany(queryParams)
   
   if (members.length === 0) throw new NotFoundError(MEMBERS_NOT_FOUND)
 
-  return members
+  const totalCount = await memberRepositories.count({ statusId: queryParams.statusId })
+
+  return { items: members, totalCount }
 }
 
 const findOneById = async (id: string): Promise<MemberToBeReturned> => {
@@ -37,4 +40,23 @@ const findOneById = async (id: string): Promise<MemberToBeReturned> => {
   return memberToBeReturned
 }
 
-export default { createOne, findMany, findOneById }
+const activateOne = async (id: string): Promise<void> => {
+  await memberRepositories.updateOne(id, { statusId: 1 })
+}
+
+const inactivateOne = async (id: string): Promise<void> => {
+  await memberRepositories.updateOne(id, { statusId: 2 })
+}
+
+const deleteOne = async (id: string): Promise<void> => {
+  await memberRepositories.updateOne(id, { statusId: 3 })
+}
+
+export default { 
+  activateOne,
+  createOne,
+  deleteOne,
+  findMany,
+  findOneById,
+  inactivateOne
+}

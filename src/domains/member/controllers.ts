@@ -37,7 +37,9 @@ const findMany = async (req: Request, res: Response): Promise<Response> => {
   if (typeof req.query['name'] === 'string') Object.assign(queryParams, { name: req.query['name'] })
   if (typeof req.query['statusId'] === 'string') Object.assign(queryParams, { statusId: parseInt(req.query['statusId']) })
 
-  const members = await memberService.findMany(queryParams)
+  const { items: members, totalCount } = await memberService.findMany(queryParams)
+
+  res.setHeader('x-total-count', totalCount.toString())
 
   return res.status(HttpStatusCode.Ok).json({ message: MEMBERS_FOUND, members })
 }
@@ -52,4 +54,41 @@ const findOneById = async (req: Request, res: Response): Promise<Response> => {
   return res.status(HttpStatusCode.Ok).json({ message: MEMBER_FOUND, member })
 }
 
-export default { createOne, findMany, findOneById }
+const activateOne = async (req: Request, res: Response): Promise<Response> => {
+  const MEMBER_SUCCESSFULLY_ACTIVATED = 'Associado ativado com sucesso.'
+
+  const memberId = req.params['id']
+
+  await memberService.activateOne(memberId)
+
+  return res.status(HttpStatusCode.Ok).json({ message: MEMBER_SUCCESSFULLY_ACTIVATED })
+}
+
+const inactivateOne = async (req: Request, res: Response): Promise<Response> => {
+  const MEMBER_SUCCESSFULLY_INACTIVATED = 'Associado inativado com sucesso.'
+
+  const memberId = req.params['id']
+
+  await memberService.inactivateOne(memberId)
+
+  return res.status(HttpStatusCode.Ok).json({ message: MEMBER_SUCCESSFULLY_INACTIVATED })
+}
+
+const deleteOne = async (req: Request, res: Response): Promise<Response> => {
+  const MEMBER_SUCCESSFULLY_DELETED = 'Associado excluído com sucesso.'
+
+  const memberId = req.params['id']
+
+  await memberService.deleteOne(memberId)
+
+  return res.status(HttpStatusCode.Ok).json({ message: MEMBER_SUCCESSFULLY_DELETED })
+}
+
+export default {
+  activateOne,
+  createOne,
+  deleteOne,
+  findMany,
+  findOneById,
+  inactivateOne
+}

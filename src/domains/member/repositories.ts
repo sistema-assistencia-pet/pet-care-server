@@ -7,6 +7,16 @@ import { FindManyMembersQueryParams, MemberToBeCreated, MemberToBeReturned } fro
 import { prismaErrors } from '../../enums/prismaErrors'
 import { status } from '../../enums/statusEnum'
 
+const count = async (where: Prisma.MemberWhereInput): Promise<number> => {
+  try {
+    const count = await prismaClient.member.count({ where })
+
+    return count
+  } catch (error) {
+    throw new DatabaseError(error)
+  }
+}
+
 const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<Pick<Member, 'id'>> => {
   const MEMBER_ALREADY_EXISTS = 'CPF ou e-mail já cadastrado.'
   try {
@@ -54,7 +64,8 @@ const findMany = async ({ skip, take, ...queryParams }: FindManyMembersQueryPara
         totalSavings: true,
         statusId: true,
         createdAt: true
-      }
+      },
+      orderBy: { createdAt: 'desc' }
     })
 
     return members
@@ -130,6 +141,7 @@ const upsertOneFirstAccessCode = async (memberId: string, firstAccessCode: strin
 }
 
 export default {
+  count,
   createOne,
   findMany,
   findOneByCpf,

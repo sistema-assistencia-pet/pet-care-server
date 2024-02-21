@@ -13,6 +13,7 @@ const URL_NOT_FOUND = 'URL não encontrada. Por favor, verifique a URL da requis
 dotenv.config()
 
 import { authRouter } from './domains/auth/routes'
+import { memberRouter } from './domains/member/routes'
 import { userRouter } from './domains/user/routes'
 
 const app = express()
@@ -24,6 +25,7 @@ app.use(helmet())
 app.use(httpLogger)
 
 app.use('/api/auth', authRouter)
+app.use('/api/member', memberRouter)
 app.use('/api/user', userRouter)
 
 app.get('/api/health-check', (_req: Request, res: Response) => {
