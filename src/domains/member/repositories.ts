@@ -1,11 +1,11 @@
-import { Member, MemberFirstAcessCode } from '@prisma/client'
+import { Member, MemberFirstAcessCode, Prisma } from '@prisma/client'
 import prismaClient from '../../database/connection'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
-import { status } from '../../enums/statusEnum'
-import { MemberToBeCreated } from './interfaces'
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
+import { FindManyMembersQueryParams, MemberToBeCreated, MemberToBeReturned } from './interfaces'
 import { prismaErrors } from '../../enums/prismaErrors'
+import { status } from '../../enums/statusEnum'
 
 const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<Pick<Member, 'id'>> => {
   const MEMBER_ALREADY_EXISTS = 'CPF ou e-mail já cadastrado.'
@@ -24,6 +24,41 @@ const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<Pick<Mem
       (error.code === prismaErrors.ALREADY_EXITS)
     ) throw new BadRequestError(MEMBER_ALREADY_EXISTS)
 
+    throw new DatabaseError(error)
+  }
+}
+
+const findMany = async ({ skip, take, ...queryParams }: FindManyMembersQueryParams): Promise<MemberToBeReturned[]> => {
+  let where: Prisma.MemberWhereInput = {}
+
+  Object.entries(queryParams).forEach(([key, value]: [key: string, value: any]) => {
+    if (value !== undefined) Object.assign(where, { [key]: value })
+  })
+
+  logger.debug(where, 'findMany where object') // TODO: remove this line after test it
+
+  try {
+    const members = await prismaClient.member.findMany({
+      where,
+      skip,
+      take,
+      select: {
+        id: true,
+        clientId: true,
+        name: true,
+        cpf: true,
+        email: true,
+        birthDate: true,
+        phoneNumber: true,
+        cep: true,
+        totalSavings: true,
+        statusId: true,
+        createdAt: true
+      }
+    })
+
+    return members
+  } catch (error) {
     throw new DatabaseError(error)
   }
 }
@@ -96,6 +131,7 @@ const upsertOneFirstAccessCode = async (memberId: string, firstAccessCode: strin
 
 export default {
   createOne,
+  findMany,
   findOneByCpf,
   findOneById,
   findOneFirstAccessCode,

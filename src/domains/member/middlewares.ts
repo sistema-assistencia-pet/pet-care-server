@@ -109,6 +109,92 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
   next()
 }
 
+const validatefindManyByIdPayload = (req: Request, _res: Response, next: NextFunction): void => {
+  const createOnePayloadSchema = z.object({
+    clientCnpj: z
+      .string({
+        invalid_type_error: '"clientCnpj " deve ser uma string.',
+        required_error: '"clientCnpj " é obrigatório.',
+      })
+      .length(14, {
+        message: '"clientCnpj" deve ter no mínimo 3 caracteres.',
+      })
+      .optional(),
+
+    cpf: z
+      .string({
+        invalid_type_error: '"cpf" deve ser uma string.',
+        required_error: '"cpf" é obrigatório.',
+      })
+      .length(11, {
+        message: '"cpf" deve ter no mínimo 3 caracteres.',
+      })
+      .optional(),
+
+    take: z
+      .number({
+        invalid_type_error: '"take" deve ser um number.',
+        required_error: '"take" é obrigatório.',
+      })
+      .gte(1, {
+        message: '"take" deve ser maior que 0.',
+      })
+      .lte(50, {
+        message: '"take" deve ser menor ou igual a 50.',
+      }),
+
+    name: z
+      .string({
+        invalid_type_error: '"name" deve ser uma string.',
+        required_error: '"name" é obrigatório.',
+      })
+      .min(3, {
+        message: '"name" deve ter no mínimo 3 caracteres.',
+      })
+      .optional(),
+
+    skip: z
+      .number({
+        invalid_type_error: '"skip" deve ser um number.',
+        required_error: '"skip" é obrigatório.',
+      })
+      .gte(1, {
+        message: '"skip" deve ser maior que 0.',
+      }),
+
+    statusId: z
+      .number({
+        invalid_type_error: '"statusId" deve ser um number.',
+        required_error: '"statusId" é obrigatório.',
+      })
+      .gte(1, {
+        message: '"statusId" deve ser 1, 2 ou 3.',
+      })
+      .lte(3, {
+        message: '"statusId" deve ser 1, 2 ou 3.',
+      })
+  })
+
+  try {
+    createOnePayloadSchema.parse({
+      clientCnpj: req.query['clientCnpj'],
+      cpf: req.query['cpf'],
+      take: parseInt(req.query['take'] as string),
+      name: req.query['name'],
+      skip: parseInt(req.query['skip'] as string),
+      statusId: parseInt(req.query['statusId'] as string)
+    })
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      throw new BadRequestError(error.issues.reduce((acc, issue) => `${acc} ${issue.message}`, ''))
+    }
+
+    throw new GenericError(error)
+  }
+
+  next()
+}
+
 const validatefindOneByIdPayload = (req: Request, _res: Response, next: NextFunction): void => {
   const createOnePayloadSchema = z.object({
     id: z
@@ -136,4 +222,4 @@ const validatefindOneByIdPayload = (req: Request, _res: Response, next: NextFunc
   next()
 }
 
-export default { validateCreateOnePayload, validatefindOneByIdPayload }
+export default { validateCreateOnePayload, validatefindManyByIdPayload, validatefindOneByIdPayload }

@@ -23,4 +23,12 @@ memberRouter.get(
   memberController.findOneById
 )
 
+memberRouter.get(
+  '/',
+  verifyAccessToken,
+  checkIfIsAdmin,
+  memberMiddlewares.validatefindManyByIdPayload,
+  memberController.findMany
+)
+
 export { memberRouter }

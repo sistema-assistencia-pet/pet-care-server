@@ -1,7 +1,7 @@
 import { BadRequestError, NotFoundError } from '../../errors'
 import clientRepositories from '../client/repositories'
+import { FindManyMembersQueryParams, MemberToBeCreated, MemberToBeReturned } from './interfaces'
 import memberRepositories from './repositories'
-import { MemberToBeCreated, MemberToBeReturned } from './interfaces'
 
 const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<string> => {
   const INVALID_CLIENT = 'Cliente inválido.'
@@ -15,6 +15,16 @@ const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<string> 
   return member.id
 }
 
+const findMany = async (queryParams: FindManyMembersQueryParams): Promise<MemberToBeReturned[]> => {
+  const MEMBERS_NOT_FOUND = 'Associados não encontrados.'
+
+  const members = await memberRepositories.findMany(queryParams)
+  
+  if (members.length === 0) throw new NotFoundError(MEMBERS_NOT_FOUND)
+
+  return members
+}
+
 const findOneById = async (id: string): Promise<MemberToBeReturned> => {
   const MEMBER_NOT_FOUND = 'Associado não encontrado.'
 
@@ -22,7 +32,9 @@ const findOneById = async (id: string): Promise<MemberToBeReturned> => {
   
   if (member === null) throw new NotFoundError(MEMBER_NOT_FOUND)
 
-  return member
+  const { password, createdPassword, updatedAt, ...memberToBeReturned } = member
+
+  return memberToBeReturned
 }
 
-export default { createOne, findOneById }
+export default { createOne, findMany, findOneById }
