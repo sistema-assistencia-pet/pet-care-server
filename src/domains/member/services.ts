@@ -1,7 +1,7 @@
 import { BadRequestError, NotFoundError } from '../../errors'
 import { FindManyResponse } from '../../interfaces'
 import clientRepositories from '../client/repositories'
-import { FindManyMembersQueryParams, MemberToBeCreated, MemberToBeReturned } from './interfaces'
+import { FindManyMembersQueryParams, FindManyWhere, MemberToBeCreated, MemberToBeReturned } from './interfaces'
 import memberRepositories from './repositories'
 
 const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<string> => {
@@ -16,10 +16,16 @@ const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<string> 
   return member.id
 }
 
-const findMany = async (queryParams: FindManyMembersQueryParams): Promise<FindManyResponse<MemberToBeReturned>> => {
+const findMany = async ({ skip, take, ...queryParams }: FindManyMembersQueryParams): Promise<FindManyResponse<MemberToBeReturned>> => {
   const MEMBERS_NOT_FOUND = 'Associados não encontrados.'
 
-  const members = await memberRepositories.findMany(queryParams)
+  const where: FindManyWhere = {}
+
+  Object.entries(queryParams).forEach(([key, value]) => {
+    if (value !== undefined && !Number.isNaN(value)) Object.assign(where, { [key]: value })
+  })
+
+  const members = await memberRepositories.findMany(skip, take, where)
   
   if (members.length === 0) throw new NotFoundError(MEMBERS_NOT_FOUND)
 

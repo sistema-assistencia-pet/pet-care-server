@@ -6,8 +6,10 @@ export interface FindManyMembersQueryParams {
   take: number
   name?: string
   skip: number
-  statusId?: number
+  statusId?: number | typeof NaN
 }
+
+export type FindManyWhere = Omit<FindManyMembersQueryParams, 'skip' | 'take'>
 
 export type MemberToBeCreated = Omit<Member, 'id' | 'password' | 'createdPassword' | 'totalSavings' | 'createdAt' | 'updatedAt'>
 

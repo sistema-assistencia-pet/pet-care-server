@@ -3,7 +3,7 @@ import prismaClient from '../../database/connection'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
-import { FindManyMembersQueryParams, MemberToBeCreated, MemberToBeReturned } from './interfaces'
+import { FindManyMembersQueryParams, FindManyWhere, MemberToBeCreated, MemberToBeReturned } from './interfaces'
 import { prismaErrors } from '../../enums/prismaErrors'
 import { status } from '../../enums/statusEnum'
 
@@ -38,15 +38,7 @@ const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<Pick<Mem
   }
 }
 
-const findMany = async ({ skip, take, ...queryParams }: FindManyMembersQueryParams): Promise<MemberToBeReturned[]> => {
-  let where: Prisma.MemberWhereInput = {}
-
-  Object.entries(queryParams).forEach(([key, value]: [key: string, value: any]) => {
-    if (value !== undefined) Object.assign(where, { [key]: value })
-  })
-
-  logger.debug(where, 'findMany where object') // TODO: remove this line after test it
-
+const findMany = async (skip: number, take: number, where: FindManyWhere): Promise<MemberToBeReturned[]> => {
   try {
     const members = await prismaClient.member.findMany({
       where,

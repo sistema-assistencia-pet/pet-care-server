@@ -29,13 +29,12 @@ const findMany = async (req: Request, res: Response): Promise<Response> => {
 
   const queryParams: FindManyMembersQueryParams = {
     take: parseInt(req.query['take'] as string),
-    skip: parseInt(req.query['skip'] as string)
+    skip: parseInt(req.query['skip'] as string),
+    clientCnpj: req.query['clientCnpj'] as string | undefined,
+    cpf: req.query['cpf'] as string | undefined,
+    name: req.query['name'] as string | undefined,
+    statusId: parseInt(req.query['statusId'] as string)
   }
-
-  if (typeof req.query['clientCnpj'] === 'string') Object.assign(queryParams, { clientCnpj: req.query['clientCnpj'] })
-  if (typeof req.query['cpf'] === 'string') Object.assign(queryParams, { cpf: req.query['cpf'] })
-  if (typeof req.query['name'] === 'string') Object.assign(queryParams, { name: req.query['name'] })
-  if (typeof req.query['statusId'] === 'string') Object.assign(queryParams, { statusId: parseInt(req.query['statusId']) })
 
   const { items: members, totalCount } = await memberService.findMany(queryParams)
 
