@@ -13,6 +13,7 @@ const URL_NOT_FOUND = 'URL não encontrada. Por favor, verifique a URL da requis
 dotenv.config()
 
 import { authRouter } from './domains/auth/routes'
+import { clientRouter } from './domains/client/routes'
 import { memberRouter } from './domains/member/routes'
 import { userRouter } from './domains/user/routes'
 
@@ -25,6 +26,7 @@ app.use(helmet())
 app.use(httpLogger)
 
 app.use('/api/auth', authRouter)
+app.use('/api/client', clientRouter)
 app.use('/api/member', memberRouter)
 app.use('/api/user', userRouter)
 
