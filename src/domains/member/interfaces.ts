@@ -9,7 +9,7 @@ export interface FindManyMembersQueryParams {
   statusId?: number | typeof NaN
 }
 
-export type FindManyWhere = Omit<FindManyMembersQueryParams, 'skip' | 'take'>
+export type FindManyWhere = Pick<Member, 'cpf' | 'clientId' | 'name' | 'statusId'>
 
 export type MemberToBeCreated = Omit<Member, 'id' | 'password' | 'createdPassword' | 'totalSavings' | 'createdAt' | 'updatedAt'>
 

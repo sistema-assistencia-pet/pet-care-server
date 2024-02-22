@@ -38,7 +38,11 @@ const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<Pick<Mem
   }
 }
 
-const findMany = async (skip: number, take: number, where: FindManyWhere): Promise<MemberToBeReturned[]> => {
+const findMany = async (
+  skip: number,
+  take: number,
+  where: Partial<FindManyWhere>
+): Promise<MemberToBeReturned[]> => {
   try {
     const members = await prismaClient.member.findMany({
       where,

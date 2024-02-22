@@ -3,6 +3,7 @@ import { Router } from 'express'
 import { checkIfIsAdmin, checkIfIsAdminOrMember } from '../../middlewares/authorization.middleware'
 import memberController from './controllers'
 import memberMiddlewares from './middlewares'
+import { validateIdParam } from '../../middlewares/validateIdParam.middleware'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
 
 const memberRouter: Router = Router()
@@ -21,7 +22,7 @@ memberRouter.get(
   '/:id',
   verifyAccessToken,
   checkIfIsAdminOrMember,
-  memberMiddlewares.validateMemberIdParam,
+  validateIdParam,
   memberController.findOneById
 )
 
@@ -39,7 +40,7 @@ memberRouter.patch(
   '/:id/activate',
   verifyAccessToken,
   checkIfIsAdmin,
-  memberMiddlewares.validateMemberIdParam,
+  validateIdParam,
   memberController.activateOne
 )
 
@@ -48,7 +49,7 @@ memberRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
   checkIfIsAdmin,
-  memberMiddlewares.validateMemberIdParam,
+  validateIdParam,
   memberController.inactivateOne
 )
 
@@ -57,7 +58,7 @@ memberRouter.patch(
   '/:id/delete',
   verifyAccessToken,
   checkIfIsAdmin,
-  memberMiddlewares.validateMemberIdParam,
+  validateIdParam,
   memberController.deleteOne
 )
 

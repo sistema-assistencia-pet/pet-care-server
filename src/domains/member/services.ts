@@ -18,12 +18,25 @@ const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<string> 
 
 const findMany = async ({ skip, take, ...queryParams }: FindManyMembersQueryParams): Promise<FindManyResponse<MemberToBeReturned>> => {
   const MEMBERS_NOT_FOUND = 'Associados não encontrados.'
+  const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
 
-  const where: FindManyWhere = {}
+  const where: Partial<FindManyWhere> = {}
 
   Object.entries(queryParams).forEach(([key, value]) => {
-    if (value !== undefined && !Number.isNaN(value)) Object.assign(where, { [key]: value })
+    if (
+      value !== undefined
+        && !Number.isNaN(value)
+        && key !== 'clientCnpj'
+    ) Object.assign(where, { [key]: value })
   })
+
+  if (queryParams.clientCnpj !== undefined) {
+    const client = await clientRepositories.findOneByCnpj(queryParams.clientCnpj)
+
+    if (client === null) throw new BadRequestError(CLIENT_NOT_FOUND)
+
+    Object.assign(where, { clientId: client.id })
+  }
 
   const members = await memberRepositories.findMany(skip, take, where)
   
