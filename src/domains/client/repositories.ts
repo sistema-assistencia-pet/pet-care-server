@@ -4,6 +4,18 @@ import { DatabaseError } from '../../errors'
 import prismaClient from '../../database/connection'
 import { status } from '../../enums/statusEnum'
 
+const findOneByCnpj = async (cnpj: string): Promise<Client | null> => {
+  try {
+    const client = await prismaClient.client.findUnique({
+      where: { cnpj, statusId: status.ACTIVE }
+    })
+
+    return client
+  } catch (error) {
+    throw new DatabaseError(error)
+  }
+}
+
 const findOneById = async (id: string): Promise<Client | null> => {
   try {
     const client = await prismaClient.client.findUnique({
@@ -16,4 +28,4 @@ const findOneById = async (id: string): Promise<Client | null> => {
   }
 }
 
-export default { findOneById }
+export default { findOneByCnpj, findOneById }

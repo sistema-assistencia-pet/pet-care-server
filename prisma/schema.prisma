@@ -53,6 +53,8 @@ model Client {
   lumpSum            Float?   @map("valor_fixo")
   unitValue          Float?   @map("valor_unitario")
   totalSavings       Float    @default(0) @map("economia_total")
+  contractUrl        String?  @map("url_do_contrato")
+  policyUrl          String?  @map("url_do_termo")
   statusId           Int      @map("id_status")
   createdAt          DateTime @default(now()) @map("data_de_criacao")
   updatedAt          DateTime @default(now()) @updatedAt @map("data_de_atualizacao")

@@ -3,6 +3,7 @@ import { Router } from 'express'
 import { checkIfIsAdmin } from '../../middlewares/authorization.middleware'
 import clientController from './controllers'
 import clientMiddlewares from './middlewares'
+import { validateIdParam } from '../../middlewares/validateIdParam.middleware'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
 
 const clientRouter: Router = Router()
@@ -21,7 +22,7 @@ clientRouter.get(
   '/:id',
   verifyAccessToken,
   checkIfIsAdmin,
-  clientMiddlewares.validateClientIdParam,
+  validateIdParam,
   clientController.findOneById
 )
 
@@ -39,7 +40,7 @@ clientRouter.patch(
   '/:id/activate',
   verifyAccessToken,
   checkIfIsAdmin,
-  clientMiddlewares.validateClientIdParam,
+  validateIdParam,
   clientController.activateOne
 )
 
@@ -48,7 +49,7 @@ clientRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
   checkIfIsAdmin,
-  clientMiddlewares.validateClientIdParam,
+  validateIdParam,
   clientController.inactivateOne
 )
 
@@ -57,7 +58,7 @@ clientRouter.patch(
   '/:id/delete',
   verifyAccessToken,
   checkIfIsAdmin,
-  clientMiddlewares.validateClientIdParam,
+  validateIdParam,
   clientController.deleteOne
 )
 
