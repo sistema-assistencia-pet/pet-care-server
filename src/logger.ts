@@ -4,9 +4,9 @@ import { pinoHttp } from 'pino-http'
 
 const TERMINAL_LOG_LEVEL = 'debug'
 const FILE_LOG_LEVEL = 'silent'
-const HTTP_LOG_LEVEL = 'silent'
+const HTTP_LOG_LEVEL = 'debug'
 
-dotenv.config()
+dotenv.config() // TODO: check if is necessary
 
 const logger = pino(
   {
@@ -46,6 +46,7 @@ const logger = pino(
 
 const httpLogger = pinoHttp({
   level: HTTP_LOG_LEVEL,
+  logger,
   transport: {
     target: 'pino-pretty',
     options: {

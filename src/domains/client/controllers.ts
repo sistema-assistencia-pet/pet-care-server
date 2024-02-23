@@ -9,13 +9,20 @@ const createOne = async (req: Request, res: Response): Promise<Response> => {
   const CLIENT_SUCCESSFULLY_CREATED = 'Cliente criado com sucesso.'
 
   const clientToBeCreated: ClientToBeCreated = {
-    birthDate: req.body.birthDate,
-    cep: req.body.cep,
-    clientId: req.body.clientId,
-    cpf: req.body.cpf,
-    email: req.body.email,
-    name: req.body.name,
-    phoneNumber: req.body.phoneNumber,
+    cnpj: req.body.cnpj,
+    corporateName: req.body.corporateName,
+    fantasyName: req.body.fantasyName,
+    segment: req.body.segment,
+    address: req.body.address,
+    state: req.body.state,
+    city: req.body.city,
+    managerName: req.body.managerName,
+    managerPhoneNumber: req.body.managerPhoneNumber,
+    managerEmail: req.body.managerEmail,
+    financePhoneNumber: req.body.financePhoneNumber,
+    lumpSum: req.body.lumpSum,
+    unitValue: req.body.unitValue,
+    contractUrl: req.body.contractUrl,
     statusId: req.body.statusId
   }
 

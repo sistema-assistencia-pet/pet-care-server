@@ -21,7 +21,7 @@ const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<Pick<Mem
   const MEMBER_ALREADY_EXISTS = 'CPF ou e-mail já cadastrado.'
   try {
     const member = await prismaClient.member.create({
-      data: { ...memberToBeCreated, statusId: status.ACTIVE },
+      data: { ...memberToBeCreated },
       select: {
         id: true,
       }

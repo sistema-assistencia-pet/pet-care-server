@@ -5,62 +5,134 @@ import { BadRequestError, GenericError } from '../../errors'
 
 const validateCreateOnePayload = (req: Request, _res: Response, next: NextFunction): void => {
   const createOnePayloadSchema = z.object({
-    birthDate: z
+    cnpj: z
       .string({
-        invalid_type_error: '"birthDate" deve ser uma string no formato AAAA-MM-DD.',
-        required_error: '"birthDate" é obrigatório e deve estar no formato AAAA-MM-DD.',
-      }),
-
-    cep: z
-      .string({
-        invalid_type_error: '"cep" deve ser uma string.',
-        required_error: '"cep" é obrigatório.',
-      }),
-
-    clientId: z
-      .string({
-        invalid_type_error: '"cep" deve ser uma string.',
-        required_error: '"cep" é obrigatório.',
+        invalid_type_error: '"cnpj" deve ser uma string.',
+        required_error: '"cnpj" é obrigatório.',
       })
-      .uuid({
-        message: '"clientId" deve ser um UUID válido.',
+      .length(14, {
+        message: '"cnpj" deve ter 14 caracteres.',
       }),
 
-    cpf: z
+    corporateName: z
       .string({
-        invalid_type_error: '"cpf" deve ser uma string.',
-        required_error: '"cpf" é obrigatório.',
-      })
-      .length(11, {
-        message: '"cpf" deve ter 11 caracteres.',
-      }),
-
-    email: z
-      .string({
-        invalid_type_error: '"email" deve ser uma string.',
-        required_error: '"email" é obrigatório.',
-      })
-      .email({
-        message: '"email" deve ser um e-mail válido.',
-      }),
-
-    name: z
-      .string({
-        invalid_type_error: '"name" deve ser uma string.',
-        required_error: '"name" é obrigatório.',
+        invalid_type_error: '"corporateName" deve ser uma string.',
+        required_error: '"corporateName" é obrigatório.',
       })
       .min(3, {
-        message: '"name" deve ter 3 caracteres.',
+        message: '"corporateName" deve ter pelo menos 3 caracteres.',
       }),
 
-    phoneNumber: z
+    fantasyName: z
       .string({
-        invalid_type_error: '"phoneNumber" deve ser uma string.',
-        required_error: '"phoneNumber" é obrigatório.',
+        invalid_type_error: '"fantasyName" deve ser uma string.',
+        required_error: '"fantasyName" é obrigatório.',
+      })
+      .min(3, {
+        message: '"fantasyName" deve ter pelo menos 3 caracteres.',
+      }),
+
+    segment: z
+      .string({
+        invalid_type_error: '"segment" deve ser uma string.',
+        required_error: '"segment" é obrigatório.',
+      })
+      .min(3, {
+        message: '"segment" deve ter pelo menos 3 caracteres.',
+      }),
+
+    address: z
+      .string({
+        invalid_type_error: '"address" deve ser uma string.',
+        required_error: '"address" é obrigatório.',
+      })
+      .min(1, {
+        message: '"address" deve ter pelo menos 3 caracteres.',
+      }),
+
+    state: z
+      .string({
+        invalid_type_error: '"state" deve ser uma string.',
+        required_error: '"state" é obrigatório.',
+      })
+      .length(2, {
+        message: '"state" deve ter 2 caracteres.',
+      }),
+
+    city: z
+      .string({
+        invalid_type_error: '"city" deve ser uma string.',
+        required_error: '"city" é obrigatório.',
+      })
+      .min(3, {
+        message: '"city" deve ter pelo menos 3 caracteres.',
+      }),
+
+    managerName: z
+      .string({
+        invalid_type_error: '"managerName" deve ser uma string.',
+        required_error: '"managerName" é obrigatório.',
+      })
+      .min(3, {
+        message: '"managerName" deve ter pelo menos 3 caracteres.',
+      }),
+
+    managerPhoneNumber: z
+      .string({
+        invalid_type_error: '"managerPhoneNumber" deve ser uma string.',
+        required_error: '"managerPhoneNumber" é obrigatório.',
       })
       .length(11, {
-        message: '"phoneNumber" deve ter 11 caracteres.',
+        message: '"managerPhoneNumber" deve ter 11 caracteres.',
       }),
+
+    managerEmail: z
+      .string({
+        invalid_type_error: '"managerEmail" deve ser uma string.',
+        required_error: '"managerEmail" é obrigatório.',
+      })
+      .email({
+        message: '"managerEmail" deve ser um e-mail válido.',
+      }),
+
+    financePhoneNumber: z
+      .string({
+        invalid_type_error: '"financePhoneNumber" deve ser uma string.',
+        required_error: '"financePhoneNumber" é obrigatório.',
+      })
+      .length(11, {
+        message: '"financePhoneNumber" deve ter 11 caracteres.',
+      }),
+
+    lumpSum: z
+      .number({
+        invalid_type_error: '"lumpSum" deve ser um number.',
+        required_error: '"lumpSum" é obrigatório.',
+      })
+      .gte(0, {
+        message: '"lumpSum" deve ser maior ou igual a 0.',
+      })
+      .optional(),
+
+    unitValue: z
+      .number({
+        invalid_type_error: '"unitValue" deve ser um number.',
+        required_error: '"unitValue" é obrigatório.',
+      })
+      .gte(0, {
+        message: '"unitValue" deve ser maior ou igual a 0.',
+      })
+      .optional(),
+
+    contractUrl: z
+      .string({
+        invalid_type_error: '"contractUrl" deve ser uma string.',
+        required_error: '"contractUrl" é obrigatório.',
+      })
+      .min(3, {
+        message: '"contractUrl" deve ter pelo menos 3 caracteres.',
+      })
+      .optional(),
 
     statusId: z
       .number({
@@ -68,22 +140,29 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         required_error: '"statusId" é obrigatório.',
       })
       .gte(1, {
-        message: '"statusId" deve ser 1, 2 ou 3.',
+        message: '"statusId" deve 1, 2 ou 3.',
       })
       .lte(3, {
-        message: '"statusId" deve ser 1, 2 ou 3.',
+        message: '"statusId" deve 1, 2 ou 3.',
       })
   })
 
   try {
     createOnePayloadSchema.parse({
-      birthDate: req.body.birthDate,
-      cep: req.body.cep,
-      clientId: req.body.clientId,
-      cpf: req.body.cpf,
-      email: req.body.email,
-      name: req.body.name,
-      phoneNumber: req.body.phoneNumber,
+      cnpj: req.body.cnpj,
+      corporateName: req.body.corporateName,
+      fantasyName: req.body.fantasyName,
+      segment: req.body.segment,
+      address: req.body.address,
+      state: req.body.state,
+      city: req.body.city,
+      managerName: req.body.managerName,
+      managerPhoneNumber: req.body.managerPhoneNumber,
+      managerEmail: req.body.managerEmail,
+      financePhoneNumber: req.body.financePhoneNumber,
+      lumpSum: req.body.lumpSum,
+      unitValue: req.body.unitValue,
+      contractUrl: req.body.contractUrl,
       statusId: req.body.statusId
     })
   } catch (error) {
@@ -92,18 +171,6 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
     }
 
     throw new GenericError(error)
-  }
-
-  const birthDateSplitted = req.body.birthDate.split('-')
-
-  if (
-    (birthDateSplitted.length !== 3) ||
-    (birthDateSplitted[0].length !== 4) ||
-    (birthDateSplitted[1].length !== 2) ||
-    (birthDateSplitted[2].length !== 2) ||
-    (birthDateSplitted.every((substring: any) => isNaN(Number(substring))))
-  ) {
-    throw new BadRequestError('"birthDate" deve estar no formato AAAA-MM-DD.')
   }
 
   next()
