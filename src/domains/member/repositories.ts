@@ -1,9 +1,9 @@
-import { Item, Member, MemberFirstAcessCode, Order, Prisma } from '@prisma/client'
+import { type Item, type Member, type MemberFirstAcessCode, type Order, type Prisma } from '@prisma/client'
 import prismaClient from '../../database/connection'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
-import { FindManyMembersWhere, MemberToBeCreated, MemberToBeReturned } from './interfaces'
+import { type FindManyMembersWhere, type MemberToBeCreated, type MemberToBeReturned } from './interfaces'
 import { prismaErrors } from '../../enums/prismaErrors'
 import { status } from '../../enums/statusEnum'
 
@@ -23,10 +23,10 @@ const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<Pick<Mem
     const member = await prismaClient.member.create({
       data: { ...memberToBeCreated },
       select: {
-        id: true,
+        id: true
       }
     })
-  
+
     return member
   } catch (error) {
     if (
@@ -42,7 +42,7 @@ const createOneForBulkCreation = async (memberToBeCreated: MemberToBeCreated): P
   const member = await prismaClient.member.create({
     data: { ...memberToBeCreated },
     select: {
-      id: true,
+      id: true
     }
   })
 
@@ -53,7 +53,7 @@ const findMany = async (
   skip: number,
   take: number,
   where: Partial<FindManyMembersWhere>
-): Promise<Omit<MemberToBeReturned, 'orders'>[]> => {
+): Promise<Array<Omit<MemberToBeReturned, 'orders'>>> => {
   try {
     const members = await prismaClient.member.findMany({
       where,
@@ -117,7 +117,7 @@ const updateMany = async (
   where: Prisma.MemberWhereInput
 ): Promise<void> => {
   const MEMBER_NOT_FOUND = 'Associado não encontrado.'
-  
+
   try {
     await prismaClient.member.updateMany({
       data,
@@ -135,7 +135,7 @@ const updateMany = async (
 
 const updateOne = async (id: string, data: Partial<Member>): Promise<void> => {
   const MEMBER_NOT_FOUND = 'Associado não encontrado.'
-  
+
   try {
     await prismaClient.member.update({
       data,
@@ -153,7 +153,7 @@ const updateOne = async (id: string, data: Partial<Member>): Promise<void> => {
 
 const addToSavings = async (id: string, savingsToAdd: number): Promise<void> => {
   const MEMBER_NOT_FOUND = 'Associado não encontrado.'
-  
+
   try {
     await prismaClient.member.update({
       data: { totalSavings: { increment: savingsToAdd } },
@@ -171,7 +171,7 @@ const addToSavings = async (id: string, savingsToAdd: number): Promise<void> => 
 
 const subtractFromSavings = async (id: string, savingsToSubtract: number): Promise<void> => {
   const MEMBER_NOT_FOUND = 'Associado não encontrado.'
-  
+
   try {
     await prismaClient.member.update({
       data: { totalSavings: { decrement: savingsToSubtract } },

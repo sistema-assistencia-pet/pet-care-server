@@ -1,8 +1,8 @@
 import clientRepositories from './repositories'
-import { ClientToBeCreated, ClientToBeReturned, FindManyClientsQueryParams, FindManyClientsWhere } from './interfaces'
+import { type ClientToBeCreated, type ClientToBeReturned, type FindManyClientsQueryParams, type FindManyClientsWhere } from './interfaces'
 import memberRepositories from '../member/repositories'
 import { NotFoundError } from '../../errors'
-import { FindManyResponse } from '../../interfaces'
+import { type FindManyResponse } from '../../interfaces'
 
 const createOne = async (clientToBeCreated: ClientToBeCreated): Promise<string> => {
   const { id } = await clientRepositories.createOne(clientToBeCreated)
@@ -17,13 +17,13 @@ const findMany = async ({ skip, take, ...queryParams }: FindManyClientsQueryPara
 
   Object.entries(queryParams).forEach(([key, value]) => {
     if (
-      value !== undefined
-        && !Number.isNaN(value)
+      value !== undefined &&
+        !Number.isNaN(value)
     ) Object.assign(where, { [key]: value })
   })
 
   const clients = await clientRepositories.findMany(skip, take, where)
-  
+
   if (clients.length === 0) throw new NotFoundError(CLIENTS_NOT_FOUND)
 
   const totalCount = await clientRepositories.count({ statusId: queryParams.statusId })
@@ -35,7 +35,7 @@ const findOneById = async (id: string): Promise<ClientToBeReturned> => {
   const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
 
   const client = await clientRepositories.findOneById(id)
-  
+
   if (client === null) throw new NotFoundError(CLIENT_NOT_FOUND)
 
   const { updatedAt, ...clientToBeReturned } = client

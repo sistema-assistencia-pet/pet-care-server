@@ -17,7 +17,7 @@ orderRouter.post(
   orderController.createOne
 )
 
-// Ativar pedido 
+// Ativar pedido
 orderRouter.patch(
   '/:id/activate',
   verifyAccessToken,
@@ -26,7 +26,7 @@ orderRouter.patch(
   orderController.activateOne
 )
 
-// Inativar pedido 
+// Inativar pedido
 orderRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,

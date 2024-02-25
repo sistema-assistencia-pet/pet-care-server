@@ -1,7 +1,7 @@
-import { Order, Prisma } from '@prisma/client'
+import { type Order, type Prisma } from '@prisma/client'
 
 import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
-import { ItemToBeCreated, OrderToBeCreated } from './interfaces'
+import { type ItemToBeCreated, type OrderToBeCreated } from './interfaces'
 import prismaClient from '../../database/connection'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { prismaErrors } from '../../enums/prismaErrors'
@@ -13,10 +13,10 @@ const createOne = async ({ items, ...orderToBeCreated }: OrderToBeCreated): Prom
     const order = await prismaClient.order.create({
       data: { ...orderToBeCreated },
       select: {
-        id: true,
+        id: true
       }
     })
-  
+
     return order
   } catch (error) {
     if (
@@ -60,7 +60,7 @@ const findAnyById = async (id: string, select?: Partial<Prisma.OrderSelect>): Pr
 
 const updateOne = async (id: string, data: Partial<Order>): Promise<Order> => {
   const ORDER_NOT_FOUND = 'Pedido não encontrado.'
-  
+
   try {
     const order = await prismaClient.order.update({
       data,

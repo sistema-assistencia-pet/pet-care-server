@@ -1,8 +1,8 @@
-import { Client, Prisma } from '@prisma/client'
+import { type Client, type Prisma } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
-import { ClientToBeCreated, ClientToBeReturned, FindManyClientsWhere } from './interfaces'
+import { type ClientToBeCreated, type ClientToBeReturned, type FindManyClientsWhere } from './interfaces'
 import prismaClient from '../../database/connection'
 import { prismaErrors } from '../../enums/prismaErrors'
 import { status } from '../../enums/statusEnum'
@@ -24,10 +24,10 @@ const createOne = async (clientToBeCreated: ClientToBeCreated): Promise<Pick<Cli
     const client = await prismaClient.client.create({
       data: { ...clientToBeCreated },
       select: {
-        id: true,
+        id: true
       }
     })
-  
+
     return client
   } catch (error) {
     if (
@@ -104,7 +104,7 @@ const findOneById = async (id: string): Promise<Client | null> => {
 
 const updateOne = async (id: string, data: Partial<Client>): Promise<void> => {
   const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
-  
+
   try {
     await prismaClient.client.update({
       data,
@@ -122,7 +122,7 @@ const updateOne = async (id: string, data: Partial<Client>): Promise<void> => {
 
 const addToSavings = async (id: string, savingsToAdd: number): Promise<void> => {
   const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
-  
+
   try {
     await prismaClient.client.update({
       data: { totalSavings: { increment: savingsToAdd } },
@@ -140,7 +140,7 @@ const addToSavings = async (id: string, savingsToAdd: number): Promise<void> => 
 
 const subtractFromSavings = async (id: string, savingsToSubtract: number): Promise<void> => {
   const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
-  
+
   try {
     await prismaClient.client.update({
       data: { totalSavings: { decrement: savingsToSubtract } },

@@ -1,8 +1,8 @@
-import { Readable } from 'stream'
+import { Readable } from 'node:stream'
 
 export const convertBufferToStream = (buffer: Buffer): Readable => {
   const stream = new Readable({
-    read() {
+    read () {
       this.push(buffer)
       this.push(null)
     }

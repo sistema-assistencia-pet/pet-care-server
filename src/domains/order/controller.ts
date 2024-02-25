@@ -2,7 +2,7 @@ import { HttpStatusCode } from 'axios'
 import { type Request, type Response } from 'express'
 
 import orderService from './services'
-import { OrderToBeCreated } from './interfaces'
+import { type OrderToBeCreated } from './interfaces'
 
 const createOne = async (req: Request, res: Response): Promise<Response> => {
   const ORDER_SUCCESSFULLY_CREATED = 'Pedido cadastrado com sucesso.'
@@ -25,7 +25,7 @@ const createOne = async (req: Request, res: Response): Promise<Response> => {
 const activateOne = async (req: Request, res: Response): Promise<Response> => {
   const ORDER_SUCCESSFULLY_ACTIVATED = 'Pedido ativado com sucesso.'
 
-  const orderId = req.params['id']
+  const orderId = req.params.id
 
   await orderService.activateOne(orderId)
 
@@ -35,7 +35,7 @@ const activateOne = async (req: Request, res: Response): Promise<Response> => {
 const inactivateOne = async (req: Request, res: Response): Promise<Response> => {
   const ORDER_SUCCESSFULLY_INACTIVATED = 'Pedido inativado com sucesso.'
 
-  const orderId = req.params['id']
+  const orderId = req.params.id
 
   await orderService.inactivateOne(orderId)
 
@@ -45,7 +45,7 @@ const inactivateOne = async (req: Request, res: Response): Promise<Response> => 
 const deleteOne = async (req: Request, res: Response): Promise<Response> => {
   const ORDER_SUCCESSFULLY_DELETED = 'Pedido excluído com sucesso.'
 
-  const orderId = req.params['id']
+  const orderId = req.params.id
 
   await orderService.deleteOne(orderId)
 

@@ -21,7 +21,7 @@ const checkIfIsAdminOrMember = async (req: Request, _res: Response, next: NextFu
   if (!isMember) throw new ForbiddenError()
 
   const requestUserId = req.headers['request-user-id']
-  const userId = req.params['id']
+  const userId = req.params.id
 
   if (requestUserId !== userId) throw new ForbiddenError()
 

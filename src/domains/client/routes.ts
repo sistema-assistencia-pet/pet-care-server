@@ -35,7 +35,7 @@ clientRouter.get(
   clientController.findMany
 )
 
-// Ativar cliente 
+// Ativar cliente
 clientRouter.patch(
   '/:id/activate',
   verifyAccessToken,
@@ -44,7 +44,7 @@ clientRouter.patch(
   clientController.activateOne
 )
 
-// Inativar cliente 
+// Inativar cliente
 clientRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,

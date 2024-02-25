@@ -8,16 +8,16 @@ const validateIdParam = (req: Request, _res: Response, next: NextFunction): void
     id: z
       .string({
         invalid_type_error: '"id" deve ser uma string.',
-        required_error: '"id" é obrigatório.',
+        required_error: '"id" é obrigatório.'
       })
       .uuid({
-        message: '"id" deve ser um UUID válido.',
+        message: '"id" deve ser um UUID válido.'
       })
   })
 
   try {
     createOnePayloadSchema.parse({
-      id: req.params['id']
+      id: req.params.id
     })
   } catch (error) {
     if (error instanceof z.ZodError) {

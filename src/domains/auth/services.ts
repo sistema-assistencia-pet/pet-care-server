@@ -1,10 +1,10 @@
 import * as bcrypt from 'bcrypt'
-import { createSecretKey, randomBytes } from 'crypto'
+import { createSecretKey, randomBytes } from 'node:crypto'
 import { SignJWT } from 'jose'
 
 import { BadRequestError, UnauthorizedError } from '../../errors'
 import { getEnvironmentVariable } from '../../utils/getEnvironmentVariable'
-import { ILoginResponse } from './interfaces'
+import { type ILoginResponse } from './interfaces'
 import memberRepositories from '../member/repositories'
 import { role } from '../../enums/roleEnum'
 import { sendEmail } from '../../utils/mailer'
@@ -46,7 +46,7 @@ const loginAdmin = async (cpf: string, password: string): Promise<ILoginResponse
 
   const accessToken = await generateAccessToken(user.id, user.roleId)
 
-  return { 
+  return {
     accessToken,
     user: {
       id: user.id,
@@ -77,7 +77,7 @@ const loginMember = async (cpf: string, password: string): Promise<ILoginRespons
 
   const accessToken = await generateAccessToken(member.id, role.MEMBER)
 
-  return { 
+  return {
     accessToken,
     user: {
       id: member.id,
@@ -127,7 +127,6 @@ const createMemberFirstPassword = async (cpf: string, firstAccessCode: string, n
   const USER_ALREADY_HAS_PASSWORD = 'Usuário já possui senha de acesso.'
   const USER_DID_NOT_CREATE_FIRST_ACCESS = 'Usuário ainda não realizou o primeiro acesso.'
   const USER_NOT_FOUND = 'Usuário não encontrado.'
-
 
   const member = await memberRepositories.findOneByCpf(cpf)
 

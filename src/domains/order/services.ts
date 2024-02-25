@@ -2,7 +2,7 @@ import { BadRequestError, NotFoundError } from '../../errors'
 import clientRepositories from '../client/repositories'
 import memberRepositories from '../member/repositories'
 import orderRepositories from './repositories'
-import { OrderToBeCreated } from './interfaces'
+import { type OrderToBeCreated } from './interfaces'
 
 const createOne = async (orderToBeCreated: OrderToBeCreated): Promise<string> => {
   const INVALID_CLIENT = 'Cliente inválido.'

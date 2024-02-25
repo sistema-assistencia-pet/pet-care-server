@@ -1,4 +1,4 @@
-import {createSecretKey} from 'crypto'
+import { createSecretKey } from 'node:crypto'
 import { jwtVerify } from 'jose'
 import { type NextFunction, type Request, type Response } from 'express'
 
@@ -21,7 +21,7 @@ export const verifyAccessToken = async (req: Request, _res: Response, next: Next
   try {
     const { payload } = await jwtVerify(accessToken, secretKey, {
       issuer: JWT_ISSUER,
-      audience: JWT_AUDIENCE,
+      audience: JWT_AUDIENCE
     })
 
     if (

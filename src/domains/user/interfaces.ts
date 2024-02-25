@@ -1,4 +1,4 @@
-import { User } from '@prisma/client'
+import { type User } from '@prisma/client'
 
 export type UserToBeCreated = Pick<User, 'cpf' | 'name' | 'email' | 'password' | 'roleId'>
 

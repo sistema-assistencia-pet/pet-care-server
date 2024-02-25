@@ -1,10 +1,9 @@
 import { HttpStatusCode } from 'axios'
 import { type Request, type Response } from 'express'
 
-import { FindManyMembersQueryParams, MemberToBeCreated } from './interfaces'
+import { type FindManyMembersQueryParams, type MemberToBeCreated } from './interfaces'
 import memberService from './services'
 import { BadRequestError } from '../../errors'
-
 
 const createOne = async (req: Request, res: Response): Promise<Response> => {
   const MEMBER_SUCCESSFULLY_CREATED = 'Associado cadastrado com sucesso.'
@@ -29,10 +28,10 @@ const createMany = async (req: Request, res: Response): Promise<Response> => {
   const MEMBER_SUCCESSFULLY_CREATED = 'Associados cadastrados com sucesso.'
   const FILE_NOT_FOUND = 'O arquivo .csv não foi recebido.'
 
-  const clientId: string = req.params['clientId'] as string
+  const clientId: string = req.params.clientId
   const file = req.file?.buffer
 
-  if (file === undefined) throw new BadRequestError(FILE_NOT_FOUND) 
+  if (file === undefined) throw new BadRequestError(FILE_NOT_FOUND)
 
   await memberService.createMany(clientId, file)
 
@@ -43,11 +42,11 @@ const findMany = async (req: Request, res: Response): Promise<Response> => {
   const MEMBERS_FOUND = 'Associados recuperados com sucesso.'
 
   const queryParams: FindManyMembersQueryParams = {
-    take: parseInt(req.query['take'] as string),
-    skip: parseInt(req.query['skip'] as string),
+    take: parseInt(req.query.take as string),
+    skip: parseInt(req.query.skip as string),
     clientCnpj: req.query['client-cnpj'] as string | undefined,
-    cpf: req.query['cpf'] as string | undefined,
-    name: req.query['name'] as string | undefined,
+    cpf: req.query.cpf as string | undefined,
+    name: req.query.name as string | undefined,
     statusId: parseInt(req.query['status-id'] as string)
   }
 
@@ -61,7 +60,7 @@ const findMany = async (req: Request, res: Response): Promise<Response> => {
 const findOneById = async (req: Request, res: Response): Promise<Response> => {
   const MEMBER_FOUND = 'Associado recuperado com sucesso.'
 
-  const id = req.params['id']
+  const id = req.params.id
 
   const member = await memberService.findOneById(id)
 
@@ -71,7 +70,7 @@ const findOneById = async (req: Request, res: Response): Promise<Response> => {
 const activateOne = async (req: Request, res: Response): Promise<Response> => {
   const MEMBER_SUCCESSFULLY_ACTIVATED = 'Associado ativado com sucesso.'
 
-  const memberId = req.params['id']
+  const memberId = req.params.id
 
   await memberService.activateOne(memberId)
 
@@ -81,7 +80,7 @@ const activateOne = async (req: Request, res: Response): Promise<Response> => {
 const inactivateOne = async (req: Request, res: Response): Promise<Response> => {
   const MEMBER_SUCCESSFULLY_INACTIVATED = 'Associado inativado com sucesso.'
 
-  const memberId = req.params['id']
+  const memberId = req.params.id
 
   await memberService.inactivateOne(memberId)
 
@@ -91,7 +90,7 @@ const inactivateOne = async (req: Request, res: Response): Promise<Response> => 
 const deleteOne = async (req: Request, res: Response): Promise<Response> => {
   const MEMBER_SUCCESSFULLY_DELETED = 'Associado excluído com sucesso.'
 
-  const memberId = req.params['id']
+  const memberId = req.params.id
 
   await memberService.deleteOne(memberId)
 

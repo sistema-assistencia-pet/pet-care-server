@@ -47,7 +47,7 @@ memberRouter.get(
   memberController.findMany
 )
 
-// Ativar associado 
+// Ativar associado
 memberRouter.patch(
   '/:id/activate',
   verifyAccessToken,
@@ -56,7 +56,7 @@ memberRouter.patch(
   memberController.activateOne
 )
 
-// Inativar associado 
+// Inativar associado
 memberRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,

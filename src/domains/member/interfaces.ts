@@ -1,4 +1,4 @@
-import { Item, Member, Order } from '@prisma/client'
+import { type Item, type Member, type Order } from '@prisma/client'
 
 export interface FindManyMembersQueryParams {
   clientCnpj?: string

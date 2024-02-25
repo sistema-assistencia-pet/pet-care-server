@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 
-import { UserToBeCreated } from './interfaces'
+import { type UserToBeCreated } from './interfaces'
 import userRepositories from './repositories'
 
 const createOne = async (userToBeCreated: UserToBeCreated): Promise<string> => {

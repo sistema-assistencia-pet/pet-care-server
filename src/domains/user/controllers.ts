@@ -2,7 +2,7 @@ import { HttpStatusCode } from 'axios'
 import { type Request, type Response } from 'express'
 
 import userService from './services'
-import { UserToBeCreated } from './interfaces'
+import { type UserToBeCreated } from './interfaces'
 
 const createOne = async (req: Request, res: Response): Promise<Response> => {
   const USER_SUCCESSFULLY_CREATED = 'Usuário cadastrado com sucesso.'

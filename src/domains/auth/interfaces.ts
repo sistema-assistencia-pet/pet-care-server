@@ -1,6 +1,6 @@
-import { User } from '@prisma/client'
+import { type User } from '@prisma/client'
 
 export interface ILoginResponse {
   accessToken: string
-  user: Pick<User, `id` | `name` | `roleId`>
+  user: Pick<User, 'id' | 'name' | 'roleId'>
 }

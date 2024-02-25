@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import pino from 'pino'
+import pino, { type DestinationStream } from 'pino'
 import { pinoHttp } from 'pino-http'
 
 const TERMINAL_LOG_LEVEL = 'debug'
@@ -7,6 +7,26 @@ const FILE_LOG_LEVEL = 'silent'
 const HTTP_LOG_LEVEL = 'debug'
 
 dotenv.config() // TODO: check if is necessary
+
+const transport: DestinationStream = pino.transport({
+  targets: [
+    {
+      target: 'pino/file',
+      level: FILE_LOG_LEVEL,
+      options: {
+        destination: './logs/server_log.log'
+      }
+    },
+    {
+      target: 'pino-http-print',
+      level: TERMINAL_LOG_LEVEL,
+      options: {
+        all: true,
+        colorize: true
+      }
+    }
+  ]
+})
 
 const logger = pino(
   {
@@ -23,25 +43,7 @@ const logger = pino(
       })}"`
     }
   },
-  pino.transport({
-    targets: [
-      {
-        target: 'pino/file',
-        level: FILE_LOG_LEVEL,
-        options: {
-          destination: './logs/server_log.log'
-        }
-      },
-      {
-        target: 'pino-http-print',
-        level: TERMINAL_LOG_LEVEL,
-        options: {
-          all: true,
-          colorize: true
-        }
-      }
-    ]
-  })
+  transport
 )
 
 const httpLogger = pinoHttp({

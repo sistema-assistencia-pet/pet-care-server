@@ -1,25 +1,25 @@
 import csv from 'csv-parser'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { BadRequestError, NotFoundError } from '../../errors'
 import clientRepositories from '../client/repositories'
 import { convertBufferToStream } from '../../utils/convertBufferToStream'
 import {
-  FindManyMembersQueryParams,
-  FindManyMembersWhere,
-  MemberToBeCreated,
-  MemberToBeReturned
+  type FindManyMembersQueryParams,
+  type FindManyMembersWhere,
+  type MemberToBeCreated,
+  type MemberToBeReturned
 } from './interfaces'
-import { FindManyResponse } from '../../interfaces'
+import { type FindManyResponse } from '../../interfaces'
 import memberRepositories from './repositories'
 import { status } from '../../enums/statusEnum'
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { prismaErrors } from '../../enums/prismaErrors'
 
 const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<string> => {
   const INVALID_CLIENT = 'Cliente inválido.'
 
   const client = await clientRepositories.findOneById(memberToBeCreated.clientId)
-  
+
   if (client === null) throw new BadRequestError(INVALID_CLIENT)
 
   const member = await memberRepositories.createOne(memberToBeCreated)
@@ -56,11 +56,11 @@ const createMany = async (clientId: string, fileBuffer: Buffer): Promise<void> =
         if (
           (error instanceof PrismaClientKnownRequestError) &&
           (error.code === prismaErrors.ALREADY_EXITS)
-          ) {
-            logger.error(`O associado de CPF ${row.cpf} não foi cadastrado: esse CPF já existe no banco de dados.`)
-          }
+        ) {
+          logger.error(`O associado de CPF ${row.cpf} não foi cadastrado: esse CPF já existe no banco de dados.`)
         }
-      })
+      }
+    })
 }
 
 const findMany = async ({ skip, take, ...queryParams }: FindManyMembersQueryParams): Promise<FindManyResponse<Omit<MemberToBeReturned, 'orders'>>> => {
@@ -71,9 +71,9 @@ const findMany = async ({ skip, take, ...queryParams }: FindManyMembersQueryPara
 
   Object.entries(queryParams).forEach(([key, value]) => {
     if (
-      value !== undefined
-        && !Number.isNaN(value)
-        && key !== 'clientCnpj'
+      value !== undefined &&
+        !Number.isNaN(value) &&
+        key !== 'clientCnpj'
     ) Object.assign(where, { [key]: value })
   })
 
@@ -86,7 +86,7 @@ const findMany = async ({ skip, take, ...queryParams }: FindManyMembersQueryPara
   }
 
   const members = await memberRepositories.findMany(skip, take, where)
-  
+
   if (members.length === 0) throw new NotFoundError(MEMBERS_NOT_FOUND)
 
   const totalCount = await memberRepositories.count({ statusId: queryParams.statusId })
@@ -98,7 +98,7 @@ const findOneById = async (id: string): Promise<MemberToBeReturned> => {
   const MEMBER_NOT_FOUND = 'Associado não encontrado.'
 
   const member = await memberRepositories.findOneById(id)
-  
+
   if (member === null) throw new NotFoundError(MEMBER_NOT_FOUND)
 
   logger.debug(member, 'Associado')
@@ -120,7 +120,7 @@ const deleteOne = async (id: string): Promise<void> => {
   await memberRepositories.updateOne(id, { statusId: 3 })
 }
 
-export default { 
+export default {
   activateOne,
   createMany,
   createOne,
