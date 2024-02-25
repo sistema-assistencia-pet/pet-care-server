@@ -1,11 +1,21 @@
-import { Client } from '@prisma/client'
+import { Client, Prisma } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
-import { BadRequestError, DatabaseError } from '../../errors'
-import { ClientToBeCreated } from './interfaces'
+import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
+import { ClientToBeCreated, ClientToBeReturned, FindManyClientsWhere } from './interfaces'
 import prismaClient from '../../database/connection'
 import { prismaErrors } from '../../enums/prismaErrors'
 import { status } from '../../enums/statusEnum'
+
+const count = async (where: Prisma.ClientWhereInput): Promise<number> => {
+  try {
+    const count = await prismaClient.client.count({ where })
+
+    return count
+  } catch (error) {
+    throw new DatabaseError(error)
+  }
+}
 
 const createOne = async (clientToBeCreated: ClientToBeCreated): Promise<Pick<Client, 'id'>> => {
   const CLIENT_ALREADY_EXISTS = 'CNPJ já cadastrado.'
@@ -25,6 +35,45 @@ const createOne = async (clientToBeCreated: ClientToBeCreated): Promise<Pick<Cli
       (error.code === prismaErrors.ALREADY_EXITS)
     ) throw new BadRequestError(CLIENT_ALREADY_EXISTS)
 
+    throw new DatabaseError(error)
+  }
+}
+
+const findMany = async (
+  skip: number,
+  take: number,
+  where: Partial<FindManyClientsWhere>
+): Promise<ClientToBeReturned[]> => {
+  try {
+    const clients = await prismaClient.client.findMany({
+      where,
+      skip,
+      take,
+      select: {
+        id: true,
+        cnpj: true,
+        corporateName: true,
+        fantasyName: true,
+        segment: true,
+        address: true,
+        state: true,
+        city: true,
+        managerName: true,
+        managerPhoneNumber: true,
+        managerEmail: true,
+        financePhoneNumber: true,
+        lumpSum: true,
+        unitValue: true,
+        totalSavings: true,
+        contractUrl: true,
+        statusId: true,
+        createdAt: true
+      },
+      orderBy: { createdAt: 'desc' }
+    })
+
+    return clients
+  } catch (error) {
     throw new DatabaseError(error)
   }
 }
@@ -53,4 +102,29 @@ const findOneById = async (id: string): Promise<Client | null> => {
   }
 }
 
-export default { createOne, findOneByCnpj, findOneById }
+const updateOne = async (id: string, data: Partial<Client>): Promise<void> => {
+  const CLIENT_NOT_FOUND = 'Associado não encontrado.'
+  
+  try {
+    await prismaClient.client.update({
+      data,
+      where: { id }
+    })
+  } catch (error) {
+    if (
+      (error instanceof PrismaClientKnownRequestError) &&
+      (error.code === prismaErrors.NOT_FOUND)
+    ) throw new NotFoundError(CLIENT_NOT_FOUND)
+
+    throw new DatabaseError(error)
+  }
+}
+
+export default {
+  count,
+  createOne,
+  findMany,
+  findOneByCnpj,
+  findOneById,
+  updateOne
+}

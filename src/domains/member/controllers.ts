@@ -25,7 +25,7 @@ const createOne = async (req: Request, res: Response): Promise<Response> => {
 }
 
 const findMany = async (req: Request, res: Response): Promise<Response> => {
-  const MEMBERS_FOUND = 'Associados encontrados com sucesso.'
+  const MEMBERS_FOUND = 'Associados recuperados com sucesso.'
 
   const queryParams: FindManyMembersQueryParams = {
     take: parseInt(req.query['take'] as string),
@@ -44,7 +44,7 @@ const findMany = async (req: Request, res: Response): Promise<Response> => {
 }
 
 const findOneById = async (req: Request, res: Response): Promise<Response> => {
-  const MEMBER_FOUND = 'Associado encontrado com sucesso.'
+  const MEMBER_FOUND = 'Associado recuperado com sucesso.'
 
   const id = req.params['id']
 

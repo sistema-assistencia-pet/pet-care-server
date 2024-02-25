@@ -15,6 +15,9 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
       .string({
         invalid_type_error: '"cep" deve ser uma string.',
         required_error: '"cep" é obrigatório.',
+      })
+      .length(6, {
+        message: '"cep" deve ter 6 caracteres.',
       }),
 
     clientId: z
@@ -50,7 +53,7 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         required_error: '"name" é obrigatório.',
       })
       .min(3, {
-        message: '"name" deve ter 3 caracteres.',
+        message: '"name" deve ter pelo menos 3 caracteres.',
       }),
 
     phoneNumber: z
@@ -109,15 +112,15 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
   next()
 }
 
-const validatefindManyPayload = (req: Request, _res: Response, next: NextFunction): void => {
-  const createOnePayloadSchema = z.object({
+const validatefindManyQueryParams = (req: Request, _res: Response, next: NextFunction): void => {
+  const findManyQueryParamsSchema = z.object({
     clientCnpj: z
       .string({
         invalid_type_error: '"clientCnpj " deve ser uma string.',
         required_error: '"clientCnpj " é obrigatório.',
       })
       .length(14, {
-        message: '"clientCnpj" deve ter no mínimo 3 caracteres.',
+        message: '"clientCnpj" deve ter 14 caracteres.',
       })
       .optional(),
 
@@ -127,7 +130,7 @@ const validatefindManyPayload = (req: Request, _res: Response, next: NextFunctio
         required_error: '"cpf" é obrigatório.',
       })
       .length(11, {
-        message: '"cpf" deve ter no mínimo 3 caracteres.',
+        message: '"cpf" deve ter 11 caracteres.',
       })
       .optional(),
 
@@ -149,7 +152,7 @@ const validatefindManyPayload = (req: Request, _res: Response, next: NextFunctio
         required_error: '"name" é obrigatório.',
       })
       .min(3, {
-        message: '"name" deve ter no mínimo 3 caracteres.',
+        message: '"name" deve ter pelo menos 3 caracteres.',
       })
       .optional(),
 
@@ -177,7 +180,7 @@ const validatefindManyPayload = (req: Request, _res: Response, next: NextFunctio
   })
 
   try {
-    createOnePayloadSchema.parse({
+    findManyQueryParamsSchema.parse({
       clientCnpj: req.query['clientCnpj'],
       cpf: req.query['cpf'],
       take: typeof req.query['take'] === 'string' ? parseInt(req.query['take']) : undefined,
@@ -196,4 +199,4 @@ const validatefindManyPayload = (req: Request, _res: Response, next: NextFunctio
   next()
 }
 
-export default { validateCreateOnePayload, validatefindManyPayload }
+export default { validateCreateOnePayload, validatefindManyQueryParams }

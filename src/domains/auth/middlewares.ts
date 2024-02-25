@@ -20,7 +20,7 @@ const validateLoginPayload = (req: Request, _res: Response, next: NextFunction):
         required_error: '"password" é obrigatório.',
       })
       .min(8, {
-        message: '"password" deve ter no mínimo 8 caracteres.',
+        message: '"password" deve ter pelo menos 8 caracteres.',
       })
   })
 
@@ -41,7 +41,7 @@ const validateLoginPayload = (req: Request, _res: Response, next: NextFunction):
 }
 
 const validateMemberFirstAccessPayload = (req: Request, _res: Response, next: NextFunction): void => {
-  const loginPayloadSchema = z.object({
+  const memberFirstAccessPayloadSchema = z.object({
     cpf: z
       .string({
         invalid_type_error: '"cpf" deve ser uma string.',
@@ -53,7 +53,7 @@ const validateMemberFirstAccessPayload = (req: Request, _res: Response, next: Ne
   })
 
   try {
-    loginPayloadSchema.parse({
+    memberFirstAccessPayloadSchema.parse({
       cpf: req.body.cpf
     })
   } catch (error) {
@@ -68,7 +68,7 @@ const validateMemberFirstAccessPayload = (req: Request, _res: Response, next: Ne
 }
 
 const validateMemberFirstPasswordPayload = (req: Request, _res: Response, next: NextFunction): void => {
-  const loginPayloadSchema = z.object({
+  const memberFirstPasswordPayloadSchema = z.object({
     cpf: z
       .string({
         invalid_type_error: '"cpf" deve ser uma string.',
@@ -77,6 +77,7 @@ const validateMemberFirstPasswordPayload = (req: Request, _res: Response, next: 
       .length(11, {
         message: '"cpf" deve ter 11 caracteres.',
       }),
+
     firstAccessCode: z
       .string({
         invalid_type_error: '"firstAccessCode" deve ser uma string.',
@@ -85,6 +86,7 @@ const validateMemberFirstPasswordPayload = (req: Request, _res: Response, next: 
       .length(6, {
         message: '"firstAccessCode" deve ter 6 caracteres.',
       }),
+
     newPassword: z
       .string({
         invalid_type_error: '"newPassword" deve ser uma string.',
@@ -96,7 +98,7 @@ const validateMemberFirstPasswordPayload = (req: Request, _res: Response, next: 
   })
 
   try {
-    loginPayloadSchema.parse({
+    memberFirstPasswordPayloadSchema.parse({
       cpf: req.body.cpf,
       firstAccessCode: req.body.firstAccessCode,
       newPassword: req.body.newPassword

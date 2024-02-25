@@ -29,7 +29,7 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         required_error: '"name" é obrigatório.',
       })
       .min(3, {
-        message: '"name" deve ter no mínimo 3 caracteres.',
+        message: '"name" deve ter pelo menos 3 caracteres.',
       }),
 
     password: z
@@ -38,7 +38,7 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         required_error: '"password" é obrigatório.',
       })
       .min(8, {
-        message: '"password" deve ter no mínimo 8 caracteres.',
+        message: '"password" deve ter pelo menos 8 caracteres.',
       }),
 
     roleId: z

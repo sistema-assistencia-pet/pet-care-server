@@ -32,14 +32,13 @@ const createOne = async (req: Request, res: Response): Promise<Response> => {
 }
 
 const findMany = async (req: Request, res: Response): Promise<Response> => {
-  const CLIENTS_FOUND = 'Clientes encontrados com sucesso.'
+  const CLIENTS_FOUND = 'Clientes recuperados com sucesso.'
 
   const queryParams: FindManyClientsQueryParams = {
     take: parseInt(req.query['take'] as string),
     skip: parseInt(req.query['skip'] as string),
-    clientCnpj: req.query['clientCnpj'] as string | undefined,
-    cpf: req.query['cpf'] as string | undefined,
-    name: req.query['name'] as string | undefined,
+    cnpj: req.query['cnpj'] as string | undefined,
+    fantasyName: req.query['fantasyName'] as string | undefined,
     statusId: parseInt(req.query['statusId'] as string)
   }
 
@@ -51,7 +50,7 @@ const findMany = async (req: Request, res: Response): Promise<Response> => {
 }
 
 const findOneById = async (req: Request, res: Response): Promise<Response> => {
-  const CLIENT_FOUND = 'Cliente encontrado com sucesso.'
+  const CLIENT_FOUND = 'Cliente recuperado com sucesso.'
 
   const id = req.params['id']
 

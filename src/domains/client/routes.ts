@@ -31,7 +31,7 @@ clientRouter.get(
   '/',
   verifyAccessToken,
   checkIfIsAdmin,
-  clientMiddlewares.validatefindManyPayload,
+  clientMiddlewares.validatefindManyQueryParams,
   clientController.findMany
 )
 

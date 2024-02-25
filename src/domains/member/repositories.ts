@@ -3,7 +3,7 @@ import prismaClient from '../../database/connection'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
-import { FindManyMembersQueryParams, FindManyWhere, MemberToBeCreated, MemberToBeReturned } from './interfaces'
+import { FindManyMembersWhere, MemberToBeCreated, MemberToBeReturned } from './interfaces'
 import { prismaErrors } from '../../enums/prismaErrors'
 import { status } from '../../enums/statusEnum'
 
@@ -41,7 +41,7 @@ const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<Pick<Mem
 const findMany = async (
   skip: number,
   take: number,
-  where: Partial<FindManyWhere>
+  where: Partial<FindManyMembersWhere>
 ): Promise<MemberToBeReturned[]> => {
   try {
     const members = await prismaClient.member.findMany({
@@ -90,6 +90,27 @@ const findOneById = async (id: string): Promise<Member | null> => {
 
     return member
   } catch (error) {
+    throw new DatabaseError(error)
+  }
+}
+
+const updateMany = async (
+  data: Partial<Member>,
+  where: Prisma.MemberWhereInput
+): Promise<void> => {
+  const MEMBER_NOT_FOUND = 'Associado não encontrado.'
+  
+  try {
+    await prismaClient.member.updateMany({
+      data,
+      where
+    })
+  } catch (error) {
+    if (
+      (error instanceof PrismaClientKnownRequestError) &&
+      (error.code === prismaErrors.NOT_FOUND)
+    ) throw new NotFoundError(MEMBER_NOT_FOUND)
+
     throw new DatabaseError(error)
   }
 }
@@ -143,6 +164,7 @@ export default {
   findOneByCpf,
   findOneById,
   findOneFirstAccessCode,
+  updateMany,
   updateOne,
   upsertOneFirstAccessCode
 }

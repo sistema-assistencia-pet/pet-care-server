@@ -46,7 +46,7 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: '"address" deve ser uma string.',
         required_error: '"address" é obrigatório.',
       })
-      .min(1, {
+      .min(3, {
         message: '"address" deve ter pelo menos 3 caracteres.',
       }),
 
@@ -176,25 +176,15 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
   next()
 }
 
-const validatefindManyPayload = (req: Request, _res: Response, next: NextFunction): void => {
-  const createOnePayloadSchema = z.object({
-    clientCnpj: z
+const validatefindManyQueryParams = (req: Request, _res: Response, next: NextFunction): void => {
+  const findManyQueryParamsSchema = z.object({
+    cnpj: z
       .string({
-        invalid_type_error: '"clientCnpj " deve ser uma string.',
-        required_error: '"clientCnpj " é obrigatório.',
+        invalid_type_error: '"cnpj " deve ser uma string.',
+        required_error: '"cnpj " é obrigatório.',
       })
       .length(14, {
-        message: '"clientCnpj" deve ter no mínimo 3 caracteres.',
-      })
-      .optional(),
-
-    cpf: z
-      .string({
-        invalid_type_error: '"cpf" deve ser uma string.',
-        required_error: '"cpf" é obrigatório.',
-      })
-      .length(11, {
-        message: '"cpf" deve ter no mínimo 3 caracteres.',
+        message: '"cnpj" deve ter 14 caracteres.',
       })
       .optional(),
 
@@ -210,13 +200,13 @@ const validatefindManyPayload = (req: Request, _res: Response, next: NextFunctio
         message: '"take" deve ser menor ou igual a 50.',
       }),
 
-    name: z
+    fantasyName: z
       .string({
-        invalid_type_error: '"name" deve ser uma string.',
-        required_error: '"name" é obrigatório.',
+        invalid_type_error: '"fantasyName" deve ser uma string.',
+        required_error: '"fantasyName" é obrigatório.',
       })
       .min(3, {
-        message: '"name" deve ter no mínimo 3 caracteres.',
+        message: '"fantasyName" deve ter no mínimo 3 caracteres.',
       })
       .optional(),
 
@@ -244,11 +234,10 @@ const validatefindManyPayload = (req: Request, _res: Response, next: NextFunctio
   })
 
   try {
-    createOnePayloadSchema.parse({
-      clientCnpj: req.query['clientCnpj'],
-      cpf: req.query['cpf'],
+    findManyQueryParamsSchema.parse({
+      cnpj: req.query['cnpj'],
       take: typeof req.query['take'] === 'string' ? parseInt(req.query['take']) : undefined,
-      name: req.query['name'],
+      fantasyName: req.query['fantasyName'],
       skip: typeof req.query['skip'] === 'string' ? parseInt(req.query['skip']) : undefined,
       statusId: typeof req.query['statusId'] === 'string' ? parseInt(req.query['statusId']) : undefined
     })
@@ -263,4 +252,4 @@ const validatefindManyPayload = (req: Request, _res: Response, next: NextFunctio
   next()
 }
 
-export default { validateCreateOnePayload, validatefindManyPayload }
+export default { validateCreateOnePayload, validatefindManyQueryParams }

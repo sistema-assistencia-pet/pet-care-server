@@ -31,7 +31,7 @@ memberRouter.get(
   '/',
   verifyAccessToken,
   checkIfIsAdmin,
-  memberMiddlewares.validatefindManyPayload,
+  memberMiddlewares.validatefindManyQueryParams,
   memberController.findMany
 )
 
