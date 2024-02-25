@@ -5,6 +5,8 @@ import memberController from './controllers'
 import memberMiddlewares from './middlewares'
 import { validateIdParam } from '../../middlewares/validateIdParam.middleware'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
+import multer from 'multer'
+import { multerOptions } from '../../utils/multerOptions'
 
 const memberRouter: Router = Router()
 
@@ -15,6 +17,16 @@ memberRouter.post(
   checkIfIsAdmin,
   memberMiddlewares.validateCreateOnePayload,
   memberController.createOne
+)
+
+// Criar associados a partir de um arquivo CSV
+memberRouter.post(
+  '/:clientId/create-members-in-bulk',
+  verifyAccessToken,
+  checkIfIsAdmin,
+  memberMiddlewares.validateCreateManyPayload,
+  multer(multerOptions).single('file'), // salva a imagem e a disponibiliza em req.file
+  memberController.createMany
 )
 
 // Detalhes de um associado

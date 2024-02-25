@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 
 import { FindManyMembersQueryParams, MemberToBeCreated } from './interfaces'
 import memberService from './services'
+import { BadRequestError } from '../../errors'
 
 
 const createOne = async (req: Request, res: Response): Promise<Response> => {
@@ -22,6 +23,20 @@ const createOne = async (req: Request, res: Response): Promise<Response> => {
   const memberId = await memberService.createOne(memberToBeCreated)
 
   return res.status(HttpStatusCode.Created).json({ message: MEMBER_SUCCESSFULLY_CREATED, memberId })
+}
+
+const createMany = async (req: Request, res: Response): Promise<Response> => {
+  const MEMBER_SUCCESSFULLY_CREATED = 'Associados cadastrados com sucesso.'
+  const FILE_NOT_FOUND = 'O arquivo .csv não foi recebido.'
+
+  const clientId: string = req.params['clientId'] as string
+  const file = req.file?.buffer
+
+  if (file === undefined) throw new BadRequestError(FILE_NOT_FOUND) 
+
+  await memberService.createMany(clientId, file)
+
+  return res.status(HttpStatusCode.Created).json({ message: MEMBER_SUCCESSFULLY_CREATED })
 }
 
 const findMany = async (req: Request, res: Response): Promise<Response> => {
@@ -85,6 +100,7 @@ const deleteOne = async (req: Request, res: Response): Promise<Response> => {
 
 export default {
   activateOne,
+  createMany,
   createOne,
   deleteOne,
   findMany,

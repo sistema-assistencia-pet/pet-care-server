@@ -112,6 +112,34 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
   next()
 }
 
+const validateCreateManyPayload = (req: Request, _res: Response, next: NextFunction): void => {
+  const createManyPayloadSchema = z.object({
+    clientId: z
+      .string({
+        invalid_type_error: '"clientId" deve ser uma string.',
+        required_error: '"clientId" é obrigatório.',
+      })
+      .uuid({
+        message: '"clientId" deve ser um UUID válido.',
+      })
+  })
+
+  try {
+    logger.debug({ body: req.body }, 'body')
+    createManyPayloadSchema.parse({
+      clientId: req.params['clientId']
+    })
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      throw new BadRequestError(error.issues.reduce((acc, issue) => `${acc} ${issue.message}`, ''))
+    }
+
+    throw new GenericError(error)
+  }
+
+  next()
+}
+
 const validatefindManyQueryParams = (req: Request, _res: Response, next: NextFunction): void => {
   const findManyQueryParamsSchema = z.object({
     clientCnpj: z
@@ -199,4 +227,8 @@ const validatefindManyQueryParams = (req: Request, _res: Response, next: NextFun
   next()
 }
 
-export default { validateCreateOnePayload, validatefindManyQueryParams }
+export default {
+  validateCreateManyPayload,
+  validateCreateOnePayload,
+  validatefindManyQueryParams
+}

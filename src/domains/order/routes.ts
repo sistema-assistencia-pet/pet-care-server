@@ -8,7 +8,7 @@ import { validateIdParam } from '../../middlewares/validateIdParam.middleware'
 
 const orderRouter: Router = Router()
 
-// Criar associado
+// Criar pedido
 orderRouter.post(
   '/',
   verifyAccessToken,
@@ -17,7 +17,7 @@ orderRouter.post(
   orderController.createOne
 )
 
-// Ativar associado 
+// Ativar pedido 
 orderRouter.patch(
   '/:id/activate',
   verifyAccessToken,
@@ -26,7 +26,7 @@ orderRouter.patch(
   orderController.activateOne
 )
 
-// Inativar associado 
+// Inativar pedido 
 orderRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
@@ -35,7 +35,7 @@ orderRouter.patch(
   orderController.inactivateOne
 )
 
-// Excluir associado
+// Excluir pedido
 orderRouter.patch(
   '/:id/delete',
   verifyAccessToken,

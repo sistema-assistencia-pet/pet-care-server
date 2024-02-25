@@ -38,6 +38,17 @@ const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<Pick<Mem
   }
 }
 
+const createOneForBulkCreation = async (memberToBeCreated: MemberToBeCreated): Promise<Pick<Member, 'id'>> => {
+  const member = await prismaClient.member.create({
+    data: { ...memberToBeCreated },
+    select: {
+      id: true,
+    }
+  })
+
+  return member
+}
+
 const findMany = async (
   skip: number,
   take: number,
@@ -197,6 +208,7 @@ export default {
   addToSavings,
   count,
   createOne,
+  createOneForBulkCreation,
   findMany,
   findOneByCpf,
   findOneById,
