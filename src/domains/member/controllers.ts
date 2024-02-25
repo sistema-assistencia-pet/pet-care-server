@@ -6,7 +6,7 @@ import memberService from './services'
 
 
 const createOne = async (req: Request, res: Response): Promise<Response> => {
-  const MEMBER_SUCCESSFULLY_CREATED = 'Associado criado com sucesso.'
+  const MEMBER_SUCCESSFULLY_CREATED = 'Associado cadastrado com sucesso.'
 
   const memberToBeCreated: MemberToBeCreated = {
     birthDate: req.body.birthDate,

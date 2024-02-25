@@ -6,7 +6,7 @@ import clientService from './service'
 
 
 const createOne = async (req: Request, res: Response): Promise<Response> => {
-  const CLIENT_SUCCESSFULLY_CREATED = 'Cliente criado com sucesso.'
+  const CLIENT_SUCCESSFULLY_CREATED = 'Cliente cadastrado com sucesso.'
 
   const clientToBeCreated: ClientToBeCreated = {
     cnpj: req.body.cnpj,

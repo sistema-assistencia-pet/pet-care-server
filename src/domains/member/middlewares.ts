@@ -16,14 +16,14 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: '"cep" deve ser uma string.',
         required_error: '"cep" é obrigatório.',
       })
-      .length(6, {
-        message: '"cep" deve ter 6 caracteres.',
+      .length(8, {
+        message: '"cep" deve ter 8 caracteres.',
       }),
 
     clientId: z
       .string({
-        invalid_type_error: '"cep" deve ser uma string.',
-        required_error: '"cep" é obrigatório.',
+        invalid_type_error: '"clientId" deve ser uma string.',
+        required_error: '"clientId" é obrigatório.',
       })
       .uuid({
         message: '"clientId" deve ser um UUID válido.',

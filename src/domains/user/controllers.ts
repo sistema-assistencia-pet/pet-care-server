@@ -4,9 +4,9 @@ import { Request, Response } from 'express'
 import userService from './services'
 import { UserToBeCreated } from './interfaces'
 
-const USER_SUCCESSFULLY_CREATED = 'Usuário criado com sucesso.'
-
 const createOne = async (req: Request, res: Response): Promise<Response> => {
+  const USER_SUCCESSFULLY_CREATED = 'Usuário cadastrado com sucesso.'
+
   const userToBeCreated: UserToBeCreated = {
     cpf: req.body.cpf,
     email: req.body.email,
