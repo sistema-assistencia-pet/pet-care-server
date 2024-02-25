@@ -209,12 +209,12 @@ const validatefindManyQueryParams = (req: Request, _res: Response, next: NextFun
 
   try {
     findManyQueryParamsSchema.parse({
-      clientCnpj: req.query['clientCnpj'],
+      clientCnpj: req.query['client-cnpj'],
       cpf: req.query['cpf'],
       take: typeof req.query['take'] === 'string' ? parseInt(req.query['take']) : undefined,
       name: req.query['name'],
       skip: typeof req.query['skip'] === 'string' ? parseInt(req.query['skip']) : undefined,
-      statusId: typeof req.query['statusId'] === 'string' ? parseInt(req.query['statusId']) : undefined
+      statusId: typeof req.query['status-id'] === 'string' ? parseInt(req.query['status-id']) : undefined
     })
   } catch (error) {
     if (error instanceof z.ZodError) {
