@@ -7,20 +7,20 @@ const validateLoginPayload = (req: Request, _res: Response, next: NextFunction):
   const loginPayloadSchema = z.object({
     cpf: z
       .string({
-        invalid_type_error: '"cpf" deve ser uma string.',
-        required_error: '"cpf" é obrigatório.',
+        invalid_type_error: 'O campo CPF ("cpf") deve ser uma string.',
+        required_error: 'O campo CPF ("cpf") é obrigatório.',
       })
       .length(11, {
-        message: '"cpf" deve ter 11 caracteres.',
+        message: 'O campo CPF ("cpf") deve ter 11 caracteres.',
       }),
 
     password: z
       .string({
-        invalid_type_error: '"password" deve ser uma string.',
-        required_error: '"password" é obrigatório.',
+        invalid_type_error: 'O campo Senha ("password") deve ser uma string.',
+        required_error: 'O campo Senha ("password") é obrigatório.',
       })
       .min(8, {
-        message: '"password" deve ter pelo menos 8 caracteres.',
+        message: 'O campo Senha ("password") deve ter pelo menos 8 caracteres.',
       })
   })
 
@@ -44,11 +44,11 @@ const validateMemberFirstAccessPayload = (req: Request, _res: Response, next: Ne
   const memberFirstAccessPayloadSchema = z.object({
     cpf: z
       .string({
-        invalid_type_error: '"cpf" deve ser uma string.',
-        required_error: '"cpf" é obrigatório.',
+        invalid_type_error: 'O campo CPF ("cpf") deve ser uma string.',
+        required_error: 'O campo CPF ("cpf") é obrigatório.',
       })
       .length(11, {
-        message: '"cpf" deve ter 11 caracteres.',
+        message: 'O campo CPF ("cpf") deve ter 11 caracteres.',
       })
   })
 
@@ -71,29 +71,29 @@ const validateMemberFirstPasswordPayload = (req: Request, _res: Response, next: 
   const memberFirstPasswordPayloadSchema = z.object({
     cpf: z
       .string({
-        invalid_type_error: '"cpf" deve ser uma string.',
-        required_error: '"cpf" é obrigatório.',
+        invalid_type_error: 'O campo CPF ("cpf") deve ser uma string.',
+        required_error: 'O campo CPF ("cpf") é obrigatório.',
       })
       .length(11, {
-        message: '"cpf" deve ter 11 caracteres.',
+        message: 'O campo CPF ("cpf") deve ter 11 caracteres.',
       }),
 
     firstAccessCode: z
       .string({
-        invalid_type_error: '"firstAccessCode" deve ser uma string.',
-        required_error: '"firstAccessCode" é obrigatório.',
+        invalid_type_error: 'O campo Código de Primeiro Acesso ("firstAccessCode") deve ser uma string.',
+        required_error: 'O campo Código de Primeiro Acesso ("firstAccessCode") é obrigatório.',
       })
       .length(6, {
-        message: '"firstAccessCode" deve ter 6 caracteres.',
+        message: 'O campo Código de Primeiro Acesso ("firstAccessCode") deve ter 6 caracteres.',
       }),
 
     newPassword: z
       .string({
-        invalid_type_error: '"newPassword" deve ser uma string.',
-        required_error: '"newPassword" é obrigatório.',
+        invalid_type_error: 'O campo Nova Senha ("newPassword") deve ser uma string.',
+        required_error: 'O campo Nova Senha ("newPassword") é obrigatório.',
       })
       .min(8, {
-        message: '"newPassword" deve ter no mínimo 8 caracteres.',
+        message: 'O campo Nova Senha ("newPassword") deve ter no mínimo 8 caracteres.',
       })
   })
 

@@ -7,74 +7,74 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
   const createOnePayloadSchema = z.object({
     birthDate: z
       .string({
-        invalid_type_error: '"birthDate" deve ser uma string no formato AAAA-MM-DD.',
-        required_error: '"birthDate" é obrigatório e deve estar no formato AAAA-MM-DD.',
+        invalid_type_error: 'O campo Data de Nascimento ("birthDate") deve ser uma string no formato AAAA-MM-DD.',
+        required_error: 'O campo Data de Nascimento ("birthDate") é obrigatório e deve estar no formato AAAA-MM-DD.',
       }),
 
     cep: z
       .string({
-        invalid_type_error: '"cep" deve ser uma string.',
-        required_error: '"cep" é obrigatório.',
+        invalid_type_error: 'O campo CEP ("cep") deve ser uma string.',
+        required_error: 'O campo CEP ("cep") é obrigatório.',
       })
       .length(8, {
-        message: '"cep" deve ter 8 caracteres.',
+        message: 'O campo CEP ("cep") deve ter 8 caracteres.',
       }),
 
     clientId: z
       .string({
-        invalid_type_error: '"clientId" deve ser uma string.',
-        required_error: '"clientId" é obrigatório.',
+        invalid_type_error: 'O campo ID do Cliente ("clientId") deve ser uma string.',
+        required_error: 'O campo ID do Cliente ("clientId") é obrigatório.',
       })
       .uuid({
-        message: '"clientId" deve ser um UUID válido.',
+        message: 'O campo ID do Cliente ("clientId") deve ser um UUID válido.',
       }),
 
-    cpf: z
+      cpf: z
       .string({
-        invalid_type_error: '"cpf" deve ser uma string.',
-        required_error: '"cpf" é obrigatório.',
+        invalid_type_error: 'O campo CPF ("cpf") deve ser uma string.',
+        required_error: 'O campo CPF ("cpf") é obrigatório.',
       })
       .length(11, {
-        message: '"cpf" deve ter 11 caracteres.',
+        message: 'O campo CPF ("cpf") deve ter 11 caracteres.',
       }),
 
     email: z
       .string({
-        invalid_type_error: '"email" deve ser uma string.',
-        required_error: '"email" é obrigatório.',
+        invalid_type_error: 'O campo E-mail ("email") deve ser uma string.',
+        required_error: 'O campo E-mail ("email") é obrigatório.',
       })
       .email({
-        message: '"email" deve ser um e-mail válido.',
+        message: 'O campo E-mail ("email") deve ser um e-mail válido.',
       }),
 
     name: z
       .string({
-        invalid_type_error: '"name" deve ser uma string.',
-        required_error: '"name" é obrigatório.',
+        invalid_type_error: 'O campo Nome ("name") deve ser uma string.',
+        required_error: 'O campo Nome ("name") é obrigatório.',
       })
       .min(3, {
-        message: '"name" deve ter pelo menos 3 caracteres.',
+        message: 'O campo Nome ("name") deve ter pelo menos 3 caracteres.',
       }),
 
     phoneNumber: z
       .string({
-        invalid_type_error: '"phoneNumber" deve ser uma string.',
-        required_error: '"phoneNumber" é obrigatório.',
+        invalid_type_error: 'O campo Telefone ("phoneNumber") deve ser uma string.',
+        required_error: 'O campo Telefone ("phoneNumber") é obrigatório.',
       })
       .length(11, {
-        message: '"phoneNumber" deve ter 11 caracteres.',
+        message: 'O campo Telefone ("phoneNumber") deve ter 11 caracteres.',
       }),
 
     statusId: z
       .number({
-        invalid_type_error: '"statusId" deve ser um number.',
-        required_error: '"statusId" é obrigatório.',
+        invalid_type_error: 'O campo Status ("statusId") deve ser um number.',
+        required_error: 'O campo Status ("statusId") é obrigatório.',
       })
       .gte(1, {
-        message: '"statusId" deve ser 1, 2 ou 3.',
+        message: 'O campo Status ("statusId") deve 1 (ativo), 2 (inativo) ou 3 (excluído).',
       })
       .lte(3, {
-        message: '"statusId" deve ser 1, 2 ou 3.',
+        message: 'O campo Status ("statusId") deve 1 (ativo), 2 (inativo) ou 3 (excluído).',
       })
   })
 
@@ -116,11 +116,11 @@ const validateCreateManyPayload = (req: Request, _res: Response, next: NextFunct
   const createManyPayloadSchema = z.object({
     clientId: z
       .string({
-        invalid_type_error: '"clientId" deve ser uma string.',
-        required_error: '"clientId" é obrigatório.',
+        invalid_type_error: 'O campo ID do Cliente ("clientId") deve ser uma string.',
+        required_error: 'O campo ID do Cliente ("clientId") é obrigatório.',
       })
       .uuid({
-        message: '"clientId" deve ser um UUID válido.',
+        message: 'O campo ID do Cliente ("clientId") deve ser um UUID válido.',
       })
   })
 
@@ -144,65 +144,65 @@ const validatefindManyQueryParams = (req: Request, _res: Response, next: NextFun
   const findManyQueryParamsSchema = z.object({
     clientCnpj: z
       .string({
-        invalid_type_error: '"clientCnpj " deve ser uma string.',
-        required_error: '"clientCnpj " é obrigatório.',
+        invalid_type_error: 'O campo CNPJ do Cliente ("clientCnpj") deve ser uma string.',
+        required_error: 'O campo CNPJ do Cliente ("clientCnpj") é obrigatório.',
       })
       .length(14, {
-        message: '"clientCnpj" deve ter 14 caracteres.',
+        message: 'O campo CNPJ do Cliente ("clientCnpj") deve ter 14 caracteres.',
       })
       .optional(),
 
     cpf: z
       .string({
-        invalid_type_error: '"cpf" deve ser uma string.',
-        required_error: '"cpf" é obrigatório.',
+        invalid_type_error: 'O campo CPF ("cpf") deve ser uma string.',
+        required_error: 'O campo CPF ("cpf") é obrigatório.',
       })
       .length(11, {
-        message: '"cpf" deve ter 11 caracteres.',
+        message: 'O campo CPF ("cpf") deve ter 11 caracteres.',
       })
       .optional(),
 
     take: z
       .number({
-        invalid_type_error: '"take" deve ser um number.',
-        required_error: '"take" é obrigatório.',
+        invalid_type_error: 'O campo Quantidade de Registros ("take") deve ser um number.',
+        required_error: 'O campo Quantidade de Registros ("take") é obrigatório.',
       })
       .gte(1, {
-        message: '"take" deve ser maior que 0.',
+        message: 'O campo Quantidade de Registros ("take") deve ser maior que 0.',
       })
       .lte(50, {
-        message: '"take" deve ser menor ou igual a 50.',
+        message: 'O campo Quantidade de Registros ("take") deve ser menor ou igual a 50.',
       }),
 
     name: z
       .string({
-        invalid_type_error: '"name" deve ser uma string.',
-        required_error: '"name" é obrigatório.',
+        invalid_type_error: 'O campo Nome ("name") deve ser uma string.',
+        required_error: 'O campo Nome ("name") é obrigatório.',
       })
       .min(3, {
-        message: '"name" deve ter pelo menos 3 caracteres.',
+        message: 'O campo Nome ("name") deve ter pelo menos 3 caracteres.',
       })
       .optional(),
 
     skip: z
       .number({
-        invalid_type_error: '"skip" deve ser um number.',
-        required_error: '"skip" é obrigatório.',
+        invalid_type_error: 'O campo Pular Registros ("skip") deve ser um number.',
+        required_error: 'O campo Pular Registros ("skip") é obrigatório.',
       })
       .gte(0, {
-        message: '"skip" deve ser maior ou igual a 0.',
+        message: 'O campo Pular Registros ("skip") deve ser maior ou igual a 0.',
       }),
 
     statusId: z
       .number({
-        invalid_type_error: '"statusId" deve ser um number.',
-        required_error: '"statusId" é obrigatório.',
+        invalid_type_error: 'O campo Status ("statusId") deve ser um number.',
+        required_error: 'O campo Status ("statusId") é obrigatório.',
       })
       .gte(1, {
-        message: '"statusId" deve ser 1, 2 ou 3.',
+        message: 'O campo Status ("statusId") deve 1 (ativo), 2 (inativo) ou 3 (excluído).',
       })
       .lte(3, {
-        message: '"statusId" deve ser 1, 2 ou 3.',
+        message: 'O campo Status ("statusId") deve 1 (ativo), 2 (inativo) ou 3 (excluído).',
       })
       .optional()
   })

@@ -7,50 +7,50 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
   const createOnePayloadSchema = z.object({
     cpf: z
       .string({
-        invalid_type_error: '"cpf" deve ser uma string.',
-        required_error: '"cpf" é obrigatório.',
+        invalid_type_error: 'O campo CPF ("cpf") deve ser uma string.',
+        required_error: 'O campo CPF ("cpf") é obrigatório.',
       })
       .length(11, {
-        message: '"cpf" deve ter 11 caracteres.',
+        message: 'O campo CPF ("cpf") deve ter 11 caracteres.',
       }),
 
     email: z
       .string({
-        invalid_type_error: '"email" deve ser uma string.',
-        required_error: '"email" é obrigatório.',
+        invalid_type_error: 'O campo E-mail ("email") deve ser uma string.',
+        required_error: 'O campo E-mail ("email") é obrigatório.',
       })
       .email({
-        message: '"email" deve ser um e-mail válido.',
+        message: 'O campo E-mail ("email") deve ser um e-mail válido.',
       }),
 
     name: z
       .string({
-        invalid_type_error: '"name" deve ser uma string.',
-        required_error: '"name" é obrigatório.',
+        invalid_type_error: 'O campo Nome ("name") deve ser uma string.',
+        required_error: 'O campo Nome ("name") é obrigatório.',
       })
       .min(3, {
-        message: '"name" deve ter pelo menos 3 caracteres.',
+        message: 'O campo Nome ("name") deve ter pelo menos 3 caracteres.',
       }),
 
     password: z
       .string({
-        invalid_type_error: '"password" deve ser uma string.',
-        required_error: '"password" é obrigatório.',
+        invalid_type_error: 'O campo Senha ("password") deve ser uma string.',
+        required_error: 'O campo Senha ("password") é obrigatório.',
       })
       .min(8, {
-        message: '"password" deve ter pelo menos 8 caracteres.',
+        message: 'O campo Senha ("password") deve ter pelo menos 8 caracteres.',
       }),
 
     roleId: z
       .number({
-        invalid_type_error: '"roleId" deve ser um number.',
-        required_error: '"roleId" é obrigatório.',
+        invalid_type_error: 'O campo Cargo ("roleId") deve ser um number.',
+        required_error: 'O campo Cargo ("roleId") é obrigatório.',
       })
       .gte(1, {
-        message: '"roleId" deve ser 1 ou 2.',
+        message: 'O campo Cargo ("roleId") deve ser 1 (administrador) ou 2 (associado).',
       })
       .lte(2, {
-        message: '"roleId" deve ser 1 ou 2.',
+        message: 'O campo Cargo ("roleId") deve ser 1 (administrador) ou 2 (associado).',
       })
   })
 
