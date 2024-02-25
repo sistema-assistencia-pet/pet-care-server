@@ -106,24 +106,40 @@ model MemberFirstAcessCode {
 }
 
 model Order {
-  id            String   @id @default(uuid())
-  memberId      String   @map("id_associado")
-  clientId      String   @map("id_cliente")
-  medicineName  String   @map("nome_do_medicamento")
-  medicineType  String   @map("tipo_do_medicamento")
-  quantity      Int      @map("quantidade")
-  listPrice     Float    @map("preco_de_tabela")
-  discountPrice Float    @map("preco_com_desconto")
-  statusId      Int      @map("id_status")
-  createdAt     DateTime @default(now()) @map("data_de_criacao")
-  updatedAt     DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
+  id           String   @id @default(uuid())
+  memberId     String   @map("id_associado")
+  clientId     String   @map("id_cliente")
+  totalValue   Float    @map("valor_total")
+  totalSavings Float    @default(0) @map("economia_total")
+  isRecurring  Boolean  @map("compra_recorrente")
+  statusId     Int      @map("id_status")
+  createdAt    DateTime @default(now()) @map("data_de_criacao")
+  updatedAt    DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
   client Client @relation(fields: [clientId], references: [id])
   member Member @relation(fields: [memberId], references: [id])
   status Status @relation(fields: [statusId], references: [id])
+  item   Item[]
 
   @@map("pedido")
+}
+
+model Item {
+  id            String   @id @default(uuid())
+  orderId       String   @map("id_pedido")
+  medicineName  String   @map("nome_do_medicamento")
+  medicineType  String   @map("tipo_do_medicamento")
+  quantity      Int      @map("quantidade")
+  listPrice     Float    @map("preco_de_tabela")
+  discountPrice Float    @map("preco_com_desconto")
+  createdAt     DateTime @default(now()) @map("data_de_criacao")
+  updatedAt     DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
+
+  // Relation
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@map("item")
 }
 
 model Status {

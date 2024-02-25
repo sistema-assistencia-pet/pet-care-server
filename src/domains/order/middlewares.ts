@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
 import { BadRequestError, GenericError } from '../../errors'
+import { ItemToBeCreated } from './interfaces'
 
 const validateCreateOnePayload = (req: Request, _res: Response, next: NextFunction): void => {
-  const createOnePayloadSchema = z.object({
+  const createOneOrderPayloadSchema = z.object({
     memberId: z
       .string({
         invalid_type_error: 'O campo ID do Associado ("memberId") deve ser uma string.',
@@ -13,7 +14,7 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         message: 'O campo ID do Associado ("memberId") deve ser um UUID válido.',
       }),
 
-      clientId: z
+    clientId: z
       .string({
         invalid_type_error: 'O campo ID do Cliente ("clientId") deve ser uma string.',
         required_error: 'O campo ID do Cliente ("clientId") é obrigatório.',
@@ -22,6 +23,38 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         message: 'O campo ID do Cliente ("clientId") deve ser um UUID válido.',
       }),
 
+    totalValue: z
+      .number({
+        invalid_type_error: 'O campo Valor Total ("totalValue") deve ser um number.',
+        required_error: 'O campo Valor Total ("totalValue") é obrigatório.',
+      }),
+
+    totalSavings: z
+      .number({
+        invalid_type_error: 'O campo Desconto Total ("totalSavings") deve ser um number.',
+        required_error: 'O campo Desconto Total ("totalSavings") é obrigatório.',
+      }),
+
+    isRecurring: z
+      .boolean({
+        invalid_type_error: 'O campo Compra Recorrente ("isRecurring") deve ser um boolean.',
+        required_error: 'O campo Compra Recorrente ("isRecurring") é obrigatório.',
+      }),
+
+    statusId: z
+      .number({
+        invalid_type_error: 'O campo Status ("statusId") deve ser um number.',
+        required_error: 'O campo Status ("statusId") é obrigatório.',
+      })
+      .gte(1, {
+        message: 'O campo Status ("statusId") deve 1 (ativo), 2 (inativo) ou 3 (excluído).',
+      })
+      .lte(3, {
+        message: 'O campo Status ("statusId") deve 1 (ativo), 2 (inativo) ou 3 (excluído).',
+      })
+  })
+
+  const createOneOrderItemPayloadSchema = z.object({
     medicineName: z
       .string({
         invalid_type_error: 'O campo Nome do Medicamento ("medicineName") deve ser uma string.',
@@ -60,30 +93,22 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Preço com Desconto ("discountPrice") deve ser um number.',
         required_error: 'O campo Preço com Desconto ("discountPrice") é obrigatório.',
       }),
+    })
 
-    statusId: z
-      .number({
-        invalid_type_error: 'O campo Status ("statusId") deve ser um number.',
-        required_error: 'O campo Status ("statusId") é obrigatório.',
-      })
-      .gte(1, {
-        message: 'O campo Status ("statusId") deve 1 (ativo), 2 (inativo) ou 3 (excluído).',
-      })
-      .lte(3, {
-        message: 'O campo Status ("statusId") deve 1 (ativo), 2 (inativo) ou 3 (excluído).',
-      })
-  })
+  const orderItems: ItemToBeCreated[] = req.body.items
 
   try {
-    createOnePayloadSchema.parse({
+    createOneOrderPayloadSchema.parse({
       memberId: req.body.memberId,
       clientId: req.body.clientId,
-      medicineName: req.body.medicineName,
-      medicineType: req.body.medicineType,
-      quantity: req.body.quantity,
-      listPrice: req.body.listPrice,
-      discountPrice: req.body.discountPrice,
+      totalValue: req.body.totalValue,
+      totalSavings: req.body.totalSavings,
+      isRecurring: req.body.isRecurring,
       statusId: req.body.statusId
+    })
+
+    orderItems.forEach((item) => {
+      createOneOrderItemPayloadSchema.parse(item)
     })
   } catch (error) {
     if (error instanceof z.ZodError) {

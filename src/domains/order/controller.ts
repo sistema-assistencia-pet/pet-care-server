@@ -10,12 +10,11 @@ const createOne = async (req: Request, res: Response): Promise<Response> => {
   const orderToBeCreated: OrderToBeCreated = {
     memberId: req.body.memberId,
     clientId: req.body.clientId,
-    medicineName: req.body.medicineName,
-    medicineType: req.body.medicineType,
-    quantity: req.body.quantity,
-    listPrice: req.body.listPrice,
-    discountPrice: req.body.discountPrice,
-    statusId: req.body.statusId
+    totalValue: req.body.totalValue,
+    totalSavings: req.body.totalSavings,
+    isRecurring: req.body.isRecurring,
+    statusId: req.body.statusId,
+    items: req.body.items
   }
 
   const orderId = await orderService.createOne(orderToBeCreated)

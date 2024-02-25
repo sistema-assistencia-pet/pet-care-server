@@ -14,14 +14,14 @@ const createOne = async (orderToBeCreated: OrderToBeCreated): Promise<string> =>
   const member = await memberRepositories.findOneById(orderToBeCreated.memberId)
   if (member === null) throw new BadRequestError(INVALID_MEMBER)
 
-  const order = await orderRepositories.createOne(orderToBeCreated)
+  const { id: orderId } = await orderRepositories.createOne(orderToBeCreated)
 
-  const totalSavings = orderToBeCreated.listPrice - orderToBeCreated.discountPrice
+  await orderRepositories.createManyItems(orderId, orderToBeCreated.items)
 
-  await memberRepositories.addToSavings(orderToBeCreated.memberId, totalSavings)
-  await clientRepositories.addToSavings(orderToBeCreated.clientId, totalSavings)
+  await memberRepositories.addToSavings(orderToBeCreated.memberId, orderToBeCreated.totalSavings)
+  await clientRepositories.addToSavings(orderToBeCreated.clientId, orderToBeCreated.totalSavings)
 
-  return order.id
+  return orderId
 }
 
 const activateOne = async (id: string): Promise<void> => {
@@ -35,9 +35,7 @@ const activateOne = async (id: string): Promise<void> => {
 
   const orderUpdated = await orderRepositories.updateOne(id, { statusId: 1 })
 
-  const totalSavings = orderUpdated.listPrice - orderUpdated.discountPrice
-
-  await memberRepositories.addToSavings(orderUpdated.memberId, totalSavings)
+  await memberRepositories.addToSavings(orderUpdated.memberId, orderUpdated.totalSavings)
 }
 
 const inactivateOne = async (id: string): Promise<void> => {
@@ -51,9 +49,7 @@ const inactivateOne = async (id: string): Promise<void> => {
 
   const orderUpdated = await orderRepositories.updateOne(id, { statusId: 2 })
 
-  const totalSavings = orderUpdated.listPrice - orderUpdated.discountPrice
-
-  if (orderToBeUpdated.statusId === 1) await memberRepositories.subtractFromSavings(orderUpdated.memberId, totalSavings)
+  if (orderToBeUpdated.statusId === 1) await memberRepositories.subtractFromSavings(orderUpdated.memberId, orderUpdated.totalSavings)
 }
 
 const deleteOne = async (id: string): Promise<void> => {
@@ -67,9 +63,7 @@ const deleteOne = async (id: string): Promise<void> => {
 
   const orderUpdated = await orderRepositories.updateOne(id, { statusId: 3 })
 
-  const totalSavings = orderUpdated.listPrice - orderUpdated.discountPrice
-
-  if (orderToBeUpdated.statusId === 1) await memberRepositories.subtractFromSavings(orderUpdated.memberId, totalSavings)
+  if (orderToBeUpdated.statusId === 1) await memberRepositories.subtractFromSavings(orderUpdated.memberId, orderUpdated.totalSavings)
 }
 
 export default {

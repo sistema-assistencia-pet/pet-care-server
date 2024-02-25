@@ -1,3 +1,5 @@
-import { Order } from '@prisma/client'
+import { Item, Order } from '@prisma/client'
 
-export type OrderToBeCreated = Omit<Order, 'id' |'createdAt' | 'updatedAt'>
+export type ItemToBeCreated = Omit<Item, 'id' | 'orderId' | 'createdAt' | 'updatedAt'>
+
+export type OrderToBeCreated = Omit<Order, 'id' |'createdAt' | 'updatedAt'> & { items: ItemToBeCreated[] }
