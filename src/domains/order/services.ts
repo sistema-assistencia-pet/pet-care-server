@@ -19,4 +19,21 @@ const createOne = async (orderToBeCreated: OrderToBeCreated): Promise<string> =>
   return order.id
 }
 
-export default { createOne }
+const activateOne = async (id: string): Promise<void> => {
+  await orderRepositories.updateOne(id, { statusId: 1 })
+}
+
+const inactivateOne = async (id: string): Promise<void> => {
+  await orderRepositories.updateOne(id, { statusId: 2 })
+}
+
+const deleteOne = async (id: string): Promise<void> => {
+  await orderRepositories.updateOne(id, { statusId: 3 })
+}
+
+export default {
+  activateOne,
+  createOne,
+  deleteOne,
+  inactivateOne
+}

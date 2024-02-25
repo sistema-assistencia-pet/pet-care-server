@@ -1,7 +1,7 @@
 import { Order } from '@prisma/client'
 import { OrderToBeCreated } from './interfaces'
 import prismaClient from '../../database/connection'
-import { BadRequestError, DatabaseError } from '../../errors'
+import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { prismaErrors } from '../../enums/prismaErrors'
 
@@ -26,4 +26,22 @@ const createOne = async (orderToBeCreated: OrderToBeCreated): Promise<Pick<Order
   }
 }
 
-export default { createOne }
+const updateOne = async (id: string, data: Partial<Order>): Promise<void> => {
+  const ORDER_NOT_FOUND = 'Pedido não encontrado.'
+  
+  try {
+    await prismaClient.order.update({
+      data,
+      where: { id }
+    })
+  } catch (error) {
+    if (
+      (error instanceof PrismaClientKnownRequestError) &&
+      (error.code === prismaErrors.NOT_FOUND)
+    ) throw new NotFoundError(ORDER_NOT_FOUND)
+
+    throw new DatabaseError(error)
+  }
+}
+
+export default { createOne, updateOne }
