@@ -63,7 +63,7 @@ const createMany = async (clientId: string, fileBuffer: Buffer): Promise<void> =
       })
 }
 
-const findMany = async ({ skip, take, ...queryParams }: FindManyMembersQueryParams): Promise<FindManyResponse<MemberToBeReturned>> => {
+const findMany = async ({ skip, take, ...queryParams }: FindManyMembersQueryParams): Promise<FindManyResponse<Omit<MemberToBeReturned, 'orders'>>> => {
   const MEMBERS_NOT_FOUND = 'Nenhum associado encontrado.'
   const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
 
@@ -100,6 +100,8 @@ const findOneById = async (id: string): Promise<MemberToBeReturned> => {
   const member = await memberRepositories.findOneById(id)
   
   if (member === null) throw new NotFoundError(MEMBER_NOT_FOUND)
+
+  logger.debug(member, 'Associado')
 
   const { password, createdPassword, updatedAt, ...memberToBeReturned } = member
 

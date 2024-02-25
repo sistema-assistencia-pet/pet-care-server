@@ -1,6 +1,6 @@
 import {createSecretKey} from 'crypto'
 import { jwtVerify } from 'jose'
-import { NextFunction, Request, Response } from 'express'
+import { type NextFunction, type Request, type Response } from 'express'
 
 import { getEnvironmentVariable } from '../utils/getEnvironmentVariable'
 import { UnauthorizedError } from '../errors'

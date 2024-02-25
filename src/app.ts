@@ -1,6 +1,6 @@
 import cors from 'cors'
 import dotenv from 'dotenv'
-import express, { Request, Response } from 'express'
+import express, { type Request, type Response } from 'express'
 import helmet from 'helmet'
 import { HttpStatusCode } from 'axios'
 

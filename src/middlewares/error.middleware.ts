@@ -1,5 +1,5 @@
 import { HttpStatusCode } from 'axios'
-import { NextFunction, Request, Response } from 'express'
+import { type NextFunction, type Request, type Response } from 'express'
 
 import { BaseAPIError } from '../errors'
 
@@ -10,7 +10,7 @@ export const errorMiddleware = async (
   _req: Request,
   res: Response,
   _next: NextFunction
-) => {
+): Promise<Response> => {
   logger.error(error, error.message)
 
   const statusCode = error instanceof BaseAPIError ? error.statusCode : HttpStatusCode.InternalServerError

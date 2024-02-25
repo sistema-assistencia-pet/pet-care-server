@@ -32,7 +32,7 @@ model Role {
   translation String @map("traducao")
 
   // Relation
-  user User[]
+  users User[]
 
   @@map("cargo")
 }
@@ -59,9 +59,9 @@ model Client {
   updatedAt          DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
-  status Status   @relation(fields: [statusId], references: [id])
-  member Member[]
-  order  Order[]
+  status  Status   @relation(fields: [statusId], references: [id])
+  members Member[]
+  orders  Order[]
 
   @@index(fantasyName)
   @@map("cliente")
@@ -84,10 +84,10 @@ model Member {
   updatedAt       DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
-  client               Client                 @relation(fields: [clientId], references: [id])
-  status               Status                 @relation(fields: [statusId], references: [id])
-  memberFirstAcessCode MemberFirstAcessCode[]
-  order                Order[]
+  client                Client                 @relation(fields: [clientId], references: [id])
+  status                Status                 @relation(fields: [statusId], references: [id])
+  memberFirstAcessCodes MemberFirstAcessCode[]
+  orders                Order[]
 
   @@index(name)
   @@map("associado")
@@ -120,7 +120,7 @@ model Order {
   client Client @relation(fields: [clientId], references: [id])
   member Member @relation(fields: [memberId], references: [id])
   status Status @relation(fields: [statusId], references: [id])
-  item   Item[]
+  items  Item[]
 
   @@map("pedido")
 }
@@ -148,10 +148,10 @@ model Status {
   translation String @map("traducao")
 
   // Relation
-  client Client[]
-  member Member[]
-  order  Order[]
-  user   User[]
+  clients Client[]
+  members Member[]
+  orders  Order[]
+  users   User[]
 
   @@map("status")
 }

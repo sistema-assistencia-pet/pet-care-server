@@ -1,4 +1,4 @@
-import { Member, MemberFirstAcessCode, Prisma } from '@prisma/client'
+import { Item, Member, MemberFirstAcessCode, Order, Prisma } from '@prisma/client'
 import prismaClient from '../../database/connection'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
@@ -53,7 +53,7 @@ const findMany = async (
   skip: number,
   take: number,
   where: Partial<FindManyMembersWhere>
-): Promise<MemberToBeReturned[]> => {
+): Promise<Omit<MemberToBeReturned, 'orders'>[]> => {
   try {
     const members = await prismaClient.member.findMany({
       where,
@@ -93,10 +93,17 @@ const findOneByCpf = async (cpf: string): Promise<Member | null> => {
   }
 }
 
-const findOneById = async (id: string): Promise<Member | null> => {
+const findOneById = async (id: string): Promise<Member & { orders: Array<Order & { items: Item[] }> } | null> => {
   try {
     const member = await prismaClient.member.findUnique({
-      where: { id, statusId: status.ACTIVE }
+      where: { id, statusId: status.ACTIVE },
+      include: {
+        orders: {
+          include: {
+            items: true
+          }
+        }
+      }
     })
 
     return member

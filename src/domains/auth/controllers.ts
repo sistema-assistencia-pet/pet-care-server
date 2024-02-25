@@ -1,12 +1,12 @@
 import { HttpStatusCode } from 'axios'
-import { Request, Response } from 'express'
+import { type Request, type Response } from 'express'
 
 import authService from './services'
 
 const loginAdmin = async (req: Request, res: Response): Promise<Response> => {
   const SUCCESSFULLY_LOGGED_IN = 'Usuário logado com sucesso.'
 
-  const { cpf, password } = req.body
+  const { cpf, password }: { cpf: string, password: string } = req.body
 
   const { accessToken, user } = await authService.loginAdmin(cpf, password)
 
@@ -18,7 +18,7 @@ const loginAdmin = async (req: Request, res: Response): Promise<Response> => {
 const loginMember = async (req: Request, res: Response): Promise<Response> => {
   const SUCCESSFULLY_LOGGED_IN = 'Associado logado com sucesso.'
 
-  const { cpf, password } = req.body
+  const { cpf, password }: { cpf: string, password: string } = req.body
 
   const { accessToken, user } = await authService.loginMember(cpf, password)
 
@@ -30,7 +30,7 @@ const loginMember = async (req: Request, res: Response): Promise<Response> => {
 const createMemberFirstAccess = async (req: Request, res: Response): Promise<Response> => {
   const SUCCESSFULLY_FIRST_ACCESS = 'Primeiro acesso realizado com sucesso. Por favor, verifique o código de acesso enviado em seu email.'
 
-  const { cpf } = req.body
+  const { cpf }: { cpf: string } = req.body
 
   await authService.createMemberFirstAccess(cpf)
 
@@ -40,7 +40,7 @@ const createMemberFirstAccess = async (req: Request, res: Response): Promise<Res
 const createMemberFirstPassword = async (req: Request, res: Response): Promise<Response> => {
   const FIRST_PASSWORD_SUCCESSFULLY_CREATED = 'Senha criada com sucesso!'
 
-  const { cpf, firstAccessCode, newPassword } = req.body
+  const { cpf, firstAccessCode, newPassword }: { cpf: string, firstAccessCode: string, newPassword: string } = req.body
 
   await authService.createMemberFirstPassword(cpf, firstAccessCode, newPassword)
 

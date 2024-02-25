@@ -1,5 +1,5 @@
 import { HttpStatusCode } from 'axios'
-import { Request, Response } from 'express'
+import { type Request, type Response } from 'express'
 
 import userService from './services'
 import { UserToBeCreated } from './interfaces'
