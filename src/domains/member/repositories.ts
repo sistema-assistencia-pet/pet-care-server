@@ -109,7 +109,7 @@ const updateMany = async (
     if (
       (error instanceof PrismaClientKnownRequestError) &&
       (error.code === prismaErrors.NOT_FOUND)
-    ) throw new NotFoundError(MEMBER_NOT_FOUND)
+    ) throw new NotFoundError(`${MEMBER_NOT_FOUND}${data.id ? ' (id: ' + data.id + ')' : ''}`)
 
     throw new DatabaseError(error)
   }
@@ -121,6 +121,42 @@ const updateOne = async (id: string, data: Partial<Member>): Promise<void> => {
   try {
     await prismaClient.member.update({
       data,
+      where: { id }
+    })
+  } catch (error) {
+    if (
+      (error instanceof PrismaClientKnownRequestError) &&
+      (error.code === prismaErrors.NOT_FOUND)
+    ) throw new NotFoundError(MEMBER_NOT_FOUND)
+
+    throw new DatabaseError(error)
+  }
+}
+
+const addToSavings = async (id: string, savingsToAdd: number): Promise<void> => {
+  const MEMBER_NOT_FOUND = 'Associado não encontrado.'
+  
+  try {
+    await prismaClient.member.update({
+      data: { totalSavings: { increment: savingsToAdd } },
+      where: { id }
+    })
+  } catch (error) {
+    if (
+      (error instanceof PrismaClientKnownRequestError) &&
+      (error.code === prismaErrors.NOT_FOUND)
+    ) throw new NotFoundError(MEMBER_NOT_FOUND)
+
+    throw new DatabaseError(error)
+  }
+}
+
+const subtractFromSavings = async (id: string, savingsToSubtract: number): Promise<void> => {
+  const MEMBER_NOT_FOUND = 'Associado não encontrado.'
+  
+  try {
+    await prismaClient.member.update({
+      data: { totalSavings: { decrement: savingsToSubtract } },
       where: { id }
     })
   } catch (error) {
@@ -158,12 +194,14 @@ const upsertOneFirstAccessCode = async (memberId: string, firstAccessCode: strin
 }
 
 export default {
+  addToSavings,
   count,
   createOne,
   findMany,
   findOneByCpf,
   findOneById,
   findOneFirstAccessCode,
+  subtractFromSavings,
   updateMany,
   updateOne,
   upsertOneFirstAccessCode

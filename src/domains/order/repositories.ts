@@ -1,7 +1,8 @@
-import { Order } from '@prisma/client'
+import { Order, Prisma } from '@prisma/client'
+
+import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
 import { OrderToBeCreated } from './interfaces'
 import prismaClient from '../../database/connection'
-import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { prismaErrors } from '../../enums/prismaErrors'
 
@@ -26,14 +27,29 @@ const createOne = async (orderToBeCreated: OrderToBeCreated): Promise<Pick<Order
   }
 }
 
-const updateOne = async (id: string, data: Partial<Order>): Promise<void> => {
+const findAnyById = async (id: string, select?: Partial<Prisma.OrderSelect>): Promise<Partial<Order> | null> => {
+  try {
+    const order = await prismaClient.order.findUnique({
+      where: { id },
+      select
+    })
+
+    return order
+  } catch (error) {
+    throw new DatabaseError(error)
+  }
+}
+
+const updateOne = async (id: string, data: Partial<Order>): Promise<Order> => {
   const ORDER_NOT_FOUND = 'Pedido não encontrado.'
   
   try {
-    await prismaClient.order.update({
+    const order = await prismaClient.order.update({
       data,
       where: { id }
     })
+
+    return order
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
@@ -44,4 +60,4 @@ const updateOne = async (id: string, data: Partial<Order>): Promise<void> => {
   }
 }
 
-export default { createOne, updateOne }
+export default { createOne, findAnyById, updateOne }

@@ -103,7 +103,7 @@ const findOneById = async (id: string): Promise<Client | null> => {
 }
 
 const updateOne = async (id: string, data: Partial<Client>): Promise<void> => {
-  const CLIENT_NOT_FOUND = 'Associado não encontrado.'
+  const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
   
   try {
     await prismaClient.client.update({
@@ -120,11 +120,49 @@ const updateOne = async (id: string, data: Partial<Client>): Promise<void> => {
   }
 }
 
+const addToSavings = async (id: string, savingsToAdd: number): Promise<void> => {
+  const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
+  
+  try {
+    await prismaClient.client.update({
+      data: { totalSavings: { increment: savingsToAdd } },
+      where: { id }
+    })
+  } catch (error) {
+    if (
+      (error instanceof PrismaClientKnownRequestError) &&
+      (error.code === prismaErrors.NOT_FOUND)
+    ) throw new NotFoundError(CLIENT_NOT_FOUND)
+
+    throw new DatabaseError(error)
+  }
+}
+
+const subtractFromSavings = async (id: string, savingsToSubtract: number): Promise<void> => {
+  const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
+  
+  try {
+    await prismaClient.client.update({
+      data: { totalSavings: { decrement: savingsToSubtract } },
+      where: { id }
+    })
+  } catch (error) {
+    if (
+      (error instanceof PrismaClientKnownRequestError) &&
+      (error.code === prismaErrors.NOT_FOUND)
+    ) throw new NotFoundError(CLIENT_NOT_FOUND)
+
+    throw new DatabaseError(error)
+  }
+}
+
 export default {
+  addToSavings,
   count,
   createOne,
   findMany,
   findOneByCnpj,
   findOneById,
+  subtractFromSavings,
   updateOne
 }
