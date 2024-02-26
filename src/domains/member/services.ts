@@ -72,9 +72,21 @@ const findMany = async ({ skip, take, ...queryParams }: FindManyMembersQueryPara
   Object.entries(queryParams).forEach(([key, value]) => {
     if (
       value !== undefined &&
-        !Number.isNaN(value) &&
+        value !== null &&
         key !== 'clientCnpj'
-    ) Object.assign(where, { [key]: value })
+    ) {
+      switch (key) {
+        case 'cpf':
+          Object.assign(where, { cpf: { contains: value } })
+          break
+        case 'name':
+          Object.assign(where, { name: { contains: value } })
+          break
+        default:
+          Object.assign(where, { [key]: value })
+          break
+      }
+    }
   })
 
   if (queryParams.clientCnpj !== undefined) {
@@ -82,7 +94,7 @@ const findMany = async ({ skip, take, ...queryParams }: FindManyMembersQueryPara
 
     if (client === null) throw new BadRequestError(CLIENT_NOT_FOUND)
 
-    Object.assign(where, { clientId: client.id })
+    Object.assign(where, { clientId: { contains: client.id } })
   }
 
   const members = await memberRepositories.findMany(skip, take, where)
@@ -100,8 +112,6 @@ const findOneById = async (id: string): Promise<MemberToBeReturned> => {
   const member = await memberRepositories.findOneById(id)
 
   if (member === null) throw new NotFoundError(MEMBER_NOT_FOUND)
-
-  logger.debug(member, 'Associado')
 
   const { password, createdPassword, updatedAt, ...memberToBeReturned } = member
 

@@ -47,7 +47,7 @@ const findMany = async (req: Request, res: Response): Promise<Response> => {
     clientCnpj: req.query['client-cnpj'] as string | undefined,
     cpf: req.query.cpf as string | undefined,
     name: req.query.name as string | undefined,
-    statusId: parseInt(req.query['status-id'] as string)
+    statusId: req.query['status-id'] ? parseInt(req.query['status-id'] as string) : undefined
   }
 
   const { items: members, totalCount } = await memberService.findMany(queryParams)

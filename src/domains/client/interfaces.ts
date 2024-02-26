@@ -1,4 +1,4 @@
-import { type Client } from '@prisma/client'
+import { Prisma, type Client } from '@prisma/client'
 
 export type ClientToBeCreated = Omit<Client, 'id' | 'totalSavings' | 'createdAt' | 'updatedAt'>
 
@@ -12,4 +12,4 @@ export interface FindManyClientsQueryParams {
   statusId?: number | typeof NaN
 }
 
-export type FindManyClientsWhere = Pick<Client, 'cnpj' | 'fantasyName' | 'statusId'>
+export type FindManyClientsWhere = Pick<Prisma.ClientWhereInput, 'cnpj' | 'fantasyName' | 'statusId'>

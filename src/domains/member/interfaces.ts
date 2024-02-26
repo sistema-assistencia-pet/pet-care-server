@@ -1,4 +1,4 @@
-import { type Item, type Member, type Order } from '@prisma/client'
+import { Prisma, type Item, type Member, type Order } from '@prisma/client'
 
 export interface FindManyMembersQueryParams {
   clientCnpj?: string
@@ -9,7 +9,7 @@ export interface FindManyMembersQueryParams {
   statusId?: number | typeof NaN
 }
 
-export type FindManyMembersWhere = Pick<Member, 'cpf' | 'clientId' | 'name' | 'statusId'>
+export type FindManyMembersWhere = Pick<Prisma.MemberWhereInput, 'cpf' | 'clientId' | 'name' | 'statusId'>
 
 export type MemberToBeCreated = Omit<Member, 'id' | 'password' | 'createdPassword' | 'totalSavings' | 'createdAt' | 'updatedAt'>
 

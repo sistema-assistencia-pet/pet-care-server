@@ -38,7 +38,7 @@ const findMany = async (req: Request, res: Response): Promise<Response> => {
     skip: parseInt(req.query.skip as string),
     cnpj: req.query.cnpj as string | undefined,
     fantasyName: req.query['fantasy-name'] as string | undefined,
-    statusId: parseInt(req.query['status-id'] as string)
+    statusId: req.query['status-id'] ? parseInt(req.query['status-id'] as string) : undefined
   }
 
   const { items: clients, totalCount } = await clientService.findMany(queryParams)
