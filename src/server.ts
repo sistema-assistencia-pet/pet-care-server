@@ -5,7 +5,7 @@ import { app } from './app'
 
 dotenv.config()
 
-const PORT = 3000
+const PORT = 4000
 
 const API_RUNNING = 'API em execução na porta'
 
