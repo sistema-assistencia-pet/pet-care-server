@@ -34,7 +34,7 @@ const loginAdmin = async (cpf: string, password: string): Promise<ILoginResponse
 
   const user = await userRepositories.findOneByCpf(cpf)
 
-  if (user === null) {
+  if (user === null || user.roleId !== role.ADMIN) {
     logger.error({ cpf }, USER_NOT_FOUND)
 
     throw new UnauthorizedError(BAD_CREDENTIALS)
