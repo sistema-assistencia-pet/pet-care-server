@@ -21,7 +21,7 @@ import { userRouter } from './domains/user/routes'
 const app = express()
 
 app.disable('x-powered-by')
-app.use(cors({ exposedHeaders: 'x-total-count' }))
+app.use(cors({ exposedHeaders: ['x-total-count', 'access-token'] }))
 app.use(express.json())
 app.use(helmet())
 app.use(httpLogger)
