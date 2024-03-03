@@ -3,7 +3,7 @@ import prismaClient from '../../database/connection'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
-import { type FindManyMembersWhere, type MemberToBeCreated, type MemberToBeReturned } from './interfaces'
+import { MemberToBeReturnedOnFindMany, FindManyMembersWhere, MemberToBeCreated } from './interfaces'
 import { prismaErrors } from '../../enums/prismaErrors'
 import { status } from '../../enums/statusEnum'
 
@@ -53,7 +53,7 @@ const findMany = async (
   skip: number,
   take: number,
   where: Partial<FindManyMembersWhere>
-): Promise<Array<Omit<MemberToBeReturned, 'orders'>>> => {
+): Promise<MemberToBeReturnedOnFindMany[]> => {
   try {
     const members = await prismaClient.member.findMany({
       where,
@@ -61,7 +61,12 @@ const findMany = async (
       take,
       select: {
         id: true,
-        clientId: true,
+        client: {
+          select: {
+            cnpj: true,
+            fantasyName: true
+          }
+        },
         name: true,
         cpf: true,
         email: true,

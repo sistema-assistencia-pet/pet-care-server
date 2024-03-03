@@ -5,6 +5,7 @@ import { BadRequestError, NotFoundError } from '../../errors'
 import clientRepositories from '../client/repositories'
 import { convertBufferToStream } from '../../utils/convertBufferToStream'
 import {
+  MemberToBeReturnedOnFindMany,
   type FindManyMembersQueryParams,
   type FindManyMembersWhere,
   type MemberToBeCreated,
@@ -63,7 +64,7 @@ const createMany = async (clientId: string, fileBuffer: Buffer): Promise<void> =
     })
 }
 
-const findMany = async ({ skip, take, ...queryParams }: FindManyMembersQueryParams): Promise<FindManyResponse<Omit<MemberToBeReturned, 'orders'>>> => {
+const findMany = async ({ skip, take, ...queryParams }: FindManyMembersQueryParams): Promise<FindManyResponse<MemberToBeReturnedOnFindMany>> => {
   const MEMBERS_NOT_FOUND = 'Nenhum associado encontrado.'
   const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
 
