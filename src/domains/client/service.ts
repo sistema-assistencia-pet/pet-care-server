@@ -35,7 +35,7 @@ const findMany = async ({ skip, take, ...queryParams }: FindManyClientsQueryPara
 
   if (clients.length === 0) throw new NotFoundError(CLIENTS_NOT_FOUND)
 
-  const totalCount = await clientRepositories.count({ statusId: queryParams.statusId })
+  const totalCount = await clientRepositories.count(where)
 
   return { items: clients, totalCount }
 }

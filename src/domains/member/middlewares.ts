@@ -147,18 +147,12 @@ const validatefindManyQueryParams = (req: Request, _res: Response, next: NextFun
         invalid_type_error: 'O campo CNPJ do Cliente ("clientCnpj") deve ser uma string.',
         required_error: 'O campo CNPJ do Cliente ("clientCnpj") é obrigatório.'
       })
-      .length(14, {
-        message: 'O campo CNPJ do Cliente ("clientCnpj") deve ter 14 caracteres.'
-      })
       .optional(),
 
     cpf: z
       .string({
         invalid_type_error: 'O campo CPF ("cpf") deve ser uma string.',
         required_error: 'O campo CPF ("cpf") é obrigatório.'
-      })
-      .length(11, {
-        message: 'O campo CPF ("cpf") deve ter 11 caracteres.'
       })
       .optional(),
 

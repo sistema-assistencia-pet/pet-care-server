@@ -101,7 +101,7 @@ const findMany = async ({ skip, take, ...queryParams }: FindManyMembersQueryPara
 
   if (members.length === 0) throw new NotFoundError(MEMBERS_NOT_FOUND)
 
-  const totalCount = await memberRepositories.count({ statusId: queryParams.statusId })
+  const totalCount = await memberRepositories.count(where)
 
   return { items: members, totalCount }
 }
