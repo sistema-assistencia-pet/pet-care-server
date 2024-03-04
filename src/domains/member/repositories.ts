@@ -98,17 +98,28 @@ const findOneByCpf = async (cpf: string): Promise<Member | null> => {
   }
 }
 
-const findOneById = async (id: string): Promise<Member & { orders: Array<Order & { items: Item[] }> } | null> => {
+const findOneById = async (id: string, data?: Partial<Member>): Promise<Member & { orders: Array<Order & { items: Item[] }> } | null> => {
   try {
+    const where = { id }
+
+    if (data) Object.assign(where, data)
+
     const member = await prismaClient.member.findUnique({
-      where: { id, statusId: status.ACTIVE },
+      where,
       include: {
+        client: {
+          select: {
+            cnpj: true,
+            fantasyName: true
+          }
+        },
         orders: {
           include: {
             items: true
-          }
+          },
+          orderBy: { createdAt: 'desc' }
         }
-      }
+      },
     })
 
     return member

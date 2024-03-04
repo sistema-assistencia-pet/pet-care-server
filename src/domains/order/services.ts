@@ -3,15 +3,16 @@ import clientRepositories from '../client/repositories'
 import memberRepositories from '../member/repositories'
 import orderRepositories from './repositories'
 import { type OrderToBeCreated } from './interfaces'
+import { status } from '../../enums/statusEnum'
 
 const createOne = async (orderToBeCreated: OrderToBeCreated): Promise<string> => {
   const INVALID_CLIENT = 'Cliente inválido.'
   const INVALID_MEMBER = 'Associado inválido.'
 
-  const client = await clientRepositories.findOneById(orderToBeCreated.clientId)
+  const client = await clientRepositories.findOneById(orderToBeCreated.clientId, { statusId: status.ACTIVE })
   if (client === null) throw new BadRequestError(INVALID_CLIENT)
 
-  const member = await memberRepositories.findOneById(orderToBeCreated.memberId)
+  const member = await memberRepositories.findOneById(orderToBeCreated.memberId, { statusId: status.ACTIVE })
   if (member === null) throw new BadRequestError(INVALID_MEMBER)
 
   const { id: orderId } = await orderRepositories.createOne(orderToBeCreated)

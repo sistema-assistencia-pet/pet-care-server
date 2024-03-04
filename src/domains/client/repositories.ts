@@ -17,6 +17,18 @@ const count = async (where: Prisma.ClientWhereInput): Promise<number> => {
   }
 }
 
+const sumSystemSavings = async (): Promise<number | null> => {
+  try {
+    const { _sum: { totalSavings: systemTotalSavings } } = await prismaClient.client.aggregate({
+      _sum: { totalSavings: true }
+    })
+
+    return systemTotalSavings
+  } catch (error) {
+    throw new DatabaseError(error)
+  }
+}
+
 const createOne = async (clientToBeCreated: ClientToBeCreated): Promise<Pick<Client, 'id'>> => {
   const CLIENT_ALREADY_EXISTS = 'CNPJ já cadastrado.'
 
@@ -90,10 +102,14 @@ const findOneByCnpj = async (cnpj: string): Promise<Client | null> => {
   }
 }
 
-const findOneById = async (id: string): Promise<Client | null> => {
+const findOneById = async (id: string, data?: Partial<Client>): Promise<Client | null> => {
   try {
+    const where = { id }
+
+    if (data) Object.assign(where, data)
+
     const client = await prismaClient.client.findUnique({
-      where: { id, statusId: status.ACTIVE }
+      where
     })
 
     return client
@@ -164,5 +180,6 @@ export default {
   findOneByCnpj,
   findOneById,
   subtractFromSavings,
+  sumSystemSavings,
   updateOne
 }

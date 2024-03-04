@@ -41,11 +41,11 @@ const findMany = async (req: Request, res: Response): Promise<Response> => {
     statusId: req.query['status-id'] ? parseInt(req.query['status-id'] as string) : undefined
   }
 
-  const { items: clients, totalCount } = await clientService.findMany(queryParams)
+  const { items: clients, totalCount, systemTotalSavings } = await clientService.findMany(queryParams)
 
   res.setHeader('x-total-count', totalCount.toString())
 
-  return res.status(HttpStatusCode.Ok).json({ message: CLIENTS_FOUND, clients })
+  return res.status(HttpStatusCode.Ok).json({ message: CLIENTS_FOUND, clients, systemTotalSavings })
 }
 
 const findOneById = async (req: Request, res: Response): Promise<Response> => {

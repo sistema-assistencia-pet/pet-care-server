@@ -19,7 +19,7 @@ import { prismaErrors } from '../../enums/prismaErrors'
 const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<string> => {
   const INVALID_CLIENT = 'Cliente inválido.'
 
-  const client = await clientRepositories.findOneById(memberToBeCreated.clientId)
+  const client = await clientRepositories.findOneById(memberToBeCreated.clientId, { statusId: status.ACTIVE })
 
   if (client === null) throw new BadRequestError(INVALID_CLIENT)
 
@@ -31,7 +31,7 @@ const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<string> 
 const createMany = async (clientId: string, fileBuffer: Buffer): Promise<void> => {
   const INVALID_CLIENT = 'Cliente inválido.'
 
-  const client = await clientRepositories.findOneById(clientId)
+  const client = await clientRepositories.findOneById(clientId, { statusId: status.ACTIVE })
 
   if (client === null) throw new BadRequestError(INVALID_CLIENT)
 
