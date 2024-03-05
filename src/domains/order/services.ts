@@ -9,18 +9,18 @@ const createOne = async (orderToBeCreated: OrderToBeCreated): Promise<string> =>
   const INVALID_CLIENT = 'Cliente inválido.'
   const INVALID_MEMBER = 'Associado inválido.'
 
-  const client = await clientRepositories.findOneById(orderToBeCreated.clientId, { statusId: status.ACTIVE })
-  if (client === null) throw new BadRequestError(INVALID_CLIENT)
-
   const member = await memberRepositories.findOneById(orderToBeCreated.memberId, { statusId: status.ACTIVE })
   if (member === null) throw new BadRequestError(INVALID_MEMBER)
+
+  const client = await clientRepositories.findOneById(member.clientId, { statusId: status.ACTIVE })
+  if (client === null) throw new BadRequestError(INVALID_CLIENT)
 
   const { id: orderId } = await orderRepositories.createOne(orderToBeCreated)
 
   await orderRepositories.createManyItems(orderId, orderToBeCreated.items)
 
   await memberRepositories.addToSavings(orderToBeCreated.memberId, orderToBeCreated.totalSavings)
-  await clientRepositories.addToSavings(orderToBeCreated.clientId, orderToBeCreated.totalSavings)
+  await clientRepositories.addToSavings(member.clientId, orderToBeCreated.totalSavings)
 
   return orderId
 }

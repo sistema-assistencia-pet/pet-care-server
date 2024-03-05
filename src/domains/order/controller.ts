@@ -9,7 +9,6 @@ const createOne = async (req: Request, res: Response): Promise<Response> => {
 
   const orderToBeCreated: OrderToBeCreated = {
     memberId: req.body.memberId,
-    clientId: req.body.clientId,
     totalValue: req.body.totalValue,
     totalSavings: req.body.totalSavings,
     isRecurring: req.body.isRecurring,

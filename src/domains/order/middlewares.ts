@@ -14,15 +14,6 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         message: 'O campo ID do Associado ("memberId") deve ser um UUID válido.'
       }),
 
-    clientId: z
-      .string({
-        invalid_type_error: 'O campo ID do Cliente ("clientId") deve ser uma string.',
-        required_error: 'O campo ID do Cliente ("clientId") é obrigatório.'
-      })
-      .uuid({
-        message: 'O campo ID do Cliente ("clientId") deve ser um UUID válido.'
-      }),
-
     totalValue: z
       .number({
         invalid_type_error: 'O campo Valor Total ("totalValue") deve ser um number.',
@@ -100,7 +91,6 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
   try {
     createOneOrderPayloadSchema.parse({
       memberId: req.body.memberId,
-      clientId: req.body.clientId,
       totalValue: req.body.totalValue,
       totalSavings: req.body.totalSavings,
       isRecurring: req.body.isRecurring,
