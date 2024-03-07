@@ -7,6 +7,8 @@ import { MemberToBeReturnedOnFindMany, FindManyMembersWhere, MemberToBeCreated }
 import { prismaErrors } from '../../enums/prismaErrors'
 import { status } from '../../enums/statusEnum'
 
+const MEMBER_NOT_FOUND = 'Associado não encontrado.'
+
 const count = async (where: Prisma.MemberWhereInput): Promise<number> => {
   try {
     const count = await prismaClient.member.count({ where })
@@ -132,8 +134,6 @@ const updateMany = async (
   data: Partial<Member>,
   where: Prisma.MemberWhereInput
 ): Promise<void> => {
-  const MEMBER_NOT_FOUND = 'Associado não encontrado.'
-
   try {
     await prismaClient.member.updateMany({
       data,
@@ -150,8 +150,6 @@ const updateMany = async (
 }
 
 const updateOne = async (id: string, data: Partial<Member>): Promise<void> => {
-  const MEMBER_NOT_FOUND = 'Associado não encontrado.'
-
   try {
     await prismaClient.member.update({
       data,
@@ -168,8 +166,6 @@ const updateOne = async (id: string, data: Partial<Member>): Promise<void> => {
 }
 
 const addToSavings = async (id: string, savingsToAdd: number): Promise<void> => {
-  const MEMBER_NOT_FOUND = 'Associado não encontrado.'
-
   try {
     await prismaClient.member.update({
       data: { totalSavings: { increment: savingsToAdd } },
@@ -186,8 +182,6 @@ const addToSavings = async (id: string, savingsToAdd: number): Promise<void> => 
 }
 
 const subtractFromSavings = async (id: string, savingsToSubtract: number): Promise<void> => {
-  const MEMBER_NOT_FOUND = 'Associado não encontrado.'
-
   try {
     await prismaClient.member.update({
       data: { totalSavings: { decrement: savingsToSubtract } },
@@ -227,11 +221,28 @@ const upsertOneFirstAccessCode = async (memberId: string, firstAccessCode: strin
   }
 }
 
+const deleteOneFirstAccessCode = async (memberId: string): Promise<void> => {
+  try {
+    await prismaClient.memberFirstAcessCode.delete({
+      where: { memberId }
+    })
+  } catch (error) {
+    if (
+      (error instanceof PrismaClientKnownRequestError) &&
+      (error.code === prismaErrors.NOT_FOUND)
+    ) throw new NotFoundError(MEMBER_NOT_FOUND)
+
+    throw new DatabaseError(error)
+  }
+
+}
+
 export default {
   addToSavings,
   count,
   createOne,
   createOneForBulkCreation,
+  deleteOneFirstAccessCode,
   findMany,
   findOneByCpf,
   findOneById,

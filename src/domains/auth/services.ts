@@ -146,6 +146,8 @@ const createMemberFirstPassword = async (cpf: string, firstAccessCode: string, n
   const encryptedPassword = await bcrypt.hash(newPassword, 10)
 
   await memberRepositories.updateOne(member.id, { password: encryptedPassword, createdPassword: true })
+
+  await memberRepositories.deleteOneFirstAccessCode(member.id)
 }
 
 export default {
