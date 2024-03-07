@@ -68,8 +68,8 @@ const deleteOne = async (id: string): Promise<void> => {
   await memberRepositories.updateMany({ statusId: 3 }, { clientId: id })
 }
 
-const updateOne = async (clientId: string, clientToBeUpdated: Partial<ClientToBeUpdated>): Promise<void> => {
-  await clientRepositories.updateOne(clientId, clientToBeUpdated)
+const updateOne = async (id: string, clientToBeUpdated: Partial<ClientToBeUpdated>): Promise<void> => {
+  await clientRepositories.updateOne(id, clientToBeUpdated)
 }
 
 export default {

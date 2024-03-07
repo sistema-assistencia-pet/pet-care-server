@@ -31,7 +31,7 @@ clientRouter.get(
   '/',
   verifyAccessToken,
   checkIfIsAdmin,
-  clientMiddlewares.validatefindManyQueryParams,
+  clientMiddlewares.validateFindManyQueryParams,
   clientController.findMany
 )
 
@@ -64,10 +64,11 @@ clientRouter.patch(
 
 // Editar cliente
 clientRouter.patch(
-  '/:id/',
+  '/:id',
   verifyAccessToken,
   checkIfIsAdmin,
   validateIdParam,
+  clientMiddlewares.validateUpdateOnePayload,
   clientController.updateOne
 )
 
