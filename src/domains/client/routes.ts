@@ -62,4 +62,13 @@ clientRouter.patch(
   clientController.deleteOne
 )
 
+// Editar cliente
+clientRouter.patch(
+  '/:id/',
+  verifyAccessToken,
+  checkIfIsAdmin,
+  validateIdParam,
+  clientController.updateOne
+)
+
 export { clientRouter }

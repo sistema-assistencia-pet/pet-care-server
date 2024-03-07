@@ -1,5 +1,5 @@
 import clientRepositories from './repositories'
-import { type ClientToBeCreated, type ClientToBeReturned, type FindManyClientsQueryParams, type FindManyClientsWhere } from './interfaces'
+import { ClientToBeUpdated, type ClientToBeCreated, type ClientToBeReturned, type FindManyClientsQueryParams, type FindManyClientsWhere } from './interfaces'
 import memberRepositories from '../member/repositories'
 import { NotFoundError } from '../../errors'
 import { type FindManyResponse } from '../../interfaces'
@@ -68,11 +68,16 @@ const deleteOne = async (id: string): Promise<void> => {
   await memberRepositories.updateMany({ statusId: 3 }, { clientId: id })
 }
 
+const updateOne = async (clientId: string, clientToBeUpdated: Partial<ClientToBeUpdated>): Promise<void> => {
+  await clientRepositories.updateOne(clientId, clientToBeUpdated)
+}
+
 export default {
   activateOne,
   createOne,
   deleteOne,
   findMany,
   findOneById,
-  inactivateOne
+  inactivateOne,
+  updateOne
 }

@@ -4,6 +4,7 @@ export type ClientToBeCreated = Omit<Client, 'id' | 'totalSavings' | 'createdAt'
 
 export type ClientToBeReturned = Omit<Client, 'updatedAt'>
 
+export type ClientToBeUpdated = Omit<ClientToBeCreated, 'cnpj' | 'statusId'>
 export interface FindManyClientsQueryParams {
   cnpj?: string
   take: number

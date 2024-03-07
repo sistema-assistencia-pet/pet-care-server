@@ -1,7 +1,7 @@
 import { HttpStatusCode } from 'axios'
 import { type Request, type Response } from 'express'
 
-import { type FindManyClientsQueryParams, type ClientToBeCreated } from './interfaces'
+import { type FindManyClientsQueryParams, type ClientToBeCreated, ClientToBeUpdated } from './interfaces'
 import clientService from './service'
 
 const createOne = async (req: Request, res: Response): Promise<Response> => {
@@ -88,11 +88,38 @@ const deleteOne = async (req: Request, res: Response): Promise<Response> => {
   return res.status(HttpStatusCode.Ok).json({ message: CLIENT_SUCCESSFULLY_DELETED })
 }
 
+const updateOne = async (req: Request, res: Response): Promise<Response> => {
+  const CLIENT_SUCCESSFULLY_UPDATED = 'Cliente atualizado com sucesso.'
+
+  const clientId = req.params.id
+
+  const clientToBeUpdated: Partial<ClientToBeUpdated> = {
+    corporateName: req.body.corporateName,
+    fantasyName: req.body.fantasyName,
+    segment: req.body.segment,
+    address: req.body.address,
+    state: req.body.state,
+    city: req.body.city,
+    managerName: req.body.managerName,
+    managerPhoneNumber: req.body.managerPhoneNumber,
+    managerEmail: req.body.managerEmail,
+    financePhoneNumber: req.body.financePhoneNumber,
+    lumpSum: req.body.lumpSum,
+    unitValue: req.body.unitValue,
+    contractUrl: req.body.contractUrl
+  }
+
+  await clientService.updateOne(clientId, clientToBeUpdated)
+
+  return res.status(HttpStatusCode.NoContent).json({ message: CLIENT_SUCCESSFULLY_UPDATED })
+}
+
 export default {
   activateOne,
   createOne,
   deleteOne,
   findMany,
   findOneById,
-  inactivateOne
+  inactivateOne,
+  updateOne
 }
