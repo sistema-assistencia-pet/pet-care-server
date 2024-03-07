@@ -1,7 +1,7 @@
 import { HttpStatusCode } from 'axios'
 import { type Request, type Response } from 'express'
 
-import { type FindManyMembersQueryParams, type MemberToBeCreated } from './interfaces'
+import { MemberToBeUpdated, type FindManyMembersQueryParams, type MemberToBeCreated } from './interfaces'
 import memberService from './services'
 import { BadRequestError } from '../../errors'
 
@@ -97,6 +97,24 @@ const deleteOne = async (req: Request, res: Response): Promise<Response> => {
   return res.status(HttpStatusCode.Ok).json({ message: MEMBER_SUCCESSFULLY_DELETED })
 }
 
+const updateOne = async (req: Request, res: Response): Promise<Response> => {
+  const MEMBER_SUCCESSFULLY_UPDATED = 'Associado atualizado com sucesso.'
+
+  const memberId = req.params.id
+
+  const memberToBeUpdated: Partial<MemberToBeUpdated> = {
+    birthDate: req.body.birthDate,
+    cep: req.body.cep,
+    email: req.body.email,
+    name: req.body.name,
+    phoneNumber: req.body.phoneNumber
+  }
+
+  await memberService.updateOne(memberId, memberToBeUpdated)
+
+  return res.status(HttpStatusCode.NoContent).json({ message: MEMBER_SUCCESSFULLY_UPDATED })
+}
+
 export default {
   activateOne,
   createMany,
@@ -104,5 +122,6 @@ export default {
   deleteOne,
   findMany,
   findOneById,
-  inactivateOne
+  inactivateOne,
+  updateOne
 }

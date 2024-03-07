@@ -74,4 +74,13 @@ memberRouter.patch(
   memberController.deleteOne
 )
 
+// Editar associado
+memberRouter.patch(
+  '/:id',
+  verifyAccessToken,
+  checkIfIsAdmin,
+  validateIdParam,
+  memberController.updateOne
+)
+
 export { memberRouter }

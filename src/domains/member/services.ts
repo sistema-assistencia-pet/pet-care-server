@@ -9,7 +9,8 @@ import {
   type FindManyMembersQueryParams,
   type FindManyMembersWhere,
   type MemberToBeCreated,
-  type MemberToBeReturned
+  type MemberToBeReturned,
+  MemberToBeUpdated
 } from './interfaces'
 import { type FindManyResponse } from '../../interfaces'
 import memberRepositories from './repositories'
@@ -131,6 +132,10 @@ const deleteOne = async (id: string): Promise<void> => {
   await memberRepositories.updateOne(id, { statusId: 3 })
 }
 
+const updateOne = async (id: string, memberToBeUpdated: Partial<MemberToBeUpdated>): Promise<void> => {
+  await memberRepositories.updateOne(id, memberToBeUpdated)
+}
+
 export default {
   activateOne,
   createMany,
@@ -138,5 +143,6 @@ export default {
   deleteOne,
   findMany,
   findOneById,
-  inactivateOne
+  inactivateOne,
+  updateOne
 }
