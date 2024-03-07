@@ -15,7 +15,7 @@ const createOne = async (orderToBeCreated: OrderToBeCreated): Promise<string> =>
   const client = await clientRepositories.findOneById(member.clientId, { statusId: status.ACTIVE })
   if (client === null) throw new BadRequestError(INVALID_CLIENT)
 
-  const { id: orderId } = await orderRepositories.createOne(orderToBeCreated)
+  const { id: orderId } = await orderRepositories.createOne({ ...orderToBeCreated, clientId: client.id })
 
   await orderRepositories.createManyItems(orderId, orderToBeCreated.items)
 

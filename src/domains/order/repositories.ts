@@ -6,7 +6,7 @@ import prismaClient from '../../database/connection'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { prismaErrors } from '../../enums/prismaErrors'
 
-const createOne = async ({ items, ...orderToBeCreated }: OrderToBeCreated): Promise<Pick<Order, 'id'>> => {
+const createOne = async ({ items, ...orderToBeCreated }: OrderToBeCreated & { clientId: string }): Promise<Pick<Order, 'id'>> => {
   const ORDER_ALREADY_EXISTS = 'Pedido já cadastrado.'
 
   try {
