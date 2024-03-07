@@ -80,6 +80,7 @@ memberRouter.patch(
   verifyAccessToken,
   checkIfIsAdmin,
   validateIdParam,
+  memberMiddlewares.validateUpdateOnePayload,
   memberController.updateOne
 )
 
