@@ -51,9 +51,29 @@ const deleteOne = async (req: Request, res: Response): Promise<Response> => {
   return res.status(HttpStatusCode.Ok).json({ message: ORDER_SUCCESSFULLY_DELETED })
 }
 
+// const updateOne = async (req: Request, res: Response): Promise<Response> => {
+//   const ORDER_SUCCESSFULLY_UPDATED = 'Pedido atualizado com sucesso.'
+
+//   const orderId = req.params.id
+
+//   const orderToBeCreated: OrderToBeCreated = {
+//     memberId: req.body.memberId,
+//     totalValue: req.body.totalValue,
+//     totalSavings: req.body.totalSavings,
+//     isRecurring: req.body.isRecurring,
+//     statusId: req.body.statusId,
+//     items: req.body.items
+//   }
+
+//   await orderService.updateOne(orderId)
+
+//   return res.status(HttpStatusCode.NoContent).json({ message: ORDER_SUCCESSFULLY_UPDATED })
+// }
+
 export default {
   activateOne,
   createOne,
   deleteOne,
   inactivateOne
+  // updateOne
 }

@@ -44,4 +44,13 @@ orderRouter.patch(
   orderController.deleteOne
 )
 
+// Editar pedido
+// orderRouter.patch(
+//   '/:id',
+//   verifyAccessToken,
+//   checkIfIsAdmin,
+//   validateIdParam,
+//   orderController.updateOne
+// )
+
 export { orderRouter }
