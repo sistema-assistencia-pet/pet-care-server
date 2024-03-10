@@ -117,9 +117,9 @@ const createMemberFirstAccess = async (cpf: string): Promise<void> => {
 
   const firstAccessCode = await generateFirstAccessCode(member.id)
 
-  // await sendFirstAccessCode(member.email, firstAccessCode, member.name) // TODO: descomentar após configurar email
+  await sendFirstAccessCode(member.email, firstAccessCode, member.name)
 
-  logger.debug({ firstAccessCode }, 'Código de acesso gerado.') // TODO: remover após configurar email
+  logger.debug({ firstAccessCode }, 'Código de acesso gerado.')
 }
 
 const createMemberFirstPassword = async (cpf: string, firstAccessCode: string, newPassword: string): Promise<void> => {

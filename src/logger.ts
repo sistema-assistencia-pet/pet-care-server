@@ -2,9 +2,9 @@ import dotenv from 'dotenv'
 import pino, { type DestinationStream } from 'pino'
 import { pinoHttp } from 'pino-http'
 
-const TERMINAL_LOG_LEVEL = 'debug'
+const TERMINAL_LOG_LEVEL = 'info'
 const FILE_LOG_LEVEL = 'silent'
-const HTTP_LOG_LEVEL = 'debug'
+const HTTP_LOG_LEVEL = 'info'
 
 dotenv.config() // TODO: check if is necessary
 

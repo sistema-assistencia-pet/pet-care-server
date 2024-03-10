@@ -125,7 +125,6 @@ const validateCreateManyPayload = (req: Request, _res: Response, next: NextFunct
   })
 
   try {
-    logger.debug({ body: req.body }, 'body')
     createManyPayloadSchema.parse({
       clientId: req.params.clientId
     })
