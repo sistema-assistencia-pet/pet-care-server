@@ -10,7 +10,9 @@ const PORT = 4000
 
 const API_RUNNING = 'API em execução na porta'
 
-logger.debug({}, getEnvironmentVariable('DATABASE_URL'))
+const DB_URL = getEnvironmentVariable('DB_URL')
+
+logger.debug({ DB_URL }, 'URL do DB')
 
 app.listen(PORT, () => {
   logger.info(`${API_RUNNING} ${PORT}`)
