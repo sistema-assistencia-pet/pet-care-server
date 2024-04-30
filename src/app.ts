@@ -7,7 +7,7 @@ import { HttpStatusCode } from 'axios'
 import { errorMiddleware } from './middlewares/error.middleware'
 import { httpLogger } from './logger'
 
-const API_RUNNING = 'API em execução.'
+const API_RUNNING = 'API clube-milhas em execução.'
 const URL_NOT_FOUND = 'URL não encontrada. Por favor, verifique a URL da requisição e tente novamente.'
 
 dotenv.config()

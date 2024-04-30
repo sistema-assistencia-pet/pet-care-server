@@ -5,10 +5,11 @@ import { app } from './app'
 
 dotenv.config()
 
-const PORT = 4000
+const DEFAULT_SERVER_PORT = 4000
+const SERVER_PORT = process.env['SERVER_PORT'] ?? DEFAULT_SERVER_PORT
 
-const API_RUNNING = 'API em execução na porta'
+const API_RUNNING = 'clube-milhas-server API running on port:'
 
-app.listen(PORT, () => {
-  logger.info(`${API_RUNNING} ${PORT}`)
+app.listen(SERVER_PORT, () => {
+  logger.info(`${API_RUNNING} ${SERVER_PORT}`)
 })

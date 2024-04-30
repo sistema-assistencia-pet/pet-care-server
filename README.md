@@ -1,2 +1,2 @@
-# f4u-server
-REST API for Farma4U project.
+# clube-milhas-server
+REST API for Clube Milhas project.

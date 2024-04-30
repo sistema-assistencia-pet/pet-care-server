@@ -7,7 +7,7 @@ datasource db {
   url      = env("DB_URL")
 }
 
-model User {
+model Admin {
   id        String   @id @default(uuid())
   cpf       String   @unique
   name      String   @map("nome")
@@ -23,15 +23,16 @@ model User {
   status Status @relation(fields: [statusId], references: [id])
 
   @@index(name)
-  @@map("usuario")
+  @@map("administrador")
 }
 
 model Role {
   id          Int    @id @default(autoincrement())
-  name        String @map("nome")
+  name        String @unique @map("nome")
   translation String @map("traducao")
 
   // Relation
+  admins Admin[]
   users User[]
 
   @@map("cargo")
@@ -48,26 +49,83 @@ model Client {
   city               String   @map("cidade")
   managerName        String   @map("nome_do_responsavel")
   managerPhoneNumber String   @map("telefone_do_responsavel")
-  managerEmail       String   @map("email_do_responsavel")
+  managerEmail       String?  @map("email_do_responsavel")
   financePhoneNumber String   @map("telefone_do_financeiro")
   lumpSum            Float?   @map("valor_fixo")
   unitValue          Float?   @map("valor_unitario")
-  totalSavings       Float    @default(0) @map("economia_total")
+  totalSavings       Float?   @default(0) @map("economia_total")
   contractUrl        String?  @map("url_do_contrato")
   statusId           Int      @map("id_status")
   createdAt          DateTime @default(now()) @map("data_de_criacao")
   updatedAt          DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
-  status  Status   @relation(fields: [statusId], references: [id])
-  members Member[]
-  orders  Order[]
+  status Status @relation(fields: [statusId], references: [id])
+  users  User[]
+  // orders  Order[]
 
   @@index(fantasyName)
+  @@index(segment)
   @@map("cliente")
 }
 
-model Member {
+model Partner {
+  id                  String   @id @default(uuid())
+  cnpj                String   @unique
+  corporateName       String?  @map("razao_social")
+  fantasyName         String   @map("nome_fantasia")
+  address             String   @map("endereco")
+  state               String   @map("estado")
+  city                String   @map("cidade")
+  categoryId          Int      @map("id_categoria")
+  tags String
+  isOnline            Boolean  @map("online")
+  managerName         String   @map("nome_do_responsavel")
+  managerPhoneNumber  String   @map("telefone_do_responsavel")
+  managerEmail        String?  @map("email_do_responsavel")
+  businessPhoneNumber String   @map("telefone_do_comercial")
+  about               String?  @map("sobre")
+  openingHours        String?  @map("horario_de_funcionamento")
+  instagram           String?
+  webpage             String?  @map("site_oficial")
+  image               String?  @map("imagem")
+  logo                String?
+  contractUrl         String?  @map("url_do_contrato")
+  statusId            Int      @map("id_status")
+  benefit1Title      String?  @map("beneficio_1_titulo")
+  benefit1Description String?  @map("beneficio_1_descricao")
+  benefit1Rules       String?  @map("beneficio_1_regras")
+  benefit1Link        String?  @map("beneficio_1_link")
+  benefit1Voucher     String?  @map("beneficio_1_voucher")
+  benefit2Title      String?  @map("beneficio_2_titulo")
+  benefit2Description String?  @map("beneficio_2_descricao")
+  benefit2Rules       String?  @map("beneficio_2_regras")
+  benefit2Link        String?  @map("beneficio_2_link")
+  benefit2Voucher     String?  @map("beneficio_2_voucher")
+  createdAt           DateTime @default(now()) @map("data_de_criacao")
+  updatedAt           DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
+
+  // Relation
+  status   Status   @relation(fields: [statusId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@index(fantasyName)
+  @@index(categoryId)
+  @@index(tags)
+  @@map("estabelecimento")
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @unique @map("nome")
+
+  // Relation
+  partners Partner[]
+
+  @@map("categoria")
+}
+
+model User {
   id              String   @id @default(uuid())
   clientId        String   @map("id_cliente")
   cpf             String   @unique
@@ -79,67 +137,33 @@ model Member {
   password        String?  @map("senha")
   createdPassword Boolean  @default(false) @map("criou_senha")
   totalSavings    Float    @default(0) @map("economia_total")
+  roleId         Int      @map("id_cargo")
   statusId        Int      @map("id_status")
   createdAt       DateTime @default(now()) @map("data_de_criacao")
   updatedAt       DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
-  client                Client                 @relation(fields: [clientId], references: [id])
-  status                Status                 @relation(fields: [statusId], references: [id])
-  memberFirstAcessCodes MemberFirstAcessCode[]
-  orders                Order[]
+  client                 Client                  @relation(fields: [clientId], references: [id])
+  role   Role   @relation(fields: [roleId], references: [id])
+  status                 Status                  @relation(fields: [statusId], references: [id])
+  userResetPasswordCodes UserResetPasswordCode[]
+  // orders                Order[]
 
   @@index(name)
-  @@map("associado")
+  @@index(clientId)
+  @@map("usuario")
 }
 
-model MemberFirstAcessCode {
-  memberId        String   @id @map("id_associado")
-  firstAccessCode String   @map("codigo_primeiro_acesso")
+model UserResetPasswordCode {
+  userId          String   @id @map("id_usuario")
+  resetCode String   @map("codigo_de_redefinicao")
   createdAt       DateTime @default(now()) @map("data_de_criacao")
   updatedAt       DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
-  member Member @relation(fields: [memberId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
-  @@map("codigo_primeiro_acesso")
-}
-
-model Order {
-  id           String   @id @default(uuid())
-  memberId     String   @map("id_associado")
-  clientId     String   @map("id_cliente")
-  totalValue   Float    @map("valor_total")
-  totalSavings Float    @default(0) @map("economia_total")
-  isRecurring  Boolean  @map("compra_recorrente")
-  statusId     Int      @map("id_status")
-  createdAt    DateTime @default(now()) @map("data_de_criacao")
-  updatedAt    DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
-
-  // Relation
-  client Client @relation(fields: [clientId], references: [id])
-  member Member @relation(fields: [memberId], references: [id])
-  status Status @relation(fields: [statusId], references: [id])
-  items  Item[]
-
-  @@map("pedido")
-}
-
-model Item {
-  id            String   @id @default(uuid())
-  orderId       String   @map("id_pedido")
-  medicineName  String   @map("nome_do_medicamento")
-  medicineType  String   @map("tipo_do_medicamento")
-  quantity      Int      @map("quantidade")
-  listPrice     Float    @map("preco_de_tabela")
-  discountPrice Float    @map("preco_com_desconto")
-  createdAt     DateTime @default(now()) @map("data_de_criacao")
-  updatedAt     DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
-
-  // Relation
-  order Order @relation(fields: [orderId], references: [id])
-
-  @@map("item")
+  @@map("codigo_redefinicao_de_senha_de_usuario")
 }
 
 model Status {
@@ -148,10 +172,48 @@ model Status {
   translation String @map("traducao")
 
   // Relation
-  clients Client[]
-  members Member[]
-  orders  Order[]
-  users   User[]
+  admins   Admin[]
+  clients  Client[]
+  partners Partner[]
+  users    User[]
+  // orders  Order[]
 
   @@map("status")
 }
+
+// model Order {
+//   id           String   @id @default(uuid())
+//   userId     String   @map("id_usuario")
+//   clientId     String   @map("id_cliente")
+//   totalValue   Float    @map("valor_total")
+//   totalSavings Float    @default(0) @map("economia_total")
+//   isRecurring  Boolean  @map("compra_recorrente")
+//   statusId     Int      @map("id_status")
+//   createdAt    DateTime @default(now()) @map("data_de_criacao")
+//   updatedAt    DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
+
+//   // Relation
+//   client Client @relation(fields: [clientId], references: [id])
+//   user User @relation(fields: [userId], references: [id])
+//   status Status @relation(fields: [statusId], references: [id])
+//   items  Item[]
+
+//   @@map("pedido")
+// }
+
+// model Item {
+//   id            String   @id @default(uuid())
+//   orderId       String   @map("id_pedido")
+//   medicineName  String   @map("nome_do_medicamento")
+//   medicineType  String   @map("tipo_do_medicamento")
+//   quantity      Int      @map("quantidade")
+//   listPrice     Float    @map("preco_de_tabela")
+//   discountPrice Float    @map("preco_com_desconto")
+//   createdAt     DateTime @default(now()) @map("data_de_criacao")
+//   updatedAt     DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
+
+//   // Relation
+//   order Order @relation(fields: [orderId], references: [id])
+
+//   @@map("item")
+// }
