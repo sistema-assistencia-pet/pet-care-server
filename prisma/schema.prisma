@@ -7,7 +7,7 @@ datasource db {
   url      = env("DB_URL")
 }
 
-model Admin {
+model User {
   id        String   @id @default(uuid())
   cpf       String   @unique
   name      String   @map("nome")
@@ -23,7 +23,7 @@ model Admin {
   status Status @relation(fields: [statusId], references: [id])
 
   @@index(name)
-  @@map("administrador")
+  @@map("usuario")
 }
 
 model Role {
@@ -32,8 +32,8 @@ model Role {
   translation String @map("traducao")
 
   // Relation
-  admins Admin[]
   users User[]
+  members Member[]
 
   @@map("cargo")
 }
@@ -61,7 +61,7 @@ model Client {
 
   // Relation
   status Status @relation(fields: [statusId], references: [id])
-  users  User[]
+  members  Member[]
   // orders  Order[]
 
   @@index(fantasyName)
@@ -125,7 +125,7 @@ model Category {
   @@map("categoria")
 }
 
-model User {
+model Member {
   id              String   @id @default(uuid())
   clientId        String   @map("id_cliente")
   cpf             String   @unique
@@ -146,24 +146,24 @@ model User {
   client                 Client                  @relation(fields: [clientId], references: [id])
   role   Role   @relation(fields: [roleId], references: [id])
   status                 Status                  @relation(fields: [statusId], references: [id])
-  userResetPasswordCodes UserResetPasswordCode[]
+  memberResetPasswordCodes MemberResetPasswordCode[]
   // orders                Order[]
 
   @@index(name)
   @@index(clientId)
-  @@map("usuario")
+  @@map("associado")
 }
 
-model UserResetPasswordCode {
-  userId          String   @id @map("id_usuario")
+model MemberResetPasswordCode {
+  memberId          String   @id @map("id_associado")
   resetCode String   @map("codigo_de_redefinicao")
   createdAt       DateTime @default(now()) @map("data_de_criacao")
   updatedAt       DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
-  user User @relation(fields: [userId], references: [id])
+  member Member @relation(fields: [memberId], references: [id])
 
-  @@map("codigo_redefinicao_de_senha_de_usuario")
+  @@map("codigo_redefinicao_de_senha_de_associado")
 }
 
 model Status {
@@ -172,10 +172,10 @@ model Status {
   translation String @map("traducao")
 
   // Relation
-  admins   Admin[]
+  users   User[]
   clients  Client[]
   partners Partner[]
-  users    User[]
+  members    Member[]
   // orders  Order[]
 
   @@map("status")
@@ -183,7 +183,7 @@ model Status {
 
 // model Order {
 //   id           String   @id @default(uuid())
-//   userId     String   @map("id_usuario")
+//   memberId     String   @map("id_associado")
 //   clientId     String   @map("id_cliente")
 //   totalValue   Float    @map("valor_total")
 //   totalSavings Float    @default(0) @map("economia_total")
@@ -194,7 +194,7 @@ model Status {
 
 //   // Relation
 //   client Client @relation(fields: [clientId], references: [id])
-//   user User @relation(fields: [userId], references: [id])
+//   member Member @relation(fields: [memberId], references: [id])
 //   status Status @relation(fields: [statusId], references: [id])
 //   items  Item[]
 
