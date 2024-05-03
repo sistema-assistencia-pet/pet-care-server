@@ -40,8 +40,8 @@ const validateLoginPayload = (req: Request, _res: Response, next: NextFunction):
   next()
 }
 
-const validateMemberFirstAccessPayload = (req: Request, _res: Response, next: NextFunction): void => {
-  const memberFirstAccessPayloadSchema = z.object({
+const validateRequestResetMemberPasswordPayload = (req: Request, _res: Response, next: NextFunction): void => {
+  const memberRequestResetPasswordPayloadSchema = z.object({
     cpf: z
       .string({
         invalid_type_error: 'O campo CPF ("cpf") deve ser uma string.',
@@ -53,7 +53,7 @@ const validateMemberFirstAccessPayload = (req: Request, _res: Response, next: Ne
   })
 
   try {
-    memberFirstAccessPayloadSchema.parse({
+    memberRequestResetPasswordPayloadSchema.parse({
       cpf: req.body.cpf
     })
   } catch (error) {
@@ -67,8 +67,8 @@ const validateMemberFirstAccessPayload = (req: Request, _res: Response, next: Ne
   next()
 }
 
-const validateMemberFirstPasswordPayload = (req: Request, _res: Response, next: NextFunction): void => {
-  const memberFirstPasswordPayloadSchema = z.object({
+const validateResetMemberPasswordPayload = (req: Request, _res: Response, next: NextFunction): void => {
+  const memberResetPasswordPayloadSchema = z.object({
     cpf: z
       .string({
         invalid_type_error: 'O campo CPF ("cpf") deve ser uma string.',
@@ -78,13 +78,13 @@ const validateMemberFirstPasswordPayload = (req: Request, _res: Response, next: 
         message: 'O campo CPF ("cpf") deve ter 11 caracteres.'
       }),
 
-    firstAccessCode: z
+    resetPasswordCode: z
       .string({
-        invalid_type_error: 'O campo Código de Primeiro Acesso ("firstAccessCode") deve ser uma string.',
-        required_error: 'O campo Código de Primeiro Acesso ("firstAccessCode") é obrigatório.'
+        invalid_type_error: 'O campo Código de Redefinição de Senha ("resetPasswordCode") deve ser uma string.',
+        required_error: 'O campo Código de Redefinição de Senha ("resetPasswordCode") é obrigatório.'
       })
       .length(6, {
-        message: 'O campo Código de Primeiro Acesso ("firstAccessCode") deve ter 6 caracteres.'
+        message: 'O campo Código de Redefinição de Senha ("resetPasswordCode") deve ter 6 caracteres.'
       }),
 
     newPassword: z
@@ -98,9 +98,9 @@ const validateMemberFirstPasswordPayload = (req: Request, _res: Response, next: 
   })
 
   try {
-    memberFirstPasswordPayloadSchema.parse({
+    memberResetPasswordPayloadSchema.parse({
       cpf: req.body.cpf,
-      firstAccessCode: req.body.firstAccessCode,
+      resetPasswordCode: req.body.resetPasswordCode,
       newPassword: req.body.newPassword
     })
   } catch (error) {
@@ -116,6 +116,6 @@ const validateMemberFirstPasswordPayload = (req: Request, _res: Response, next: 
 
 export default {
   validateLoginPayload,
-  validateMemberFirstAccessPayload,
-  validateMemberFirstPasswordPayload
+  validateResetMemberPasswordPayload,
+  validateRequestResetMemberPasswordPayload
 }

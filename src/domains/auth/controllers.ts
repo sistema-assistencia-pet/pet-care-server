@@ -27,29 +27,29 @@ const loginMember = async (req: Request, res: Response): Promise<Response> => {
   return res.status(HttpStatusCode.Ok).json({ message: SUCCESSFULLY_LOGGED_IN, user })
 }
 
-const createMemberFirstAccess = async (req: Request, res: Response): Promise<Response> => {
-  const SUCCESSFULLY_FIRST_ACCESS = 'Primeiro acesso realizado com sucesso. Por favor, verifique o código de acesso enviado em seu email.'
+const requestResetMemberPassword = async (req: Request, res: Response): Promise<Response> => {
+  const RESET_PASSWORD_REQUESTED_SUCCESSFULLY = 'Redefinição de senha requisitada com sucesso. Por favor, verifique o código de acesso enviado em seu email.'
 
   const { cpf }: { cpf: string } = req.body
 
-  await authService.createMemberFirstAccess(cpf)
+  await authService.requestResetMemberPassword(cpf)
 
-  return res.status(HttpStatusCode.Ok).json({ message: SUCCESSFULLY_FIRST_ACCESS })
+  return res.status(HttpStatusCode.Ok).json({ message: RESET_PASSWORD_REQUESTED_SUCCESSFULLY })
 }
 
-const createMemberFirstPassword = async (req: Request, res: Response): Promise<Response> => {
-  const FIRST_PASSWORD_SUCCESSFULLY_CREATED = 'Senha criada com sucesso!'
+const resetMemberPassword = async (req: Request, res: Response): Promise<Response> => {
+  const RESET_PASSWORD_SUCCESSFULLY_CREATED = 'Senha redefinida com sucesso!'
 
-  const { cpf, firstAccessCode, newPassword }: { cpf: string, firstAccessCode: string, newPassword: string } = req.body
+  const { cpf, resetPasswordCode, newPassword }: { cpf: string, resetPasswordCode: string, newPassword: string } = req.body
 
-  await authService.createMemberFirstPassword(cpf, firstAccessCode, newPassword)
+  await authService.resetMemberPassword(cpf, resetPasswordCode, newPassword)
 
-  return res.status(HttpStatusCode.Created).json({ message: FIRST_PASSWORD_SUCCESSFULLY_CREATED })
+  return res.status(HttpStatusCode.Created).json({ message: RESET_PASSWORD_SUCCESSFULLY_CREATED })
 }
 
 export default {
-  createMemberFirstAccess,
-  createMemberFirstPassword,
   loginAdmin,
-  loginMember
+  loginMember,
+  resetMemberPassword,
+  requestResetMemberPassword
 }

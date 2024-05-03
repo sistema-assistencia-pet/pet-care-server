@@ -192,19 +192,19 @@ const subtractFromSavings = async (id: string, savingsToSubtract: number): Promi
   }
 }
 
-const findOneFirstAccessCode = async (memberId: string): Promise<MemberResetPasswordCode | null> => {
+const findOneResetPasswordCode = async (memberId: string): Promise<MemberResetPasswordCode | null> => {
   try {
-    const firstAccessCodeData = await prismaClient.memberResetPasswordCode.findUnique({
+    const resetPasswordCodeData = await prismaClient.memberResetPasswordCode.findUnique({
       where: { memberId }
     })
 
-    return firstAccessCodeData
+    return resetPasswordCodeData
   } catch (error) {
     throw new DatabaseError(error)
   }
 }
 
-const upsertOneFirstAccessCode = async (memberId: string, resetCode: string): Promise<void> => {
+const upsertOneResetPasswordCode = async (memberId: string, resetCode: string): Promise<void> => {
   try {
     await prismaClient.memberResetPasswordCode.upsert({
       create: { memberId, resetCode },
@@ -216,7 +216,7 @@ const upsertOneFirstAccessCode = async (memberId: string, resetCode: string): Pr
   }
 }
 
-const deleteOneFirstAccessCode = async (memberId: string): Promise<void> => {
+const deleteOneResetPasswordCode = async (memberId: string): Promise<void> => {
   try {
     await prismaClient.memberResetPasswordCode.delete({
       where: { memberId }
@@ -237,13 +237,13 @@ export default {
   count,
   createOne,
   createOneForBulkCreation,
-  deleteOneFirstAccessCode,
+  deleteOneResetPasswordCode,
   findMany,
   findOneByCpf,
   findOneById,
-  findOneFirstAccessCode,
+  findOneResetPasswordCode,
   subtractFromSavings,
   updateMany,
   updateOne,
-  upsertOneFirstAccessCode
+  upsertOneResetPasswordCode
 }

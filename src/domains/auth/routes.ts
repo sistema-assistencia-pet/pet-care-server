@@ -18,15 +18,15 @@ authRouter.post(
 )
 
 authRouter.post(
-  '/member-first-access',
-  authMiddlewares.validateMemberFirstAccessPayload,
-  authController.createMemberFirstAccess
+  '/request-reset-member-password',
+  authMiddlewares.validateRequestResetMemberPasswordPayload,
+  authController.requestResetMemberPassword
 )
 
 authRouter.post(
-  '/member-first-password',
-  authMiddlewares.validateMemberFirstPasswordPayload,
-  authController.createMemberFirstPassword
+  '/reset-member-password',
+  authMiddlewares.validateResetMemberPasswordPayload,
+  authController.resetMemberPassword
 )
 
 export { authRouter }

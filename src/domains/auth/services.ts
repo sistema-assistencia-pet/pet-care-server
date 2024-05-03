@@ -9,6 +9,7 @@ import memberRepositories from '../member/repositories'
 import { role } from '../../enums/roleEnum'
 import { sendEmail } from '../../utils/mailer'
 import userRepositories from '../user/repositories'
+import { systemName } from '../../apiConfig'
 
 const generateAccessToken = async (id: string, roleId: number): Promise<string> => {
   const JWT_SECRET = getEnvironmentVariable('JWT_SECRET')
@@ -87,72 +88,68 @@ const loginMember = async (cpf: string, password: string): Promise<ILoginRespons
   }
 }
 
-const generateFirstAccessCode = async (memberId: string): Promise<string> => {
-  const firstAccessCode = randomBytes(3).toString('hex')
+const generateResetPasswordCode = async (memberId: string): Promise<string> => {
+  const resetPasswordCode = randomBytes(3).toString('hex')
 
-  const encryptedFirstAccessCode = await bcrypt.hash(firstAccessCode, 10)
+  const encryptedResetPasswordCode = await bcrypt.hash(resetPasswordCode, 10)
 
-  await memberRepositories.upsertOneFirstAccessCode(memberId, encryptedFirstAccessCode)
+  await memberRepositories.upsertOneResetPasswordCode(memberId, encryptedResetPasswordCode)
 
-  return firstAccessCode
+  return resetPasswordCode
 }
 
-const sendFirstAccessCode = async (email: string, firstAccessCode: string, name: string): Promise<void> => {
-  const SUBJECT = 'Farma4u - Crie sua senha de acesso!'
-  const BODY = `Olá, ${name}! Seu código de acesso é: ${firstAccessCode}`
+const sendResetPasswordCode = async (email: string, resetPasswordCode: string, name: string): Promise<void> => {
+  const SUBJECT = `${systemName} - Redefina sua senha!`
+  const BODY = `Olá, ${name}! Seu código de acesso é: ${resetPasswordCode}. Utilize-o para redefinir sua senha.`
 
   const mailSent = await sendEmail(SUBJECT, BODY, email)
 
   logger.debug(mailSent, 'Resposta do envio do email.')
 }
 
-const createMemberFirstAccess = async (cpf: string): Promise<void> => {
-  const USER_ALREADY_HAS_PASSWORD = 'Usuário já possui senha de acesso.'
-  const USER_NOT_FOUND = 'Usuário não encontrado.'
+const requestResetMemberPassword = async (cpf: string): Promise<void> => {
+  const MEMBER_NOT_FOUND = 'Associado não encontrado.'
 
   const member = await memberRepositories.findOneByCpf(cpf)
 
-  if (member === null) throw new UnauthorizedError(USER_NOT_FOUND)
-  if (member.createdPassword) throw new UnauthorizedError(USER_ALREADY_HAS_PASSWORD)
+  if (member === null) throw new UnauthorizedError(MEMBER_NOT_FOUND)
 
-  const firstAccessCode = await generateFirstAccessCode(member.id)
+  const resetPasswordCode = await generateResetPasswordCode(member.id)
 
-  await sendFirstAccessCode(member.email, firstAccessCode, member.name)
+  await sendResetPasswordCode(member.email, resetPasswordCode, member.name)
 
-  logger.debug({ firstAccessCode }, 'Código de acesso gerado.')
+  logger.debug({ resetPasswordCode }, 'Código de acesso gerado.')
 }
 
-const createMemberFirstPassword = async (cpf: string, firstAccessCode: string, newPassword: string): Promise<void> => {
-  const INVALID_FIRST_ACCESS_CODE = 'Código de primeiro acesso inválido.'
-  const USER_ALREADY_HAS_PASSWORD = 'Usuário já possui senha de acesso.'
-  const USER_DID_NOT_CREATE_FIRST_ACCESS = 'Usuário ainda não realizou o primeiro acesso.'
-  const USER_NOT_FOUND = 'Usuário não encontrado.'
+const resetMemberPassword = async (cpf: string, resetPasswordCode: string, newPassword: string): Promise<void> => {
+  const INVALID_RESET_PASSWORD_CODE = 'Código de redefinição de senha inválido.'
+  const MEMBER_DID_NOT_REQUESTED_PASSWORD_RESET = 'Associado ainda não requisitou o código de redefinição de senha.'
+  const MEMBER_NOT_FOUND = 'Associado não encontrado.'
 
   const member = await memberRepositories.findOneByCpf(cpf)
 
-  if (member === null) throw new UnauthorizedError(USER_NOT_FOUND)
-  if (member.createdPassword) throw new UnauthorizedError(USER_ALREADY_HAS_PASSWORD)
+  if (member === null) throw new UnauthorizedError(MEMBER_NOT_FOUND)
 
-  const firstAccessCodeData = await memberRepositories.findOneFirstAccessCode(member.id)
+  const resetPasswordCodeData = await memberRepositories.findOneResetPasswordCode(member.id)
 
-  if (firstAccessCodeData === null) throw new BadRequestError(USER_DID_NOT_CREATE_FIRST_ACCESS)
+  if (resetPasswordCodeData === null) throw new BadRequestError(MEMBER_DID_NOT_REQUESTED_PASSWORD_RESET)
 
-  const encryptedFirstAccessCode = firstAccessCodeData.firstAccessCode
+  const encryptedResetPasswordCode = resetPasswordCodeData.resetCode
 
-  const isFirstAccessCodeValid = await bcrypt.compare(firstAccessCode, encryptedFirstAccessCode)
+  const isResetPasswordCodeValid = await bcrypt.compare(resetPasswordCode, encryptedResetPasswordCode)
 
-  if (!isFirstAccessCodeValid) throw new UnauthorizedError(INVALID_FIRST_ACCESS_CODE)
+  if (!isResetPasswordCodeValid) throw new UnauthorizedError(INVALID_RESET_PASSWORD_CODE)
 
   const encryptedPassword = await bcrypt.hash(newPassword, 10)
 
   await memberRepositories.updateOne(member.id, { password: encryptedPassword, createdPassword: true })
 
-  await memberRepositories.deleteOneFirstAccessCode(member.id)
+  await memberRepositories.deleteOneResetPasswordCode(member.id)
 }
 
 export default {
-  createMemberFirstAccess,
-  createMemberFirstPassword,
   loginAdmin,
-  loginMember
+  loginMember,
+  resetMemberPassword,
+  requestResetMemberPassword
 }
