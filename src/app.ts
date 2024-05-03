@@ -15,7 +15,7 @@ dotenv.config()
 import { authRouter } from './domains/auth/routes'
 import { clientRouter } from './domains/client/routes'
 import { memberRouter } from './domains/member/routes'
-import { orderRouter } from './domains/order/routes'
+// import { orderRouter } from './domains/order/routes'
 import { userRouter } from './domains/user/routes'
 
 const app = express()
@@ -29,7 +29,7 @@ app.use(httpLogger)
 app.use('/api/auth', authRouter)
 app.use('/api/client', clientRouter)
 app.use('/api/member', memberRouter)
-app.use('/api/order', orderRouter)
+// app.use('/api/order', orderRouter)
 app.use('/api/user', userRouter)
 
 app.get('/api/health-check', (_req: Request, res: Response) => {
