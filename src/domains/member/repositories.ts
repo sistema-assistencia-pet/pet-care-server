@@ -1,4 +1,4 @@
-import { type Item, type Member, type MemberFirstAcessCode, type Order, type Prisma } from '@prisma/client'
+import { type Member, type MemberResetPasswordCode, type Prisma } from '@prisma/client'
 import prismaClient from '../../database/connection'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
@@ -63,6 +63,7 @@ const findMany = async (
       take,
       select: {
         id: true,
+        roleId: true,
         client: {
           select: {
             cnpj: true,
@@ -100,7 +101,7 @@ const findOneByCpf = async (cpf: string): Promise<Member | null> => {
   }
 }
 
-const findOneById = async (id: string, data?: Partial<Member>): Promise<Member & { orders: Array<Order & { items: Item[] }> } | null> => {
+const findOneById = async (id: string, data?: Partial<Member>): Promise<Member | null> => {
   try {
     const where = { id }
 
@@ -115,12 +116,6 @@ const findOneById = async (id: string, data?: Partial<Member>): Promise<Member &
             fantasyName: true
           }
         },
-        orders: {
-          include: {
-            items: true
-          },
-          orderBy: { createdAt: 'desc' }
-        }
       },
     })
 
@@ -197,9 +192,9 @@ const subtractFromSavings = async (id: string, savingsToSubtract: number): Promi
   }
 }
 
-const findOneFirstAccessCode = async (memberId: string): Promise<MemberFirstAcessCode | null> => {
+const findOneFirstAccessCode = async (memberId: string): Promise<MemberResetPasswordCode | null> => {
   try {
-    const firstAccessCodeData = await prismaClient.memberFirstAcessCode.findUnique({
+    const firstAccessCodeData = await prismaClient.memberResetPasswordCode.findUnique({
       where: { memberId }
     })
 
@@ -209,11 +204,11 @@ const findOneFirstAccessCode = async (memberId: string): Promise<MemberFirstAces
   }
 }
 
-const upsertOneFirstAccessCode = async (memberId: string, firstAccessCode: string): Promise<void> => {
+const upsertOneFirstAccessCode = async (memberId: string, resetCode: string): Promise<void> => {
   try {
-    await prismaClient.memberFirstAcessCode.upsert({
-      create: { memberId, firstAccessCode },
-      update: { firstAccessCode },
+    await prismaClient.memberResetPasswordCode.upsert({
+      create: { memberId, resetCode },
+      update: { resetCode },
       where: { memberId }
     })
   } catch (error) {
@@ -223,7 +218,7 @@ const upsertOneFirstAccessCode = async (memberId: string, firstAccessCode: strin
 
 const deleteOneFirstAccessCode = async (memberId: string): Promise<void> => {
   try {
-    await prismaClient.memberFirstAcessCode.delete({
+    await prismaClient.memberResetPasswordCode.delete({
       where: { memberId }
     })
   } catch (error) {

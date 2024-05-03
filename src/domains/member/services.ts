@@ -16,6 +16,7 @@ import { type FindManyResponse } from '../../interfaces'
 import memberRepositories from './repositories'
 import { status } from '../../enums/statusEnum'
 import { prismaErrors } from '../../enums/prismaErrors'
+import { role } from '../../enums/roleEnum'
 
 const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<string> => {
   const INVALID_CLIENT = 'Cliente inválido.'
@@ -49,7 +50,8 @@ const createMany = async (clientId: string, fileBuffer: Buffer): Promise<void> =
         email: row.email,
         name: row.nome,
         phoneNumber: row.telefone,
-        statusId: status.ACTIVE
+        statusId: status.ACTIVE,
+        roleId: role.MEMBER
       }
 
       try {

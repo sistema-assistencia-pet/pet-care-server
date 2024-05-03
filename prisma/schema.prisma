@@ -32,7 +32,7 @@ model Role {
   translation String @map("traducao")
 
   // Relation
-  users User[]
+  users   User[]
   members Member[]
 
   @@map("cargo")
@@ -51,7 +51,7 @@ model Client {
   managerPhoneNumber String   @map("telefone_do_responsavel")
   managerEmail       String?  @map("email_do_responsavel")
   financePhoneNumber String   @map("telefone_do_financeiro")
-  lumpSum            Float?   @map("valor_fixo")
+  lumpSum            Float?   @map("valor_do_boleto")
   unitValue          Float?   @map("valor_unitario")
   totalSavings       Float?   @default(0) @map("economia_total")
   contractUrl        String?  @map("url_do_contrato")
@@ -60,8 +60,8 @@ model Client {
   updatedAt          DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
-  status Status @relation(fields: [statusId], references: [id])
-  members  Member[]
+  status  Status   @relation(fields: [statusId], references: [id])
+  members Member[]
   // orders  Order[]
 
   @@index(fantasyName)
@@ -78,7 +78,7 @@ model Partner {
   state               String   @map("estado")
   city                String   @map("cidade")
   categoryId          Int      @map("id_categoria")
-  tags String
+  tags                String
   isOnline            Boolean  @map("online")
   managerName         String   @map("nome_do_responsavel")
   managerPhoneNumber  String   @map("telefone_do_responsavel")
@@ -92,12 +92,12 @@ model Partner {
   logo                String?
   contractUrl         String?  @map("url_do_contrato")
   statusId            Int      @map("id_status")
-  benefit1Title      String?  @map("beneficio_1_titulo")
+  benefit1Title       String?  @map("beneficio_1_titulo")
   benefit1Description String?  @map("beneficio_1_descricao")
   benefit1Rules       String?  @map("beneficio_1_regras")
   benefit1Link        String?  @map("beneficio_1_link")
   benefit1Voucher     String?  @map("beneficio_1_voucher")
-  benefit2Title      String?  @map("beneficio_2_titulo")
+  benefit2Title       String?  @map("beneficio_2_titulo")
   benefit2Description String?  @map("beneficio_2_descricao")
   benefit2Rules       String?  @map("beneficio_2_regras")
   benefit2Link        String?  @map("beneficio_2_link")
@@ -137,15 +137,15 @@ model Member {
   password        String?  @map("senha")
   createdPassword Boolean  @default(false) @map("criou_senha")
   totalSavings    Float    @default(0) @map("economia_total")
-  roleId         Int      @map("id_cargo")
+  roleId          Int      @map("id_cargo")
   statusId        Int      @map("id_status")
   createdAt       DateTime @default(now()) @map("data_de_criacao")
   updatedAt       DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
-  client                 Client                  @relation(fields: [clientId], references: [id])
-  role   Role   @relation(fields: [roleId], references: [id])
-  status                 Status                  @relation(fields: [statusId], references: [id])
+  client                   Client                    @relation(fields: [clientId], references: [id])
+  role                     Role                      @relation(fields: [roleId], references: [id])
+  status                   Status                    @relation(fields: [statusId], references: [id])
   memberResetPasswordCodes MemberResetPasswordCode[]
   // orders                Order[]
 
@@ -155,10 +155,10 @@ model Member {
 }
 
 model MemberResetPasswordCode {
-  memberId          String   @id @map("id_associado")
+  memberId  String   @id @map("id_associado")
   resetCode String   @map("codigo_de_redefinicao")
-  createdAt       DateTime @default(now()) @map("data_de_criacao")
-  updatedAt       DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
+  createdAt DateTime @default(now()) @map("data_de_criacao")
+  updatedAt DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
   member Member @relation(fields: [memberId], references: [id])
@@ -172,10 +172,10 @@ model Status {
   translation String @map("traducao")
 
   // Relation
-  users   User[]
+  users    User[]
   clients  Client[]
   partners Partner[]
-  members    Member[]
+  members  Member[]
   // orders  Order[]
 
   @@map("status")
