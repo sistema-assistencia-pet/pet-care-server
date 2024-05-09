@@ -15,8 +15,9 @@ dotenv.config()
 import { authRouter } from './domains/auth/routes'
 import { clientRouter } from './domains/client/routes'
 import { memberRouter } from './domains/member/routes'
-// import { orderRouter } from './domains/order/routes'
+import { partnerRouter } from './domains/partner/routes'
 import { userRouter } from './domains/user/routes'
+// import { orderRouter } from './domains/order/routes'
 
 const app = express()
 
@@ -29,8 +30,9 @@ app.use(httpLogger)
 app.use('/api/auth', authRouter)
 app.use('/api/client', clientRouter)
 app.use('/api/member', memberRouter)
-// app.use('/api/order', orderRouter)
+app.use('/api/partner', partnerRouter)
 app.use('/api/user', userRouter)
+// app.use('/api/order', orderRouter)
 
 app.get('/api/health-check', (_req: Request, res: Response) => {
   res.status(HttpStatusCode.Ok).json(API_RUNNING)

@@ -13,7 +13,7 @@ model User {
   name      String   @map("nome")
   email     String   @unique
   password  String   @map("senha")
-  statusId  Int      @map("id_status")
+  statusId  Int      @default(1) @map("id_status")
   roleId    Int      @map("id_cargo")
   createdAt DateTime @default(now()) @map("data_de_criacao")
   updatedAt DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
@@ -55,7 +55,7 @@ model Client {
   unitValue          Float?   @map("valor_unitario")
   totalSavings       Float?   @default(0) @map("economia_total")
   contractUrl        String?  @map("url_do_contrato")
-  statusId           Int      @map("id_status")
+  statusId           Int      @default(1) @map("id_status")
   createdAt          DateTime @default(now()) @map("data_de_criacao")
   updatedAt          DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
@@ -91,7 +91,7 @@ model Partner {
   image               String?  @map("imagem")
   logo                String?
   contractUrl         String?  @map("url_do_contrato")
-  statusId            Int      @map("id_status")
+  statusId            Int      @default(1) @map("id_status")
   benefit1Title       String?  @map("beneficio_1_titulo")
   benefit1Description String?  @map("beneficio_1_descricao")
   benefit1Rules       String?  @map("beneficio_1_regras")
@@ -138,7 +138,7 @@ model Member {
   createdPassword Boolean  @default(false) @map("criou_senha")
   totalSavings    Float    @default(0) @map("economia_total")
   roleId          Int      @map("id_cargo")
-  statusId        Int      @map("id_status")
+  statusId        Int      @default(1) @map("id_status")
   createdAt       DateTime @default(now()) @map("data_de_criacao")
   updatedAt       DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
@@ -188,7 +188,7 @@ model Status {
 //   totalValue   Float    @map("valor_total")
 //   totalSavings Float    @default(0) @map("economia_total")
 //   isRecurring  Boolean  @map("compra_recorrente")
-//   statusId     Int      @map("id_status")
+//   statusId     Int      @default(1) @map("id_status")
 //   createdAt    DateTime @default(now()) @map("data_de_criacao")
 //   updatedAt    DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
