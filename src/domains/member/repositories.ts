@@ -160,37 +160,37 @@ const updateOne = async (id: string, data: Partial<Member>): Promise<void> => {
   }
 }
 
-const addToSavings = async (id: string, savingsToAdd: number): Promise<void> => {
-  try {
-    await prismaClient.member.update({
-      data: { totalSavings: { increment: savingsToAdd } },
-      where: { id }
-    })
-  } catch (error) {
-    if (
-      (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.NOT_FOUND)
-    ) throw new NotFoundError(MEMBER_NOT_FOUND)
+// const addToSavings = async (id: string, savingsToAdd: number): Promise<void> => {
+//   try {
+//     await prismaClient.member.update({
+//       data: { totalSavings: { increment: savingsToAdd } },
+//       where: { id }
+//     })
+//   } catch (error) {
+//     if (
+//       (error instanceof PrismaClientKnownRequestError) &&
+//       (error.code === prismaErrors.NOT_FOUND)
+//     ) throw new NotFoundError(MEMBER_NOT_FOUND)
 
-    throw new DatabaseError(error)
-  }
-}
+//     throw new DatabaseError(error)
+//   }
+// }
 
-const subtractFromSavings = async (id: string, savingsToSubtract: number): Promise<void> => {
-  try {
-    await prismaClient.member.update({
-      data: { totalSavings: { decrement: savingsToSubtract } },
-      where: { id }
-    })
-  } catch (error) {
-    if (
-      (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.NOT_FOUND)
-    ) throw new NotFoundError(MEMBER_NOT_FOUND)
+// const subtractFromSavings = async (id: string, savingsToSubtract: number): Promise<void> => {
+//   try {
+//     await prismaClient.member.update({
+//       data: { totalSavings: { decrement: savingsToSubtract } },
+//       where: { id }
+//     })
+//   } catch (error) {
+//     if (
+//       (error instanceof PrismaClientKnownRequestError) &&
+//       (error.code === prismaErrors.NOT_FOUND)
+//     ) throw new NotFoundError(MEMBER_NOT_FOUND)
 
-    throw new DatabaseError(error)
-  }
-}
+//     throw new DatabaseError(error)
+//   }
+// }
 
 const findOneResetPasswordCode = async (memberId: string): Promise<MemberResetPasswordCode | null> => {
   try {
@@ -233,7 +233,7 @@ const deleteOneResetPasswordCode = async (memberId: string): Promise<void> => {
 }
 
 export default {
-  addToSavings,
+  // addToSavings,
   count,
   createOne,
   createOneForBulkCreation,
@@ -242,7 +242,7 @@ export default {
   findOneByCpf,
   findOneById,
   findOneResetPasswordCode,
-  subtractFromSavings,
+  // subtractFromSavings,
   updateMany,
   updateOne,
   upsertOneResetPasswordCode

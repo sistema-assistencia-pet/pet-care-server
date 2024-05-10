@@ -2,7 +2,7 @@ import { type Partner, type Prisma } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
-import { PartnerToBeCreated, FindManyPartnersWhere } from './interfaces'
+import { FindManyPartnersParams, PartnerToBeCreated, PartnerToBeReturned } from './interfaces'
 import prismaClient from '../../database/connection'
 import { prismaErrors } from '../../enums/prismaErrors'
 import { status } from '../../enums/statusEnum'
@@ -39,52 +39,30 @@ const createOne = async (partnerToBeCreated: PartnerToBeCreated): Promise<Pick<P
   }
 }
 
-const findMany = async (
-  skip: number,
-  take: number,
-  where: Partial<FindManyClientsWhere>
-): Promise<ClientToBeReturned[]> => {
+const findMany = async ({ skip, take, where }: FindManyPartnersParams): Promise<PartnerToBeReturned[]> => {
   try {
-    const clients = await prismaClient.client.findMany({
+    const query: Prisma.PartnerFindManyArgs = {}
+
+    if (skip !== undefined) Object.assign(query, { skip })
+    if (take !== undefined) Object.assign(query, { take })
+
+    const partners = await prismaClient.partner.findMany({
       where,
       skip,
       take,
       select: {
         id: true,
         cnpj: true,
-        corporateName: true,
         fantasyName: true,
-        segment: true,
-        address: true,
-        state: true,
-        city: true,
-        managerName: true,
-        managerPhoneNumber: true,
-        managerEmail: true,
-        financePhoneNumber: true,
-        lumpSum: true,
-        unitValue: true,
-        totalSavings: true,
-        contractUrl: true,
+        categoryId: true,
+        isOnline: true,
         statusId: true,
-        createdAt: true
+        createdAt: true,
       },
       orderBy: { createdAt: 'desc' }
     })
 
-    return clients
-  } catch (error) {
-    throw new DatabaseError(error)
-  }
-}
-
-const findOneByCnpj = async (cnpj: string): Promise<Partner | null> => {
-  try {
-    const partner = await prismaClient.partner.findUnique({
-      where: { cnpj, statusId: status.ACTIVE }
-    })
-
-    return partner
+    return partners
   } catch (error) {
     throw new DatabaseError(error)
   }
@@ -128,7 +106,6 @@ export default {
   count,
   createOne,
   findMany,
-  findOneByCnpj,
   findOneById,
   updateOne
 }

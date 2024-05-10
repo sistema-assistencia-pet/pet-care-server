@@ -1,14 +1,13 @@
 import partnerRepositories from './repositories'
 import {
-  ClientToBeUpdated,
   PartnerToBeCreated,
   PartnerToBeReturned,
-  FindManyClientsQueryParams,
-  FindManyClientsWhere
+  FindManyPartnersQueryParams,
+  PartnerToBeUpdated
 } from './interfaces'
-import memberRepositories from '../member/repositories'
 import { NotFoundError } from '../../errors'
-import { type FindManyResponse } from '../../interfaces'
+import { FindManyResponse } from '../../interfaces'
+import { type Prisma } from '@prisma/client'
 
 const createOne = async (partnerToBeCreated: PartnerToBeCreated): Promise<string> => {
   const { id } = await partnerRepositories.createOne(partnerToBeCreated)
@@ -16,19 +15,20 @@ const createOne = async (partnerToBeCreated: PartnerToBeCreated): Promise<string
   return id
 }
 
-const findMany = async ({ skip, take, ...queryParams }: FindManyClientsQueryParams): Promise<FindManyResponse<ClientToBeReturned> & { systemTotalSavings: number }> => {
-  const CLIENTS_NOT_FOUND = 'Nenhum cliente encontrado.'
+const findMany = async (
+  { skip, take, ...queryParams }: FindManyPartnersQueryParams
+): Promise<FindManyResponse<PartnerToBeReturned>> => {
+  const PARTNERS_NOT_FOUND = 'Nenhum estabelecimento encontrado.'
 
-  const where: FindManyClientsWhere = {}
+  const where: Prisma.PartnerWhereInput = { OR: [] }
 
   Object.entries(queryParams).forEach(([key, value]) => {
     if (value !== undefined && value !== null) {
       switch (key) {
-        case 'cnpj':
-          Object.assign(where, { cnpj: { contains: value } })
-          break
-        case 'fantasyName':
-          Object.assign(where, { fantasyName: { contains: value } })
+        case 'searchInput':
+          where.OR?.push({ cnpj: { contains: value as string } })
+          where.OR?.push({ fantasyName: { contains: value as string } })
+          where.OR?.push({ tags: { contains: value as string } })
           break
         default:
           Object.assign(where, { [key]: value })
@@ -37,14 +37,13 @@ const findMany = async ({ skip, take, ...queryParams }: FindManyClientsQueryPara
     }
   })
 
-  const clients = await clientRepositories.findMany(skip, take, where)
+  const partners = await partnerRepositories.findMany({ skip, take, where })
 
-  if (clients.length === 0) throw new NotFoundError(CLIENTS_NOT_FOUND)
+  if (partners.length === 0) throw new NotFoundError(PARTNERS_NOT_FOUND)
 
-  const totalCount = await clientRepositories.count(where)
-  const systemTotalSavings = await clientRepositories.sumSystemSavings()
+  const totalCount = await partnerRepositories.count(where)
 
-  return { items: clients, totalCount, systemTotalSavings: systemTotalSavings ?? 0 }
+  return { items: partners, totalCount }
 }
 
 const findOneById = async (id: string): Promise<PartnerToBeReturned> => {
@@ -71,8 +70,8 @@ const deleteOne = async (id: string): Promise<void> => {
   await partnerRepositories.updateOne(id, { statusId: 3 })
 }
 
-const updateOne = async (id: string, clientToBeUpdated: Partial<ClientToBeUpdated>): Promise<void> => {
-  await clientRepositories.updateOne(id, clientToBeUpdated)
+const updateOne = async (id: string, partnerToBeUpdated: Partial<PartnerToBeUpdated>): Promise<void> => {
+  await partnerRepositories.updateOne(id, partnerToBeUpdated)
 }
 
 export default {

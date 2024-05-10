@@ -10,7 +10,9 @@ const createOne = async (clientToBeCreated: ClientToBeCreated): Promise<string> 
   return id
 }
 
-const findMany = async ({ skip, take, ...queryParams }: FindManyClientsQueryParams): Promise<FindManyResponse<ClientToBeReturned> & { systemTotalSavings: number }> => {
+const findMany = async (
+  { skip, take, ...queryParams }: FindManyClientsQueryParams
+): Promise<FindManyResponse<ClientToBeReturned>> => {
   const CLIENTS_NOT_FOUND = 'Nenhum cliente encontrado.'
 
   const where: FindManyClientsWhere = {}
@@ -36,9 +38,8 @@ const findMany = async ({ skip, take, ...queryParams }: FindManyClientsQueryPara
   if (clients.length === 0) throw new NotFoundError(CLIENTS_NOT_FOUND)
 
   const totalCount = await clientRepositories.count(where)
-  const systemTotalSavings = await clientRepositories.sumSystemSavings()
 
-  return { items: clients, totalCount, systemTotalSavings: systemTotalSavings ?? 0 }
+  return { items: clients, totalCount }
 }
 
 const findOneById = async (id: string): Promise<ClientToBeReturned> => {

@@ -17,17 +17,17 @@ const count = async (where: Prisma.ClientWhereInput): Promise<number> => {
   }
 }
 
-const sumSystemSavings = async (): Promise<number | null> => {
-  try {
-    const { _sum: { totalSavings: systemTotalSavings } } = await prismaClient.client.aggregate({
-      _sum: { totalSavings: true }
-    })
+// const sumSystemSavings = async (): Promise<number | null> => {
+//   try {
+//     const { _sum: { totalSavings: systemTotalSavings } } = await prismaClient.client.aggregate({
+//       _sum: { totalSavings: true }
+//     })
 
-    return systemTotalSavings
-  } catch (error) {
-    throw new DatabaseError(error)
-  }
-}
+//     return systemTotalSavings
+//   } catch (error) {
+//     throw new DatabaseError(error)
+//   }
+// }
 
 const createOne = async (clientToBeCreated: ClientToBeCreated): Promise<Pick<Client, 'id'>> => {
   const CLIENT_ALREADY_EXISTS = 'CNPJ já cadastrado.'
@@ -136,50 +136,50 @@ const updateOne = async (id: string, data: Partial<Client>): Promise<void> => {
   }
 }
 
-const addToSavings = async (id: string, savingsToAdd: number): Promise<void> => {
-  const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
+// const addToSavings = async (id: string, savingsToAdd: number): Promise<void> => {
+//   const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
 
-  try {
-    await prismaClient.client.update({
-      data: { totalSavings: { increment: savingsToAdd } },
-      where: { id }
-    })
-  } catch (error) {
-    if (
-      (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.NOT_FOUND)
-    ) throw new NotFoundError(CLIENT_NOT_FOUND)
+//   try {
+//     await prismaClient.client.update({
+//       data: { totalSavings: { increment: savingsToAdd } },
+//       where: { id }
+//     })
+//   } catch (error) {
+//     if (
+//       (error instanceof PrismaClientKnownRequestError) &&
+//       (error.code === prismaErrors.NOT_FOUND)
+//     ) throw new NotFoundError(CLIENT_NOT_FOUND)
 
-    throw new DatabaseError(error)
-  }
-}
+//     throw new DatabaseError(error)
+//   }
+// }
 
-const subtractFromSavings = async (id: string, savingsToSubtract: number): Promise<void> => {
-  const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
+// const subtractFromSavings = async (id: string, savingsToSubtract: number): Promise<void> => {
+//   const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
 
-  try {
-    await prismaClient.client.update({
-      data: { totalSavings: { decrement: savingsToSubtract } },
-      where: { id }
-    })
-  } catch (error) {
-    if (
-      (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.NOT_FOUND)
-    ) throw new NotFoundError(CLIENT_NOT_FOUND)
+//   try {
+//     await prismaClient.client.update({
+//       data: { totalSavings: { decrement: savingsToSubtract } },
+//       where: { id }
+//     })
+//   } catch (error) {
+//     if (
+//       (error instanceof PrismaClientKnownRequestError) &&
+//       (error.code === prismaErrors.NOT_FOUND)
+//     ) throw new NotFoundError(CLIENT_NOT_FOUND)
 
-    throw new DatabaseError(error)
-  }
-}
+//     throw new DatabaseError(error)
+//   }
+// }
 
 export default {
-  addToSavings,
+  // addToSavings,
   count,
   createOne,
   findMany,
   findOneByCnpj,
   findOneById,
-  subtractFromSavings,
-  sumSystemSavings,
+  // subtractFromSavings,
+  // sumSystemSavings,
   updateOne
 }
