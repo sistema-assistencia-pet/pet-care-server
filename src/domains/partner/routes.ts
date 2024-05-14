@@ -5,6 +5,8 @@ import partnerController from './controllers'
 import partnerMiddlewares from './middlewares'
 import { validateIdParam } from '../../middlewares/validateIdParam.middleware'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
+import multer from 'multer'
+import { multerOptionsForImage } from '../../multerOptions'
 
 const partnerRouter: Router = Router()
 
@@ -70,6 +72,28 @@ partnerRouter.patch(
   validateIdParam,
   partnerMiddlewares.validateUpdateOnePayload,
   partnerController.updateOne
+)
+
+// Salvar imagem
+partnerRouter.patch(
+  '/:id/image',
+  verifyAccessToken,
+  checkIfIsAdmin,
+  validateIdParam,
+  partnerMiddlewares.validateUpdateFilePayload,
+  partnerController.updateFile,
+  multer(multerOptionsForImage).single('image')
+)
+
+// Salvar logo
+partnerRouter.patch(
+  '/:id/logo',
+  verifyAccessToken,
+  checkIfIsAdmin,
+  validateIdParam,
+  partnerMiddlewares.validateUpdateFilePayload,
+  partnerController.updateFile,
+  multer(multerOptionsForImage).single('logo')
 )
 
 export { partnerRouter }

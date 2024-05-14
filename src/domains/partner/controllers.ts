@@ -3,6 +3,8 @@ import { type Request, type Response } from 'express'
 
 import { FindManyPartnersQueryParams, PartnerToBeCreated, PartnerToBeUpdated } from './interfaces'
 import partnerService from './service'
+import { BadRequestError } from '../../errors'
+import { FILE_FIELD_NAMES } from '../../enums/fileFieldNames'
 
 const createOne = async (req: Request, res: Response): Promise<Response> => {
   const PARTNER_SUCCESSFULLY_CREATED = 'Estabelecimento cadastrado com sucesso.'
@@ -142,6 +144,21 @@ const updateOne = async (req: Request, res: Response): Promise<Response> => {
   return res.status(HttpStatusCode.NoContent).json({ message: PARTNER_SUCCESSFULLY_UPDATED })
 }
 
+const updateFile = async (req: Request, res: Response): Promise<Response> => {
+  const FILE_SUCCESSFULLY_UPDATED = `Arquivo atualizado com sucesso.`
+
+  const partnerId = req.params.id
+  const file = req.file as Express.Multer.File
+
+  await partnerService.updateFile({
+    id: partnerId,
+    fileName: file.filename,
+    fieldName: file.fieldname as FILE_FIELD_NAMES
+  })
+
+  return res.status(HttpStatusCode.NoContent).json({ message: FILE_SUCCESSFULLY_UPDATED })
+}
+
 export default {
   activateOne,
   createOne,
@@ -149,5 +166,6 @@ export default {
   findMany,
   findOneById,
   inactivateOne,
+  updateFile,
   updateOne
 }

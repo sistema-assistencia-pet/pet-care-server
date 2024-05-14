@@ -8,6 +8,7 @@ import {
 import { NotFoundError } from '../../errors'
 import { FindManyResponse } from '../../interfaces'
 import { type Prisma } from '@prisma/client'
+import { FILE_FIELD_NAMES } from '../../enums/fileFieldNames'
 
 const createOne = async (partnerToBeCreated: PartnerToBeCreated): Promise<string> => {
   const { id } = await partnerRepositories.createOne(partnerToBeCreated)
@@ -74,6 +75,12 @@ const updateOne = async (id: string, partnerToBeUpdated: Partial<PartnerToBeUpda
   await partnerRepositories.updateOne(id, partnerToBeUpdated)
 }
 
+const updateFile = async (
+  { id, fileName, fieldName }: { id: string, fileName: string, fieldName: FILE_FIELD_NAMES }
+): Promise<void> => {
+  await partnerRepositories.updateOne(id, { [fieldName]: fileName })
+}
+
 export default {
   activateOne,
   createOne,
@@ -81,5 +88,6 @@ export default {
   findMany,
   findOneById,
   inactivateOne,
+  updateFile,
   updateOne
 }

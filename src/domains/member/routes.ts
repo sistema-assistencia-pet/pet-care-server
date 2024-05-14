@@ -6,7 +6,7 @@ import memberMiddlewares from './middlewares'
 import { validateIdParam } from '../../middlewares/validateIdParam.middleware'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
 import multer from 'multer'
-import { multerOptions } from '../../utils/multerOptions'
+import { multerOptionsForCSV } from '../../multerOptions'
 
 const memberRouter: Router = Router()
 
@@ -25,7 +25,7 @@ memberRouter.post(
   verifyAccessToken,
   checkIfIsAdmin,
   memberMiddlewares.validateCreateManyPayload,
-  multer(multerOptions).single('file'), // salva a imagem e a disponibiliza em req.file
+  multer(multerOptionsForCSV).single('file'), // salva o arquivo e o disponibiliza em req.file
   memberController.createMany
 )
 

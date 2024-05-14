@@ -35,3 +35,6 @@ Thumbs.db
 
 # Prisma
 prisma/migrations
+
+# Public uploads
+public/
