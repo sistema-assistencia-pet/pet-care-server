@@ -50,8 +50,7 @@ const createMany = async (clientId: string, fileBuffer: Buffer): Promise<void> =
         email: row.email,
         name: row.nome,
         phoneNumber: row.telefone,
-        statusId: status.ACTIVE,
-        roleId: role.MEMBER
+        statusId: status.ACTIVE
       }
 
       try {

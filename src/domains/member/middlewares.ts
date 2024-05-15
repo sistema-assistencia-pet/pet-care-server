@@ -75,18 +75,6 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
       })
       .lte(3, {
         message: 'O campo Status ("statusId") deve 1 (ativo), 2 (inativo) ou 3 (excluído).'
-      }),
-
-      roleId: z
-      .number({
-        invalid_type_error: 'O campo Cargo ("roleId") deve ser um number.',
-        required_error: 'O campo Cargo ("roleId") é obrigatório.'
-      })
-      .gte(1, {
-        message: 'O campo Cargo ("roleId") deve ser 1 (administrador) ou 2 (associado).'
-      })
-      .lte(2, {
-        message: 'O campo Cargo ("roleId") deve ser 1 (administrador) ou 2 (associado).'
       })
   })
 
@@ -99,8 +87,7 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
       email: req.body.email,
       name: req.body.name,
       phoneNumber: req.body.phoneNumber,
-      statusId: req.body.statusId,
-      roleId: req.body.roleId
+      statusId: req.body.statusId
     })
   } catch (error) {
     if (error instanceof z.ZodError) {

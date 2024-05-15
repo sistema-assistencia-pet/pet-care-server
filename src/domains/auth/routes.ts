@@ -6,13 +6,13 @@ import authMiddlewares from './middlewares'
 const authRouter: Router = Router()
 
 authRouter.post(
-  '/login-admin',
+  '/login/admin',
   authMiddlewares.validateLoginPayload,
   authController.loginAdmin
 )
 
 authRouter.post(
-  '/login-member',
+  '/login/member',
   authMiddlewares.validateLoginPayload,
   authController.loginMember
 )

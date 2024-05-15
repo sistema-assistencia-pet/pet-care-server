@@ -11,7 +11,7 @@ export interface FindManyMembersQueryParams {
 
 export type FindManyMembersWhere = Pick<Prisma.MemberWhereInput, 'cpf' | 'clientId' | 'name' | 'statusId'>
 
-export type MemberToBeCreated = Omit<Member, 'id' | 'password' | 'createdPassword' | 'totalSavings' | 'createdAt' | 'updatedAt'>
+export type MemberToBeCreated = Omit<Member, 'id' | 'password' | 'createdPassword' | 'totalSavings' | 'roleId' | 'createdAt' | 'updatedAt'>
 
 export type MemberToBeUpdated = Omit<MemberToBeCreated, 'cpf' | 'statusId'>
 

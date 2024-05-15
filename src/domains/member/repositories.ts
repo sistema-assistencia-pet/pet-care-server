@@ -6,6 +6,7 @@ import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
 import { MemberToBeReturnedOnFindMany, FindManyMembersWhere, MemberToBeCreated } from './interfaces'
 import { prismaErrors } from '../../enums/prismaErrors'
 import { status } from '../../enums/statusEnum'
+import { role } from '../../enums/roleEnum'
 
 const MEMBER_NOT_FOUND = 'Associado não encontrado.'
 
@@ -23,7 +24,7 @@ const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<Pick<Mem
   const MEMBER_ALREADY_EXISTS = 'CPF ou e-mail já cadastrado.'
   try {
     const member = await prismaClient.member.create({
-      data: { ...memberToBeCreated },
+      data: { ...memberToBeCreated, roleId: role.MEMBER },
       select: {
         id: true
       }
@@ -42,7 +43,7 @@ const createOne = async (memberToBeCreated: MemberToBeCreated): Promise<Pick<Mem
 
 const createOneForBulkCreation = async (memberToBeCreated: MemberToBeCreated): Promise<Pick<Member, 'id'>> => {
   const member = await prismaClient.member.create({
-    data: { ...memberToBeCreated },
+    data: { ...memberToBeCreated, roleId: role.MEMBER },
     select: {
       id: true
     }

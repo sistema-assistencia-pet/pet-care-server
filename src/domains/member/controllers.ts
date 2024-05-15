@@ -16,8 +16,7 @@ const createOne = async (req: Request, res: Response): Promise<Response> => {
     email: req.body.email,
     name: req.body.name,
     phoneNumber: req.body.phoneNumber,
-    statusId: req.body.statusId,
-    roleId: req.body.roleId
+    statusId: req.body.statusId
   }
 
   const memberId = await memberService.createOne(memberToBeCreated)
