@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import express, { type Request, type Response } from 'express'
 import helmet from 'helmet'
 import { HttpStatusCode } from 'axios'
+import { resolve } from 'node:path'
 
 import { errorMiddleware } from './middlewares/error.middleware'
 import { httpLogger } from './logger'
@@ -26,6 +27,9 @@ app.use(cors({ exposedHeaders: ['x-total-count', 'access-token'] }))
 app.use(express.json())
 app.use(helmet())
 app.use(httpLogger)
+
+// Serve static files from /public folder
+app.use('/api/files', express.static(resolve(__dirname, '../public')))
 
 app.use('/api/auth', authRouter)
 app.use('/api/client', clientRouter)

@@ -80,9 +80,9 @@ partnerRouter.patch(
   verifyAccessToken,
   checkIfIsAdmin,
   validateIdParam,
+  multer(multerOptionsForImage).single('image'),
   partnerMiddlewares.validateUpdateFilePayload,
-  partnerController.updateFile,
-  multer(multerOptionsForImage).single('image')
+  partnerController.updateFile
 )
 
 // Salvar logo
@@ -91,9 +91,9 @@ partnerRouter.patch(
   verifyAccessToken,
   checkIfIsAdmin,
   validateIdParam,
+  multer(multerOptionsForImage).single('logo'),
   partnerMiddlewares.validateUpdateFilePayload,
-  partnerController.updateFile,
-  multer(multerOptionsForImage).single('logo')
+  partnerController.updateFile
 )
 
 export { partnerRouter }

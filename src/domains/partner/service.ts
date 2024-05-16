@@ -9,6 +9,7 @@ import { NotFoundError } from '../../errors'
 import { FindManyResponse } from '../../interfaces'
 import { type Prisma } from '@prisma/client'
 import { FILE_FIELD_NAMES } from '../../enums/fileFieldNames'
+import { getEnvironmentVariable } from '../../utils/getEnvironmentVariable'
 
 const createOne = async (partnerToBeCreated: PartnerToBeCreated): Promise<string> => {
   const { id } = await partnerRepositories.createOne(partnerToBeCreated)
@@ -53,10 +54,19 @@ const findMany = async (
 
 const findOneById = async (id: string): Promise<PartnerToBeReturned> => {
   const PARTNER_NOT_FOUND = 'Estabelecimento não encontrado.'
+  const API_BASE_URL = getEnvironmentVariable('API_BASE_URL')
 
   const partner = await partnerRepositories.findOneById(id)
 
   if (partner === null) throw new NotFoundError(PARTNER_NOT_FOUND)
+
+  partner.image = partner.image !== null
+    ? `${API_BASE_URL}/api/files/${partner.image}`
+    : partner.image
+
+  partner.logo = partner.logo !== null
+    ? `${API_BASE_URL}/api/files/${partner.logo}`
+    : partner.logo
 
   const { updatedAt, ...partnerToBeReturned } = partner
 
