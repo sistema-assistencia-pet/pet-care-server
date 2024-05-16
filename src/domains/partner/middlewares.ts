@@ -366,16 +366,20 @@ const validateFindManyQueryParams = (req: Request, _res: Response, next: NextFun
 
     isOnline: z
       .boolean({
-        invalid_type_error: 'O campo Online ("isOnline") deve ser uma string.',
+        invalid_type_error: 'O campo Online ("isOnline") deve ser um boolean.',
         required_error: 'O campo Online ("isOnline") é obrigatório.'
       })
       .optional(),
   })
 
+  let isOnline: any = null
+  if (req.query['is-online'] === 'true') isOnline = true
+  if (req.query['is-online'] === 'false') isOnline = false
+
   try {
     findManyQueryParamsSchema.parse({
       categoryId: typeof req.query['category-id'] === 'string' ? parseInt(req.query['category-id']) : undefined,
-      isOnline:  req.query['is-online'],
+      isOnline,
       searchInput: req.query['search-input'],
       skip: typeof req.query.skip === 'string' ? parseInt(req.query.skip) : undefined,
       statusId: typeof req.query['status-id'] === 'string' ? parseInt(req.query['status-id']) : undefined,

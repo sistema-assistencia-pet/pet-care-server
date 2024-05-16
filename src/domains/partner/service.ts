@@ -24,7 +24,9 @@ const findMany = async (
   const where: Prisma.PartnerWhereInput = { OR: [] }
 
   Object.entries(queryParams).forEach(([key, value]) => {
+    logger.debug({ queryParams }, 'queryParams')
     if (value !== undefined && value !== null) {
+      logger.debug({ key, value }, 'key value')
       switch (key) {
         case 'searchInput':
           where.OR?.push({ cnpj: { contains: value as string } })
@@ -37,6 +39,8 @@ const findMany = async (
       }
     }
   })
+
+  if (where.OR?.length === 0) delete where.OR
 
   const partners = await partnerRepositories.findMany({ skip, take, where })
 

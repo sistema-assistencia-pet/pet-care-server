@@ -48,10 +48,14 @@ const createOne = async (req: Request, res: Response): Promise<Response> => {
 const findMany = async (req: Request, res: Response): Promise<Response> => {
   const PARTNERS_FOUND = 'Estabelecimento recuperados com sucesso.'
 
+  let isOnline: any = null
+  if (req.query['is-online'] === 'true') isOnline = true
+  if (req.query['is-online'] === 'false') isOnline = false
+
   const queryParams: FindManyPartnersQueryParams = {
     categoryId: req.query['category-id'] ? parseInt(req.query['category-id'] as string) : undefined,
-    isOnline: req.query['is-online'] as boolean | undefined,
-    searchInput: req.query.searchInput as string | undefined,
+    isOnline,
+    searchInput: req.query['search-input'] as string | undefined,
     skip: req.query.skip ? parseInt(req.query.skip as string) : undefined,
     statusId: req.query['status-id'] ? parseInt(req.query['status-id'] as string) : undefined,
     take: req.query.take ? parseInt(req.query.take as string) : undefined

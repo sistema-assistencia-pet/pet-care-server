@@ -5,7 +5,6 @@ import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
 import { FindManyPartnersParams, PartnerToBeCreated, PartnerToBeReturned } from './interfaces'
 import prismaClient from '../../database/connection'
 import { prismaErrors } from '../../enums/prismaErrors'
-import { status } from '../../enums/statusEnum'
 
 const count = async (where: Prisma.PartnerWhereInput): Promise<number> => {
   try {
@@ -41,10 +40,7 @@ const createOne = async (partnerToBeCreated: PartnerToBeCreated): Promise<Pick<P
 
 const findMany = async ({ skip, take, where }: FindManyPartnersParams): Promise<PartnerToBeReturned[]> => {
   try {
-    const query: Prisma.PartnerFindManyArgs = {}
-
-    if (skip !== undefined) Object.assign(query, { skip })
-    if (take !== undefined) Object.assign(query, { take })
+    logger.debug({ where }, 'where')
 
     const partners = await prismaClient.partner.findMany({
       where,

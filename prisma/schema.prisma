@@ -111,6 +111,7 @@ model Partner {
 
   @@index(fantasyName)
   @@index(categoryId)
+  @@index(isOnline)
   @@index(tags)
   @@map("estabelecimento")
 }
