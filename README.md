@@ -1,2 +1,2 @@
-# clube-milhas-server
-REST API for Clube Milhas project.
+# clube-rede-server
+REST API for Clube Rede project.

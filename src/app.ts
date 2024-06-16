@@ -8,7 +8,7 @@ import { resolve } from 'node:path'
 import { errorMiddleware } from './middlewares/error.middleware'
 import { httpLogger } from './logger'
 
-const API_RUNNING = 'API clube-milhas em execução.'
+const API_RUNNING = 'API clube-rede em execução.'
 const URL_NOT_FOUND = 'URL não encontrada. Por favor, verifique a URL da requisição e tente novamente.'
 
 dotenv.config()

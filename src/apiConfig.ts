@@ -1,1 +1,1 @@
-export const systemName = 'Clube Milhas'
+export const systemName = 'Clube Rede'
