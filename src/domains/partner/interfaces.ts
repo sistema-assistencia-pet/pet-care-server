@@ -2,7 +2,9 @@ import { Prisma, type Partner } from '@prisma/client'
 
 export type PartnerToBeCreated = Omit<Partner, 'id' | 'image' | 'logo' | 'statusId' | 'createdAt' | 'updatedAt'>
 
-export type PartnerToBeReturned = Pick<Partner, 'id' | 'cnpj' | 'fantasyName' | 'categoryId' | 'isOnline' | 'statusId' | 'createdAt'>
+export type PartnerToBeReturned = Pick<Partner, 'id' | 'cnpj' | 'fantasyName' | 'isOnline' | 'statusId' | 'createdAt'> & { category: { id: number, name: string } }
+
+export type PartnerDetailsToBeReturned = Partner & { category: { id: number, name: string } }
 
 export type PartnerToBeUpdated = Omit<PartnerToBeCreated, 'cnpj'>
 export interface FindManyPartnersQueryParams {

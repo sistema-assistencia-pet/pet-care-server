@@ -23,7 +23,7 @@ const generateAccessToken = async (id: string, roleId: number): Promise<string> 
     .setIssuedAt()
     .setIssuer(JWT_ISSUER)
     .setAudience(JWT_AUDIENCE)
-    .setExpirationTime('120m')
+    .setExpirationTime('240m')
     .sign(secretKey)
 
   return accessToken

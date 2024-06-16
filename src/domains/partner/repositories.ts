@@ -2,7 +2,7 @@ import { type Partner, type Prisma } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
-import { FindManyPartnersParams, PartnerToBeCreated, PartnerToBeReturned } from './interfaces'
+import { FindManyPartnersParams, PartnerDetailsToBeReturned, PartnerToBeCreated, PartnerToBeReturned } from './interfaces'
 import prismaClient from '../../database/connection'
 import { prismaErrors } from '../../enums/prismaErrors'
 
@@ -50,7 +50,9 @@ const findMany = async ({ skip, take, where }: FindManyPartnersParams): Promise<
         id: true,
         cnpj: true,
         fantasyName: true,
-        categoryId: true,
+        category: {
+          select: { id: true, name: true }
+        },
         isOnline: true,
         statusId: true,
         createdAt: true,
@@ -64,14 +66,15 @@ const findMany = async ({ skip, take, where }: FindManyPartnersParams): Promise<
   }
 }
 
-const findOneById = async (id: string, data?: Partial<Partner>): Promise<Partner | null> => {
+const findOneById = async (id: string, data?: Partial<Partner>): Promise<PartnerDetailsToBeReturned | null> => {
   try {
     const where = { id }
 
     if (data) Object.assign(where, data)
 
     const partner = await prismaClient.partner.findUnique({
-      where
+      where,
+      include: { category: true }
     })
 
     return partner

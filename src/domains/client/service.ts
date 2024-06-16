@@ -1,8 +1,9 @@
 import clientRepositories from './repositories'
-import { ClientToBeUpdated, type ClientToBeCreated, type ClientToBeReturned, type FindManyClientsQueryParams, type FindManyClientsWhere } from './interfaces'
+import { ClientToBeUpdated, ClientToBeCreated, ClientToBeReturned, FindManyClientsQueryParams } from './interfaces'
 import memberRepositories from '../member/repositories'
 import { NotFoundError } from '../../errors'
 import { type FindManyResponse } from '../../interfaces'
+import { type Prisma } from '@prisma/client'
 
 const createOne = async (clientToBeCreated: ClientToBeCreated): Promise<string> => {
   const { id } = await clientRepositories.createOne(clientToBeCreated)
@@ -15,7 +16,7 @@ const findMany = async (
 ): Promise<FindManyResponse<ClientToBeReturned>> => {
   const CLIENTS_NOT_FOUND = 'Nenhum cliente encontrado.'
 
-  const where: FindManyClientsWhere = {}
+  const where: Prisma.ClientWhereInput = {}
 
   Object.entries(queryParams).forEach(([key, value]) => {
     if (value !== undefined && value !== null) {
@@ -33,7 +34,7 @@ const findMany = async (
     }
   })
 
-  const clients = await clientRepositories.findMany(skip, take, where)
+  const clients = await clientRepositories.findMany({ skip, take, where })
 
   if (clients.length === 0) throw new NotFoundError(CLIENTS_NOT_FOUND)
 

@@ -36,9 +36,9 @@ export const multerOptionsForImage = {
   }),
 
   fileFilter: (_req: Request, file: Express.Multer.File, callBack: multer.FileFilterCallback) => {
-    const ALLOWED_EXTENSION = ['.jpg', '.png']
+    const ALLOWED_EXTENSION = ['.jpg', '.png', '.jpeg']
     const ALLOWED_MIME_TYPE = ['image/jpeg', 'image/png']
-    const ONLY_IMAGE_FILES_ALLOWED = 'Apenas arquivos de imagem (.jpg ou .png) são permitidos.'
+    const ONLY_IMAGE_FILES_ALLOWED = 'Apenas arquivos de imagem (.jpg, .jpeg ou .png) são permitidos.'
 
     const isExtensionValid = ALLOWED_EXTENSION.includes(path.extname(file.originalname).toLowerCase())
     const isMimeTypeValid = ALLOWED_MIME_TYPE.includes(file.mimetype)

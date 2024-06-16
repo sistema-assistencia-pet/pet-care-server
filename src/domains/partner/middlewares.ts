@@ -20,9 +20,6 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Razão Social ("corporateName") deve ser uma string.',
         required_error: 'O campo Razão Social ("corporateName") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Razão Social ("corporateName") deve ter pelo menos 3 caracteres.'
-      })
       .optional(),
 
     fantasyName: z
@@ -72,9 +69,7 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Tags ("tags") deve ser uma string.',
         required_error: 'O campo Tags ("tags") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Tags ("tags") deve ter pelo menos 3 caracteres.'
-      }),
+      .optional(),
 
     isOnline: z
       .boolean({
@@ -105,9 +100,9 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo E-mail do Responsável ("managerEmail") deve ser uma string.',
         required_error: 'O campo E-mail do Responsável ("managerEmail") é obrigatório.'
       })
-      .email({
-        message: 'O campo E-mail do Responsável ("managerEmail") deve ser um e-mail válido.'
-      })
+      // .email({
+      //   message: 'O campo E-mail do Responsável ("managerEmail") deve ser um e-mail válido.'
+      // })
       .optional(),
 
     businessPhoneNumber: z
@@ -117,15 +112,13 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
       })
       .length(11, {
         message: 'O campo Telefone Comercial ("businessPhoneNumber") deve ter 11 caracteres.'
-      }),
+      })
+      .optional(),
 
     about: z
       .string({
         invalid_type_error: 'O campo Sobre ("about") deve ser uma string.',
         required_error: 'O campo Sobre ("about") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Sobre ("about") deve ter pelo menos 3 caracteres.'
       })
       .optional(),
 
@@ -134,18 +127,12 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Horário de Funcionamento ("openingHours") deve ser uma string.',
         required_error: 'O campo Horário de Funcionamento ("openingHours") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Horário de Funcionamento ("openingHours") deve ter pelo menos 3 caracteres.'
-      })
       .optional(),
 
     instagram: z
       .string({
         invalid_type_error: 'O campo Instagram ("instagram") deve ser uma string.',
         required_error: 'O campo Instagram ("instagram") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Instagram ("instagram") deve ter pelo menos 3 caracteres.'
       })
       .optional(),
 
@@ -154,9 +141,9 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Site Oficial ("webpage") deve ser uma string.',
         required_error: 'O campo Site Oficial ("webpage") é obrigatório.'
       })
-      .url({
-        message: 'O campo Site Oficial ("webpage") deve ser uma URL válida.'
-      })
+      // .url({
+      //   message: 'O campo Site Oficial ("webpage") deve ser uma URL válida.'
+      // })
       .optional(),
 
     contractUrl: z
@@ -164,18 +151,15 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo URL do Contrato ("contractUrl") deve ser uma string.',
         required_error: 'O campo URL do Contrato ("contractUrl") é obrigatório.'
       })
-      .url({
-        message: 'O campo URL do Contrato ("contractUrl") deve ser uma URL válida.'
-      })
+      // .url({
+      //   message: 'O campo URL do Contrato ("contractUrl") deve ser uma URL válida.'
+      // })
       .optional(),
 
     benefit1Title: z
       .string({
         invalid_type_error: 'O campo Título do Benefício 1 ("benefit1Title") deve ser uma string.',
         required_error: 'O campo Título do Benefício 1 ("benefit1Title") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Título do Benefício 1 ("benefit1Title") deve ter pelo menos 3 caracteres.'
       })
       .optional(),
 
@@ -184,18 +168,12 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Descrição do Benefício 1 ("benefit1Description") deve ser uma string.',
         required_error: 'O campo Descrição do Benefício 1 ("benefit1Description") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Descrição do Benefício 1 ("benefit1Description") deve ter pelo menos 3 caracteres.'
-      })
       .optional(),
 
     benefit1Rules: z
       .string({
         invalid_type_error: 'O campo Regras do Benefício 1 ("benefit1Rules") deve ser uma string.',
         required_error: 'O campo Regras do Benefício 1 ("benefit1Rules") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Regras do Benefício 1 ("benefit1Rules") deve ter pelo menos 3 caracteres.'
       })
       .optional(),
 
@@ -204,18 +182,12 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Link do Benefício 1 ("benefit1Link") deve ser uma string.',
         required_error: 'O campo Link do Benefício 1 ("benefit1Link") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Link do Benefício 1 ("benefit1Link") deve ter pelo menos 3 caracteres.'
-      })
       .optional(),
 
     benefit1Voucher: z
       .string({
         invalid_type_error: 'O campo Voucher do Benefício 1 ("benefit1Voucher") deve ser uma string.',
         required_error: 'O campo Voucher do Benefício 1 ("benefit1Voucher") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Voucher do Benefício 1 ("benefit1Voucher") deve ter pelo menos 3 caracteres.'
       })
       .optional(),
 
@@ -224,18 +196,12 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Título do Benefício 2 ("benefit2Title") deve ser uma string.',
         required_error: 'O campo Título do Benefício 2 ("benefit2Title") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Título do Benefício 2 ("benefit2Title") deve ter pelo menos 3 caracteres.'
-      })
       .optional(),
 
     benefit2Description: z
       .string({
         invalid_type_error: 'O campo Descrição do Benefício 2 ("benefit2Description") deve ser uma string.',
         required_error: 'O campo Descrição do Benefício 2 ("benefit2Description") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Descrição do Benefício 2 ("benefit2Description") deve ter pelo menos 3 caracteres.'
       })
       .optional(),
 
@@ -244,9 +210,6 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Regras do Benefício 2 ("benefit2Rules") deve ser uma string.',
         required_error: 'O campo Regras do Benefício 2 ("benefit2Rules") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Regras do Benefício 2 ("benefit2Rules") deve ter pelo menos 3 caracteres.'
-      })
       .optional(),
 
     benefit2Link: z
@@ -254,18 +217,12 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Link do Benefício 2 ("benefit2Link") deve ser uma string.',
         required_error: 'O campo Link do Benefício 2 ("benefit2Link") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Link do Benefício 2 ("benefit2Link") deve ter pelo menos 3 caracteres.'
-      })
       .optional(),
 
     benefit2Voucher: z
       .string({
         invalid_type_error: 'O campo Voucher do Benefício 2 ("benefit2Voucher") deve ser uma string.',
         required_error: 'O campo Voucher do Benefício 2 ("benefit2Voucher") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Voucher do Benefício 2 ("benefit2Voucher") deve ter pelo menos 3 caracteres.'
       })
       .optional()
   })
@@ -372,7 +329,7 @@ const validateFindManyQueryParams = (req: Request, _res: Response, next: NextFun
       .optional(),
   })
 
-  let isOnline: any = null
+  let isOnline: any = undefined
   if (req.query['is-online'] === 'true') isOnline = true
   if (req.query['is-online'] === 'false') isOnline = false
 
@@ -403,9 +360,6 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Razão Social ("corporateName") deve ser uma string.',
         required_error: 'O campo Razão Social ("corporateName") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Razão Social ("corporateName") deve ter pelo menos 3 caracteres.'
-      })
       .optional(),
 
     fantasyName: z
@@ -415,8 +369,7 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
       })
       .min(3, {
         message: 'O campo Nome Fantasia ("fantasyName") deve ter pelo menos 3 caracteres.'
-      })
-      .optional(),
+      }),
 
     address: z
       .string({
@@ -425,8 +378,7 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
       })
       .min(3, {
         message: 'O campo Endereço ("address") deve ter pelo menos 3 caracteres.'
-      })
-      .optional(),
+      }),
 
     state: z
       .string({
@@ -435,8 +387,7 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
       })
       .length(2, {
         message: 'O campo Estado ("state") deve ter 2 caracteres.'
-      })
-      .optional(),
+      }),
 
     city: z
       .string({
@@ -445,23 +396,18 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
       })
       .min(3, {
         message: 'O campo Cidade ("city") deve ter pelo menos 3 caracteres.'
-      })
-      .optional(),
+      }),
 
     categoryId: z
       .number({
         invalid_type_error: 'O campo Categoria ("categoryId") deve ser um number.',
         required_error: 'O campo Categoria ("categoryId") é obrigatório.'
-      })
-      .optional(),
+      }),
 
     tags: z
       .string({
         invalid_type_error: 'O campo Tags ("tags") deve ser uma string.',
         required_error: 'O campo Tags ("tags") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Tags ("tags") deve ter pelo menos 3 caracteres.'
       })
       .optional(),
 
@@ -469,8 +415,7 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
       .boolean({
         invalid_type_error: 'O campo Online ("isOnline") deve ser uma string.',
         required_error: 'O campo Online ("isOnline") é obrigatório.'
-      })
-      .optional(),
+      }),
 
     managerName: z
       .string({
@@ -479,8 +424,7 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
       })
       .min(3, {
         message: 'O campo Nome do Responsável ("managerName") deve ter pelo menos 3 caracteres.'
-      })
-      .optional(),
+      }),
 
     managerPhoneNumber: z
       .string({
@@ -489,17 +433,16 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
       })
       .length(11, {
         message: 'O campo Telefone do Responsável ("managerPhoneNumber") deve ter 11 caracteres.'
-      })
-      .optional(),
+      }),
 
     managerEmail: z
       .string({
         invalid_type_error: 'O campo E-mail do Responsável ("managerEmail") deve ser uma string.',
         required_error: 'O campo E-mail do Responsável ("managerEmail") é obrigatório.'
       })
-      .email({
-        message: 'O campo E-mail do Responsável ("managerEmail") deve ser um e-mail válido.'
-      })
+      // .email({
+      //   message: 'O campo E-mail do Responsável ("managerEmail") deve ser um e-mail válido.'
+      // })
       .optional(),
 
     businessPhoneNumber: z
@@ -517,18 +460,12 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Sobre ("about") deve ser uma string.',
         required_error: 'O campo Sobre ("about") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Sobre ("about") deve ter pelo menos 3 caracteres.'
-      })
       .optional(),
 
     openingHours: z
       .string({
         invalid_type_error: 'O campo Horário de Funcionamento ("openingHours") deve ser uma string.',
         required_error: 'O campo Horário de Funcionamento ("openingHours") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Horário de Funcionamento ("openingHours") deve ter pelo menos 3 caracteres.'
       })
       .optional(),
 
@@ -537,9 +474,6 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Instagram ("instagram") deve ser uma string.',
         required_error: 'O campo Instagram ("instagram") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Instagram ("instagram") deve ter pelo menos 3 caracteres.'
-      })
       .optional(),
 
     webpage: z
@@ -547,9 +481,9 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Site Oficial ("webpage") deve ser uma string.',
         required_error: 'O campo Site Oficial ("webpage") é obrigatório.'
       })
-      .url({
-        message: 'O campo Site Oficial ("webpage") deve ser uma URL válida.'
-      })
+      // .url({
+      //   message: 'O campo Site Oficial ("webpage") deve ser uma URL válida.'
+      // })
       .optional(),
 
     contractUrl: z
@@ -557,18 +491,15 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo URL do Contrato ("contractUrl") deve ser uma string.',
         required_error: 'O campo URL do Contrato ("contractUrl") é obrigatório.'
       })
-      .url({
-        message: 'O campo URL do Contrato ("contractUrl") deve ser uma URL válida.'
-      })
+      // .url({
+      //   message: 'O campo URL do Contrato ("contractUrl") deve ser uma URL válida.'
+      // })
       .optional(),
 
     benefit1Title: z
       .string({
         invalid_type_error: 'O campo Título do Benefício 1 ("benefit1Title") deve ser uma string.',
         required_error: 'O campo Título do Benefício 1 ("benefit1Title") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Título do Benefício 1 ("benefit1Title") deve ter pelo menos 3 caracteres.'
       })
       .optional(),
 
@@ -577,18 +508,12 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Descrição do Benefício 1 ("benefit1Description") deve ser uma string.',
         required_error: 'O campo Descrição do Benefício 1 ("benefit1Description") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Descrição do Benefício 1 ("benefit1Description") deve ter pelo menos 3 caracteres.'
-      })
       .optional(),
 
     benefit1Rules: z
       .string({
         invalid_type_error: 'O campo Regras do Benefício 1 ("benefit1Rules") deve ser uma string.',
         required_error: 'O campo Regras do Benefício 1 ("benefit1Rules") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Regras do Benefício 1 ("benefit1Rules") deve ter pelo menos 3 caracteres.'
       })
       .optional(),
 
@@ -597,18 +522,12 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Link do Benefício 1 ("benefit1Link") deve ser uma string.',
         required_error: 'O campo Link do Benefício 1 ("benefit1Link") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Link do Benefício 1 ("benefit1Link") deve ter pelo menos 3 caracteres.'
-      })
       .optional(),
 
     benefit1Voucher: z
       .string({
         invalid_type_error: 'O campo Voucher do Benefício 1 ("benefit1Voucher") deve ser uma string.',
         required_error: 'O campo Voucher do Benefício 1 ("benefit1Voucher") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Voucher do Benefício 1 ("benefit1Voucher") deve ter pelo menos 3 caracteres.'
       })
       .optional(),
 
@@ -617,18 +536,12 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Título do Benefício 2 ("benefit2Title") deve ser uma string.',
         required_error: 'O campo Título do Benefício 2 ("benefit2Title") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Título do Benefício 2 ("benefit2Title") deve ter pelo menos 3 caracteres.'
-      })
       .optional(),
 
     benefit2Description: z
       .string({
         invalid_type_error: 'O campo Descrição do Benefício 2 ("benefit2Description") deve ser uma string.',
         required_error: 'O campo Descrição do Benefício 2 ("benefit2Description") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Descrição do Benefício 2 ("benefit2Description") deve ter pelo menos 3 caracteres.'
       })
       .optional(),
 
@@ -637,9 +550,6 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Regras do Benefício 2 ("benefit2Rules") deve ser uma string.',
         required_error: 'O campo Regras do Benefício 2 ("benefit2Rules") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Regras do Benefício 2 ("benefit2Rules") deve ter pelo menos 3 caracteres.'
-      })
       .optional(),
 
     benefit2Link: z
@@ -647,18 +557,12 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Link do Benefício 2 ("benefit2Link") deve ser uma string.',
         required_error: 'O campo Link do Benefício 2 ("benefit2Link") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Link do Benefício 2 ("benefit2Link") deve ter pelo menos 3 caracteres.'
-      })
       .optional(),
 
     benefit2Voucher: z
       .string({
         invalid_type_error: 'O campo Voucher do Benefício 2 ("benefit2Voucher") deve ser uma string.',
         required_error: 'O campo Voucher do Benefício 2 ("benefit2Voucher") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Voucher do Benefício 2 ("benefit2Voucher") deve ter pelo menos 3 caracteres.'
       })
       .optional()
   })

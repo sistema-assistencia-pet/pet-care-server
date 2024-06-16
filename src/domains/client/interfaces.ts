@@ -7,10 +7,15 @@ export type ClientToBeReturned = Omit<Client, 'updatedAt'>
 export type ClientToBeUpdated = Omit<ClientToBeCreated, 'cnpj' | 'statusId'>
 export interface FindManyClientsQueryParams {
   cnpj?: string
-  take: number
+  take?: number
   fantasyName?: string
-  skip: number
+  skip?: number
   statusId?: number | typeof NaN
 }
 
-export type FindManyClientsWhere = Pick<Prisma.ClientWhereInput, 'cnpj' | 'fantasyName' | 'statusId'>
+export interface FindManyClientsParams {
+  skip?: number
+  take?: number
+  where: Partial<Prisma.ClientWhereInput>
+}
+

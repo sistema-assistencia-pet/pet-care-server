@@ -3,7 +3,6 @@ import { type Request, type Response } from 'express'
 
 import { FindManyPartnersQueryParams, PartnerToBeCreated, PartnerToBeUpdated } from './interfaces'
 import partnerService from './service'
-import { BadRequestError } from '../../errors'
 import { FILE_FIELD_NAMES } from '../../enums/fileFieldNames'
 
 const createOne = async (req: Request, res: Response): Promise<Response> => {
@@ -145,7 +144,7 @@ const updateOne = async (req: Request, res: Response): Promise<Response> => {
 
   await partnerService.updateOne(partnerId, partnerToBeUpdated)
 
-  return res.status(HttpStatusCode.NoContent).json({ message: PARTNER_SUCCESSFULLY_UPDATED })
+  return res.status(HttpStatusCode.Ok).json({ message: PARTNER_SUCCESSFULLY_UPDATED })
 }
 
 const updateFile = async (req: Request, res: Response): Promise<Response> => {
@@ -160,7 +159,7 @@ const updateFile = async (req: Request, res: Response): Promise<Response> => {
     fieldName: file.fieldname as FILE_FIELD_NAMES
   })
 
-  return res.status(HttpStatusCode.NoContent).json({ message: FILE_SUCCESSFULLY_UPDATED })
+  return res.status(HttpStatusCode.Ok).json({ message: FILE_SUCCESSFULLY_UPDATED })
 }
 
 export default {

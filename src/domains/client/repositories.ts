@@ -2,7 +2,7 @@ import { type Client, type Prisma } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { BadRequestError, DatabaseError, NotFoundError } from '../../errors'
-import { type ClientToBeCreated, type ClientToBeReturned, type FindManyClientsWhere } from './interfaces'
+import { FindManyClientsParams, ClientToBeCreated, ClientToBeReturned } from './interfaces'
 import prismaClient from '../../database/connection'
 import { prismaErrors } from '../../enums/prismaErrors'
 import { status } from '../../enums/statusEnum'
@@ -51,11 +51,7 @@ const createOne = async (clientToBeCreated: ClientToBeCreated): Promise<Pick<Cli
   }
 }
 
-const findMany = async (
-  skip: number,
-  take: number,
-  where: Partial<FindManyClientsWhere>
-): Promise<ClientToBeReturned[]> => {
+const findMany = async ({ skip, take, where }: FindManyClientsParams): Promise<ClientToBeReturned[]> => {
   try {
     const clients = await prismaClient.client.findMany({
       where,
