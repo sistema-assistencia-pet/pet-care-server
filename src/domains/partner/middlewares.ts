@@ -91,8 +91,11 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Telefone do Responsável ("managerPhoneNumber") deve ser uma string.',
         required_error: 'O campo Telefone do Responsável ("managerPhoneNumber") é obrigatório.'
       })
-      .length(11, {
-        message: 'O campo Telefone do Responsável ("managerPhoneNumber") deve ter 11 caracteres.'
+      .min(10, {
+        message: 'O campo Telefone do Responsável ("managerPhoneNumber") deve ter pelo menos 10 caracteres.'
+      })
+      .max(11, {
+        message: 'O campo Telefone do Responsável ("managerPhoneNumber") deve ter no máximo 11 caracteres.'
       }),
 
     managerEmail: z
@@ -431,8 +434,11 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Telefone do Responsável ("managerPhoneNumber") deve ser uma string.',
         required_error: 'O campo Telefone do Responsável ("managerPhoneNumber") é obrigatório.'
       })
-      .length(11, {
-        message: 'O campo Telefone do Responsável ("managerPhoneNumber") deve ter 11 caracteres.'
+      .min(10, {
+        message: 'O campo Telefone do Responsável ("managerPhoneNumber") deve ter pelo menos 10 caracteres.'
+      })
+      .max(11, {
+        message: 'O campo Telefone do Responsável ("managerPhoneNumber") deve ter no máximo 11 caracteres.'
       }),
 
     managerEmail: z
@@ -450,8 +456,11 @@ const validateUpdateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Telefone Comercial ("businessPhoneNumber") deve ser uma string.',
         required_error: 'O campo Telefone Comercial ("businessPhoneNumber") é obrigatório.'
       })
-      .length(11, {
-        message: 'O campo Telefone Comercial ("businessPhoneNumber") deve ter 11 caracteres.'
+      .min(10, {
+        message: 'O campo Telefone do Responsável ("businessPhoneNumber") deve ter pelo menos 10 caracteres.'
+      })
+      .max(11, {
+        message: 'O campo Telefone do Responsável ("businessPhoneNumber") deve ter no máximo 11 caracteres.'
       })
       .optional(),
 
