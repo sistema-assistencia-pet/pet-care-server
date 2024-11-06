@@ -1,7 +1,7 @@
 {
-  "name": "server",
+  "name": "vouchers-server",
   "version": "1.0.0",
-  "description": "REST API",
+  "description": "Vouchers management system REST API",
   "main": "./build/server",
   "scripts": {
     "build": "tsc -p .",

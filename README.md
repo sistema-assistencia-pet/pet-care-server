@@ -1,2 +1,2 @@
-# clube-rede-server
-REST API for Clube Rede project.
+# vouchers-server
+REST API for vouchers management system project.

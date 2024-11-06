@@ -6,7 +6,7 @@ const TERMINAL_LOG_LEVEL = 'debug'
 const FILE_LOG_LEVEL = 'silent'
 const HTTP_LOG_LEVEL = 'info'
 
-dotenv.config() // TODO: check if is necessary
+dotenv.config()
 
 const transport: DestinationStream = pino.transport({
   targets: [

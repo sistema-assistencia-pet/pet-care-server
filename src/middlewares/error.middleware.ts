@@ -17,7 +17,7 @@ export async function errorMiddleware (
 
   let message = INTERNAL_SERVER_ERROR
   let statusCode = HttpStatusCode.InternalServerError
-  
+
   switch (true) {
     case (error instanceof BaseAPIError):
       message = error.message

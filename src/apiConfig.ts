@@ -1,1 +1,2 @@
-export const systemName = 'Clube Rede'
+export const systemName = 'Vouchers'
+export const apiName = 'vouchers-server'
