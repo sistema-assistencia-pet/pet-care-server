@@ -1,6 +1,6 @@
 import { type User } from '@prisma/client'
 
-export type UserToBeCreated = Pick<User, 'cpf' | 'name' | 'email' | 'password' | 'roleId'>
+export type UserToBeCreated = Omit<User, 'id' | 'statusId' | 'createdAt' | 'updatedAt'>
 
 export type UserCreated = Pick<User, 'id' | 'name'>
 

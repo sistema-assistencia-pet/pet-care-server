@@ -8,7 +8,7 @@ import { type ILoginResponse } from './interfaces'
 import memberRepositories from '../member/repositories'
 import { role } from '../../enums/roleEnum'
 import { sendEmail } from '../../utils/mailer'
-import userRepositories from '../user/repositories'
+import userRepositories from '../user/repositories/repositories'
 import { systemName } from '../../apiConfig'
 
 const generateAccessToken = async (id: string, roleId: number): Promise<string> => {

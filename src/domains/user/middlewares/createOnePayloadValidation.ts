@@ -1,9 +1,10 @@
 import { type NextFunction, type Request, type Response } from 'express'
 import { z } from 'zod'
 
-import { BadRequestError, GenericError } from '../../errors'
+import { BadRequestError, GenericError } from '../../../errors'
+import { role } from '../../../enums/roleEnum'
 
-const validateCreateOnePayload = (req: Request, _res: Response, next: NextFunction): void => {
+const createOnePayloadValidation = (req: Request, _res: Response, next: NextFunction): void => {
   const createOnePayloadSchema = z.object({
     cpf: z
       .string({
@@ -46,12 +47,22 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
         invalid_type_error: 'O campo Cargo ("roleId") deve ser um number.',
         required_error: 'O campo Cargo ("roleId") é obrigatório.'
       })
-      .gte(1, {
-        message: 'O campo Cargo ("roleId") deve ser 1 (administrador) ou 2 (associado).'
+      .gte(2, {
+        message: 'O campo Cargo ("roleId") deve ser 1 (MASTER) ou 2 (CLIENT_ADMIN).'
       })
-      .lte(2, {
-        message: 'O campo Cargo ("roleId") deve ser 1 (administrador) ou 2 (associado).'
+      .lte(3, {
+        message: 'O campo Cargo ("roleId") deve ser 1 (MASTER) ou 2 (CLIENT_ADMIN).'
+      }),
+
+    clientId: z
+      .string({
+        invalid_type_error: 'O campo Id do Cliente ("clientId") deve ser uma string.',
+        required_error: 'O campo Id do Cliente ("clientId") é obrigatório.'
       })
+      .uuid({
+        message: 'O campo Id do Cliente ("clientId") deve ser um UUID válido.'
+      })
+      .nullable()
   })
 
   try {
@@ -60,7 +71,8 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
       email: req.body.email,
       name: req.body.name,
       password: req.body.password,
-      roleId: req.body.roleId
+      roleId: req.body.roleId,
+      clientId: req.body.clientId
     })
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -70,7 +82,12 @@ const validateCreateOnePayload = (req: Request, _res: Response, next: NextFuncti
     throw new GenericError(error)
   }
 
+  if (
+    (req.body.roleId === role.CLIENT_ADMIN) &&
+    (req.body.clientId === null)
+  ) throw new BadRequestError('Ao criar um usuário Admin de Cliente ("roleId" = 3), um Id de Cliente ("clientId") deve ser informado.')
+
   next()
 }
 
-export default { validateCreateOnePayload }
+export { createOnePayloadValidation }

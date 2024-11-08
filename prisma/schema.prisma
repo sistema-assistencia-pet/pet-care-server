@@ -15,12 +15,14 @@ model User {
   password  String   @map("senha")
   statusId  Int      @default(1) @map("id_status")
   roleId    Int      @map("id_cargo")
+  clientId  String?  @map("id_cliente")
   createdAt DateTime @default(now()) @map("data_de_criacao")
   updatedAt DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
   role                   Role                    @relation(fields: [roleId], references: [id])
   status                 Status                  @relation(fields: [statusId], references: [id])
+  client                 Client?                 @relation(fields: [clientId], references: [id])
   userResetPasswordCodes UserResetPasswordCode[]
 
   @@index(name)
@@ -145,6 +147,7 @@ model Client {
   state                    State?                    @relation(fields: [stateId], references: [id])
   city                     City?                     @relation(fields: [cityId], references: [id])
   members                  Member[]
+  users                    User[]
   clientRecharges          ClientRecharge[]
   voucherRedemptions       VoucherRedemption[]
   voucherSettingsByClients VoucherSettingsByClient[]

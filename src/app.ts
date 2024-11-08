@@ -47,7 +47,6 @@ app.use((_req: Request, res: Response) => {
   res.status(HttpStatusCode.NotFound).json(URL_NOT_FOUND)
 })
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
 app.use(errorMiddleware)
 
 export { app }
