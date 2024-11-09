@@ -4,9 +4,9 @@ import { type User } from '@prisma/client'
 
 import { BadRequestError, DatabaseError } from '../../../errors'
 import { prismaErrors } from '../../../enums/prismaErrors'
-import { type UserToBeCreated } from '../interfaces'
+import { type UserToBeCreated } from '../userInterfaces'
 
-const createOne = async (userToBeCreated: UserToBeCreated): Promise<Pick<User, 'id'>> => {
+export async function createOne (userToBeCreated: UserToBeCreated): Promise<Pick<User, 'id'>> {
   try {
     const user = await prismaClient.user.create({
       data: { ...userToBeCreated },
@@ -25,5 +25,3 @@ const createOne = async (userToBeCreated: UserToBeCreated): Promise<Pick<User, '
     throw new DatabaseError(error)
   }
 }
-
-export { createOne }

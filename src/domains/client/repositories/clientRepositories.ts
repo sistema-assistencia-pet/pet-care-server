@@ -1,0 +1,3 @@
+const clientRepositories = {}
+
+export { clientRepositories }

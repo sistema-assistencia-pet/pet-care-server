@@ -1,8 +1,8 @@
 import { Router } from 'express'
 
-import { checkIfIsAdmin } from '../../middlewares/authorization.middleware'
-import partnerController from './controllers'
-import partnerMiddlewares from './middlewares'
+import { checkIfIsSystemUser } from '../../middlewares/authorization.middleware'
+import { partnerControllers } from './controllers/partnerControllers'
+import { partnerMiddlewares } from './middlewares/partnerMiddlewares'
 import { validateIdParam } from '../../middlewares/validateIdParam.middleware'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
 import multer from 'multer'
@@ -14,86 +14,86 @@ const partnerRouter: Router = Router()
 partnerRouter.post(
   '/',
   verifyAccessToken,
-  checkIfIsAdmin,
-  partnerMiddlewares.validateCreateOnePayload,
-  partnerController.createOne
+  checkIfIsSystemUser,
+  partnerMiddlewares.createOnePayloadValidation,
+  partnerControllers.createOne
 )
 
 // Detalhes de um estabelecimento
 partnerRouter.get(
   '/:id',
   verifyAccessToken,
-  checkIfIsAdmin,
+  checkIfIsSystemUser,
   validateIdParam,
-  partnerController.findOneById
+  partnerControllers.findOneById
 )
 
 // Listar estabelecimentos
 partnerRouter.get(
   '/',
   verifyAccessToken,
-  checkIfIsAdmin,
-  partnerMiddlewares.validateFindManyQueryParams,
-  partnerController.findMany
+  checkIfIsSystemUser,
+  partnerMiddlewares.findManyQueryParamsValidation,
+  partnerControllers.findMany
 )
 
 // Ativar estabelecimento
 partnerRouter.patch(
   '/:id/activate',
   verifyAccessToken,
-  checkIfIsAdmin,
+  checkIfIsSystemUser,
   validateIdParam,
-  partnerController.activateOne
+  partnerControllers.activateOne
 )
 
 // Inativar estabelecimento
 partnerRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
-  checkIfIsAdmin,
+  checkIfIsSystemUser,
   validateIdParam,
-  partnerController.inactivateOne
+  partnerControllers.inactivateOne
 )
 
 // Excluir estabelecimento
 partnerRouter.patch(
   '/:id/delete',
   verifyAccessToken,
-  checkIfIsAdmin,
+  checkIfIsSystemUser,
   validateIdParam,
-  partnerController.deleteOne
+  partnerControllers.deleteOne
 )
 
 // Editar estabelecimento
 partnerRouter.patch(
   '/:id',
   verifyAccessToken,
-  checkIfIsAdmin,
+  checkIfIsSystemUser,
   validateIdParam,
-  partnerMiddlewares.validateUpdateOnePayload,
-  partnerController.updateOne
+  partnerMiddlewares.updateOnePayloadValidation,
+  partnerControllers.updateOne
 )
 
 // Salvar imagem
 partnerRouter.patch(
   '/:id/image',
   verifyAccessToken,
-  checkIfIsAdmin,
+  checkIfIsSystemUser,
   validateIdParam,
   multer(multerOptionsForImage).single('image'),
-  partnerMiddlewares.validateUpdateFilePayload,
-  partnerController.updateFile
+  partnerMiddlewares.updateFilePayloadValidation,
+  partnerControllers.updateFile
 )
 
 // Salvar logo
 partnerRouter.patch(
   '/:id/logo',
   verifyAccessToken,
-  checkIfIsAdmin,
+  checkIfIsSystemUser,
   validateIdParam,
   multer(multerOptionsForImage).single('logo'),
-  partnerMiddlewares.validateUpdateFilePayload,
-  partnerController.updateFile
+  partnerMiddlewares.updateFilePayloadValidation,
+  partnerControllers.updateFile
 )
 
 export { partnerRouter }

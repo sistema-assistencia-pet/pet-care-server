@@ -4,7 +4,7 @@ import { type User } from '@prisma/client'
 import { DatabaseError } from '../../../errors'
 import { status } from '../../../enums/statusEnum'
 
-const findOneByCpf = async (cpf: string): Promise<User | null> => {
+export async function findOneByCpf (cpf: string): Promise<User | null> {
   try {
     const user = await prismaClient.user.findUnique({
       where: { cpf, statusId: status.ACTIVE }
@@ -15,5 +15,3 @@ const findOneByCpf = async (cpf: string): Promise<User | null> => {
     throw new DatabaseError(error)
   }
 }
-
-export { findOneByCpf }

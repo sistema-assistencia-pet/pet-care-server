@@ -1,12 +1,12 @@
+import multer from 'multer'
 import { Router } from 'express'
 
-import { checkIfIsAdmin, checkIfIsAdminOrMember } from '../../middlewares/authorization.middleware'
-import memberController from './controllers'
-import memberMiddlewares from './middlewares'
+import { checkIfIsAnyUser, checkIfIsSystemUser } from '../../middlewares/authorization.middleware'
+import { memberMiddlewares } from './middlewares/memberMiddlewares'
 import { validateIdParam } from '../../middlewares/validateIdParam.middleware'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
-import multer from 'multer'
 import { multerOptionsForCSV } from '../../multerOptions'
+import { memberControllers } from './controllers/memberControllers'
 
 const memberRouter: Router = Router()
 
@@ -14,74 +14,74 @@ const memberRouter: Router = Router()
 memberRouter.post(
   '/',
   verifyAccessToken,
-  checkIfIsAdmin,
-  memberMiddlewares.validateCreateOnePayload,
-  memberController.createOne
+  checkIfIsSystemUser,
+  memberMiddlewares.createOnePayloadValidation,
+  memberControllers.createOne
 )
 
 // Criar associados a partir de um arquivo CSV
 memberRouter.post(
   '/:clientId/create-members-in-bulk',
   verifyAccessToken,
-  checkIfIsAdmin,
-  memberMiddlewares.validateCreateManyPayload,
+  checkIfIsSystemUser,
+  memberMiddlewares.createManyPayloadValidation,
   multer(multerOptionsForCSV).single('file'), // salva o arquivo e o disponibiliza em req.file
-  memberController.createMany
+  memberControllers.createMany
 )
 
 // Detalhes de um associado
 memberRouter.get(
   '/:id',
   verifyAccessToken,
-  checkIfIsAdminOrMember,
+  checkIfIsAnyUser,
   validateIdParam,
-  memberController.findOneById
+  memberControllers.findOneById
 )
 
 // Listar associados
 memberRouter.get(
   '/',
   verifyAccessToken,
-  checkIfIsAdmin,
-  memberMiddlewares.validatefindManyQueryParams,
-  memberController.findMany
+  checkIfIsSystemUser,
+  memberMiddlewares.findManyQueryParamsValidation,
+  memberControllers.findMany
 )
 
 // Ativar associado
 memberRouter.patch(
   '/:id/activate',
   verifyAccessToken,
-  checkIfIsAdmin,
+  checkIfIsSystemUser,
   validateIdParam,
-  memberController.activateOne
+  memberControllers.activateOne
 )
 
 // Inativar associado
 memberRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
-  checkIfIsAdmin,
+  checkIfIsSystemUser,
   validateIdParam,
-  memberController.inactivateOne
+  memberControllers.inactivateOne
 )
 
 // Excluir associado
 memberRouter.patch(
   '/:id/delete',
   verifyAccessToken,
-  checkIfIsAdmin,
+  checkIfIsSystemUser,
   validateIdParam,
-  memberController.deleteOne
+  memberControllers.deleteOne
 )
 
 // Editar associado
 memberRouter.patch(
   '/:id',
   verifyAccessToken,
-  checkIfIsAdmin,
+  checkIfIsSystemUser,
   validateIdParam,
-  memberMiddlewares.validateUpdateOnePayload,
-  memberController.updateOne
+  memberMiddlewares.updateOnePayloadValidation,
+  memberControllers.updateOne
 )
 
 export { memberRouter }

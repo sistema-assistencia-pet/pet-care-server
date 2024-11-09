@@ -1,4 +1,4 @@
-import { Prisma, type Partner } from '@prisma/client'
+import type { Prisma, Partner } from '@prisma/client'
 
 export type PartnerToBeCreated = Omit<Partner, 'id' | 'image' | 'logo' | 'statusId' | 'createdAt' | 'updatedAt'>
 

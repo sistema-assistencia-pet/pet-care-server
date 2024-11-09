@@ -3,7 +3,7 @@ import { type NextFunction, type Request, type Response } from 'express'
 import { ForbiddenError } from '../../../errors'
 import { role } from '../../../enums/roleEnum'
 
-const createOneAuthorization = async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
+export async function createOneAuthorization (req: Request, _res: Response, next: NextFunction): Promise<void> {
   if (
     (req.body.roleId === role.CLIENT_ADMIN) &&
     (JSON.parse(req.headers['request-user-role-id'] as string) === role.CLIENT_ADMIN) &&
@@ -12,5 +12,3 @@ const createOneAuthorization = async (req: Request, _res: Response, next: NextFu
 
   next()
 }
-
-export { createOneAuthorization }

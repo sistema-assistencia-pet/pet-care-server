@@ -4,7 +4,7 @@ import { ForbiddenError } from '../../../errors'
 import { type RequestUserData } from '../../../interfaces'
 import { role } from '../../../enums/roleEnum'
 import { userRepositories } from '../repositories/userRepositories'
-import { type UserToBeCreated } from '../interfaces'
+import { type UserToBeCreated } from '../userInterfaces'
 
 function checkIfIsCreatingMaster (userToBeCreated: UserToBeCreated): void {
   if (userToBeCreated.roleId === role.MASTER) throw new ForbiddenError('Usuários de cliente não podem criar usuários master.')
@@ -16,7 +16,7 @@ function checkIfIsSameClientId (requestUserData: RequestUserData, userToBeCreate
   }
 }
 
-async function createOne (requestUserData: RequestUserData, userToBeCreated: UserToBeCreated): Promise<string> {
+export async function createOne (requestUserData: RequestUserData, userToBeCreated: UserToBeCreated): Promise<string> {
   if (requestUserData.roleId === role.CLIENT_ADMIN) {
     checkIfIsCreatingMaster(userToBeCreated)
     checkIfIsSameClientId(requestUserData, userToBeCreated)
@@ -30,5 +30,3 @@ async function createOne (requestUserData: RequestUserData, userToBeCreated: Use
 
   return user.id
 }
-
-export { createOne }

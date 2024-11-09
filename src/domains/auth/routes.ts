@@ -1,32 +1,32 @@
 import { Router } from 'express'
 
-import authController from './controllers'
-import authMiddlewares from './middlewares'
+import { authControllers } from './controllers/authControllers'
+import { authMiddlewares } from './middlewares/authMiddlewares'
 
 const authRouter: Router = Router()
 
 authRouter.post(
   '/login/admin',
-  authMiddlewares.validateLoginPayload,
-  authController.loginAdmin
+  authMiddlewares.loginPayloadValidation,
+  authControllers.loginAdmin
 )
 
 authRouter.post(
   '/login/member',
-  authMiddlewares.validateLoginPayload,
-  authController.loginMember
+  authMiddlewares.loginPayloadValidation,
+  authControllers.loginMember
 )
 
 authRouter.post(
   '/request-reset-member-password',
-  authMiddlewares.validateRequestResetMemberPasswordPayload,
-  authController.requestResetMemberPassword
+  authMiddlewares.requestResetMemberPasswordPayloadValidation,
+  authControllers.requestResetMemberPassword
 )
 
 authRouter.post(
   '/reset-member-password',
-  authMiddlewares.validateResetMemberPasswordPayload,
-  authController.resetMemberPassword
+  authMiddlewares.resetMemberPasswordPayloadValidation,
+  authControllers.resetMemberPassword
 )
 
 export { authRouter }

@@ -4,8 +4,18 @@ import { z } from 'zod'
 import { BadRequestError, GenericError } from '../../../errors'
 import { role } from '../../../enums/roleEnum'
 
-const createOnePayloadValidation = (req: Request, _res: Response, next: NextFunction): void => {
+export function createOnePayloadValidation (req: Request, _res: Response, next: NextFunction): void {
   const createOnePayloadSchema = z.object({
+    clientId: z
+      .string({
+        invalid_type_error: 'O campo Id do Cliente ("clientId") deve ser uma string.',
+        required_error: 'O campo Id do Cliente ("clientId") é obrigatório.'
+      })
+      .uuid({
+        message: 'O campo Id do Cliente ("clientId") deve ser um UUID válido.'
+      })
+      .nullable(),
+
     cpf: z
       .string({
         invalid_type_error: 'O campo CPF ("cpf") deve ser uma string.',
@@ -52,27 +62,17 @@ const createOnePayloadValidation = (req: Request, _res: Response, next: NextFunc
       })
       .lte(3, {
         message: 'O campo Cargo ("roleId") deve ser 1 (MASTER) ou 2 (CLIENT_ADMIN).'
-      }),
-
-    clientId: z
-      .string({
-        invalid_type_error: 'O campo Id do Cliente ("clientId") deve ser uma string.',
-        required_error: 'O campo Id do Cliente ("clientId") é obrigatório.'
       })
-      .uuid({
-        message: 'O campo Id do Cliente ("clientId") deve ser um UUID válido.'
-      })
-      .nullable()
   })
 
   try {
     createOnePayloadSchema.parse({
+      clientId: req.body.clientId,
       cpf: req.body.cpf,
       email: req.body.email,
       name: req.body.name,
       password: req.body.password,
-      roleId: req.body.roleId,
-      clientId: req.body.clientId
+      roleId: req.body.roleId
     })
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -89,5 +89,3 @@ const createOnePayloadValidation = (req: Request, _res: Response, next: NextFunc
 
   next()
 }
-
-export { createOnePayloadValidation }
