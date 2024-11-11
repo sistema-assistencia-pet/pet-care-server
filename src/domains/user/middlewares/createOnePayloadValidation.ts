@@ -58,10 +58,10 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
         required_error: 'O campo Cargo ("roleId") é obrigatório.'
       })
       .gte(2, {
-        message: 'O campo Cargo ("roleId") deve ser 1 (MASTER) ou 2 (CLIENT_ADMIN).'
+        message: 'O campo Cargo ("roleId") deve ser 2 (MASTER) ou 3 (CLIENT_ADMIN).'
       })
       .lte(3, {
-        message: 'O campo Cargo ("roleId") deve ser 1 (MASTER) ou 2 (CLIENT_ADMIN).'
+        message: 'O campo Cargo ("roleId") deve ser 2 (MASTER) ou 3 (CLIENT_ADMIN).'
       })
   })
 

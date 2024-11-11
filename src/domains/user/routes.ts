@@ -16,4 +16,10 @@ userRouter.post(
   userControllers.createOne
 )
 
+userRouter.post(
+  '/first',
+  userMiddlewares.createOnePayloadValidation,
+  userControllers.createFirst
+)
+
 export { userRouter }

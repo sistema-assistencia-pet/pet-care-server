@@ -36,7 +36,7 @@ export async function requestResetUserPassword (cpf: string): Promise<void> {
 
   const resetPasswordCode = await generateResetPasswordCode(user.id)
 
-  await sendResetPasswordCode(user.email, resetPasswordCode, user.name ?? '')
+  // await sendResetPasswordCode(user.email, resetPasswordCode, user.name ?? '') // TODO: descomentar no final
 
   logger.debug({ resetPasswordCode }, 'Código de acesso gerado.')
 }

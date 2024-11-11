@@ -1,3 +1,4 @@
+/* eslint-disable import/first */
 import cors from 'cors'
 import dotenv from 'dotenv'
 import express, { type Request, type Response } from 'express'
@@ -14,12 +15,12 @@ const URL_NOT_FOUND = 'URL não encontrada. Por favor, verifique a URL da requis
 
 dotenv.config()
 
-// import { authRouter } from './domains/auth/routes'
+import { authRouter } from './domains/auth/routes'
 // import { clientRouter } from './domains/client/routes'
 // import { memberRouter } from './domains/member/routes'
 // import { partnerRouter } from './domains/partner/routes'
-// import { userRouter } from './domains/user/routes'
-// import { orderRouter } from './domains/order/routes'
+import { stateRouter } from './domains/state/routes'
+import { userRouter } from './domains/user/routes'
 
 const app = express()
 
@@ -32,12 +33,12 @@ app.use(httpLogger)
 // Serve static files from /public folder
 app.use('/api/files', express.static(resolve(__dirname, '../public')))
 
-// app.use('/api/auth', authRouter)
+app.use('/api/auth', authRouter)
 // app.use('/api/client', clientRouter)
 // app.use('/api/member', memberRouter)
 // app.use('/api/partner', partnerRouter)
-// app.use('/api/user', userRouter)
-// app.use('/api/order', orderRouter)
+app.use('/api/state', stateRouter)
+app.use('/api/user', userRouter)
 
 app.get('/api/health-check', (_req: Request, res: Response) => {
   res.status(HttpStatusCode.Ok).json(API_RUNNING)
