@@ -5,7 +5,7 @@ import type { FindManyPartnersQueryParams } from '../partnerInterfaces'
 import { partnerServices } from '../services/partnerServices'
 
 export async function findMany (req: Request, res: Response): Promise<Response> {
-  const PARTNERS_FOUND = 'Estabelecimento recuperados com sucesso.'
+  const PARTNERS_FOUND = 'Estabelecimentos recuperados com sucesso.'
 
   let isOnline: any = null
   if (req.query['is-online'] === 'true') isOnline = true
