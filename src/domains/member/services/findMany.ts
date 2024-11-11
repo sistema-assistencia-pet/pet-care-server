@@ -1,7 +1,7 @@
 import { BadRequestError, NotFoundError } from '../../../errors'
 import clientRepositories from '../../client/repositories'
 import { memberRepositories } from '../repositories/memberRepositories'
-import type { FindManyMembersQueryParams, FindManyMembersWhere, MemberToBeReturnedOnFindMany } from '../interfaces'
+import type { FindManyMembersQueryParams, FindManyMembersWhere, MemberToBeReturnedOnFindMany } from '../memberInterfaces'
 import type { FindManyResponse } from '../../../interfaces'
 
 export async function findMany ({ skip, take, ...queryParams }: FindManyMembersQueryParams): Promise<FindManyResponse<MemberToBeReturnedOnFindMany>> {

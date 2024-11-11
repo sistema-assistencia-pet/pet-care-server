@@ -3,8 +3,8 @@ import { z } from 'zod'
 
 import { BadRequestError, GenericError } from '../../../errors'
 
-export function resetMemberPasswordPayloadValidation (req: Request, _res: Response, next: NextFunction): void {
-  const memberResetPasswordPayloadSchema = z.object({
+export function resetPasswordPayloadValidation (req: Request, _res: Response, next: NextFunction): void {
+  const resetPasswordPayloadSchema = z.object({
     cpf: z
       .string({
         invalid_type_error: 'O campo CPF ("cpf") deve ser uma string.',
@@ -34,7 +34,7 @@ export function resetMemberPasswordPayloadValidation (req: Request, _res: Respon
   })
 
   try {
-    memberResetPasswordPayloadSchema.parse({
+    resetPasswordPayloadSchema.parse({
       cpf: req.body.cpf,
       resetPasswordCode: req.body.resetPasswordCode,
       newPassword: req.body.newPassword

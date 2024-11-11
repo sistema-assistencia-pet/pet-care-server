@@ -3,12 +3,12 @@ import type { Request, Response } from 'express'
 
 import { authServices } from '../services/authServices'
 
-export async function resetMemberPassword (req: Request, res: Response): Promise<Response> {
+export async function resetUserPassword (req: Request, res: Response): Promise<Response> {
   const RESET_PASSWORD_SUCCESSFULLY_CREATED = 'Senha redefinida com sucesso!'
 
   const { cpf, resetPasswordCode, newPassword }: { cpf: string, resetPasswordCode: string, newPassword: string } = req.body
 
-  await authServices.resetMemberPassword(cpf, resetPasswordCode, newPassword)
+  await authServices.resetUserPassword(cpf, resetPasswordCode, newPassword)
 
   return res.status(HttpStatusCode.Created).json({ message: RESET_PASSWORD_SUCCESSFULLY_CREATED })
 }

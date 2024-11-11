@@ -1,4 +1,4 @@
-import type { MemberToBeUpdated } from '../interfaces'
+import type { MemberToBeUpdated } from '../memberInterfaces'
 import { memberRepositories } from '../repositories/memberRepositories'
 
 export async function updateOne (id: string, memberToBeUpdated: Partial<MemberToBeUpdated>): Promise<void> {

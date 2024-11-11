@@ -1,7 +1,7 @@
 import { HttpStatusCode } from 'axios'
 import { type Request, type Response } from 'express'
 
-import type { FindManyPartnersQueryParams } from '../interfaces'
+import type { FindManyPartnersQueryParams } from '../partnerInterfaces'
 import { partnerServices } from '../services/partnerServices'
 
 export async function findMany (req: Request, res: Response): Promise<Response> {

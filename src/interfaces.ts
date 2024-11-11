@@ -2,7 +2,7 @@ export interface FindManyResponse<T> {
   items: T[]
   totalCount: number
 }
-export interface RequestUserData {
+export interface AccessTokenData {
   id: string
   clientId: string
   roleId: number

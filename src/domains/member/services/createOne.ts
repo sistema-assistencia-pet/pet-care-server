@@ -1,4 +1,4 @@
-import { type MemberToBeCreated } from '../interfaces'
+import { type MemberToBeCreated } from '../memberInterfaces'
 import { memberRepositories } from '../repositories/memberRepositories'
 
 export async function createOne (memberToBeCreated: MemberToBeCreated): Promise<string> {

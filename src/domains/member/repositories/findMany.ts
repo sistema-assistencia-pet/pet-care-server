@@ -1,7 +1,7 @@
 import prismaClient from '../../../database/connection'
 
 import { DatabaseError } from '../../../errors'
-import type { FindManyMembersWhere, MemberToBeReturnedOnFindMany } from '../interfaces'
+import type { FindManyMembersWhere, MemberToBeReturnedOnFindMany } from '../memberInterfaces'
 
 export async function findMany (
   skip: number,

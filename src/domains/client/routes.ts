@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { checkIfIsSystemUser } from '../../middlewares/authorization.middleware'
+import { checkIfIsUser } from '../../middlewares/authorization.middleware'
 import { clientControllers } from './controllers/clientControllers'
 import { clientMiddlewares } from './middlewares/clientMiddlewares'
 import { validateIdParam } from '../../middlewares/validateIdParam.middleware'
@@ -12,7 +12,7 @@ const clientRouter: Router = Router()
 clientRouter.post(
   '/',
   verifyAccessToken,
-  checkIfIsSystemUser,
+  checkIfIsUser,
   clientMiddlewares.createOnePayloadValidation,
   clientControllers.createOne
 )
@@ -21,7 +21,7 @@ clientRouter.post(
 clientRouter.get(
   '/:id',
   verifyAccessToken,
-  checkIfIsSystemUser,
+  checkIfIsUser,
   validateIdParam,
   clientControllers.findOneById
 )
@@ -30,7 +30,7 @@ clientRouter.get(
 clientRouter.get(
   '/',
   verifyAccessToken,
-  checkIfIsSystemUser,
+  checkIfIsUser,
   clientMiddlewares.findManyQueryParamsValidation,
   clientControllers.findMany
 )
@@ -39,7 +39,7 @@ clientRouter.get(
 clientRouter.patch(
   '/:id/activate',
   verifyAccessToken,
-  checkIfIsSystemUser,
+  checkIfIsUser,
   validateIdParam,
   clientControllers.activateOne
 )
@@ -48,7 +48,7 @@ clientRouter.patch(
 clientRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
-  checkIfIsSystemUser,
+  checkIfIsUser,
   validateIdParam,
   clientControllers.inactivateOne
 )
@@ -57,7 +57,7 @@ clientRouter.patch(
 clientRouter.patch(
   '/:id/delete',
   verifyAccessToken,
-  checkIfIsSystemUser,
+  checkIfIsUser,
   validateIdParam,
   clientControllers.deleteOne
 )
@@ -66,7 +66,7 @@ clientRouter.patch(
 clientRouter.patch(
   '/:id',
   verifyAccessToken,
-  checkIfIsSystemUser,
+  checkIfIsUser,
   validateIdParam,
   clientMiddlewares.updateOnePayloadValidation,
   clientControllers.updateOne

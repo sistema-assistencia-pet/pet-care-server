@@ -1,5 +1,5 @@
 import partnerRepositories from '../repositories'
-import type { PartnerToBeReturned } from '../interfaces'
+import type { PartnerToBeReturned } from '../partnerInterfaces'
 import { NotFoundError } from '../../../errors'
 import { getEnvironmentVariable } from '../../../utils/getEnvironmentVariable'
 

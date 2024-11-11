@@ -24,7 +24,7 @@ export async function resetMemberPassword (cpf: string, resetPasswordCode: strin
 
   const encryptedPassword = await bcrypt.hash(newPassword, 10)
 
-  await memberRepositories.updateOne(member.id, { password: encryptedPassword, createdPassword: true })
+  await memberRepositories.updateOne(member.id, { password: encryptedPassword, hasCreatedPassword: true })
 
   await memberRepositories.deleteOneResetPasswordCode(member.id)
 }

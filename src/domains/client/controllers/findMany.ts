@@ -1,7 +1,7 @@
 import { HttpStatusCode } from 'axios'
 import { type Request, type Response } from 'express'
 
-import type { FindManyClientsQueryParams } from '../interfaces'
+import type { FindManyClientsQueryParams } from '../clientInterfaces'
 import clientService from '../service'
 
 export async function findMany (req: Request, res: Response): Promise<Response> {

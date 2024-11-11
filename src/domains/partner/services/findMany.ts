@@ -2,7 +2,7 @@ import partnerRepositories from '../repositories'
 import type {
   PartnerToBeReturned,
   FindManyPartnersQueryParams
-} from '../interfaces'
+} from '../partnerInterfaces'
 import { NotFoundError } from '../../../errors'
 import type { FindManyResponse } from '../../../interfaces'
 import { type Prisma } from '@prisma/client'

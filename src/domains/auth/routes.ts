@@ -6,26 +6,38 @@ import { authMiddlewares } from './middlewares/authMiddlewares'
 const authRouter: Router = Router()
 
 authRouter.post(
-  '/login/admin',
+  '/user/login',
   authMiddlewares.loginPayloadValidation,
-  authControllers.loginAdmin
+  authControllers.loginUser
 )
 
 authRouter.post(
-  '/login/member',
+  '/user/request-reset-password',
+  authMiddlewares.requestResetPasswordPayloadValidation,
+  authControllers.requestResetUserPassword
+)
+
+authRouter.post(
+  '/user/reset-password',
+  authMiddlewares.resetPasswordPayloadValidation,
+  authControllers.resetUserPassword
+)
+
+authRouter.post(
+  '/member/login',
   authMiddlewares.loginPayloadValidation,
   authControllers.loginMember
 )
 
 authRouter.post(
-  '/request-reset-member-password',
-  authMiddlewares.requestResetMemberPasswordPayloadValidation,
+  '/member/request-reset-password',
+  authMiddlewares.requestResetPasswordPayloadValidation,
   authControllers.requestResetMemberPassword
 )
 
 authRouter.post(
-  '/reset-member-password',
-  authMiddlewares.resetMemberPasswordPayloadValidation,
+  '/member/reset-password',
+  authMiddlewares.resetPasswordPayloadValidation,
   authControllers.resetMemberPassword
 )
 

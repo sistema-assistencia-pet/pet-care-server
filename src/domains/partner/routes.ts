@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { checkIfIsSystemUser } from '../../middlewares/authorization.middleware'
+import { checkIfIsUser } from '../../middlewares/authorization.middleware'
 import { partnerControllers } from './controllers/partnerControllers'
 import { partnerMiddlewares } from './middlewares/partnerMiddlewares'
 import { validateIdParam } from '../../middlewares/validateIdParam.middleware'
@@ -14,7 +14,7 @@ const partnerRouter: Router = Router()
 partnerRouter.post(
   '/',
   verifyAccessToken,
-  checkIfIsSystemUser,
+  checkIfIsUser,
   partnerMiddlewares.createOnePayloadValidation,
   partnerControllers.createOne
 )
@@ -23,7 +23,7 @@ partnerRouter.post(
 partnerRouter.get(
   '/:id',
   verifyAccessToken,
-  checkIfIsSystemUser,
+  checkIfIsUser,
   validateIdParam,
   partnerControllers.findOneById
 )
@@ -32,7 +32,7 @@ partnerRouter.get(
 partnerRouter.get(
   '/',
   verifyAccessToken,
-  checkIfIsSystemUser,
+  checkIfIsUser,
   partnerMiddlewares.findManyQueryParamsValidation,
   partnerControllers.findMany
 )
@@ -41,7 +41,7 @@ partnerRouter.get(
 partnerRouter.patch(
   '/:id/activate',
   verifyAccessToken,
-  checkIfIsSystemUser,
+  checkIfIsUser,
   validateIdParam,
   partnerControllers.activateOne
 )
@@ -50,7 +50,7 @@ partnerRouter.patch(
 partnerRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
-  checkIfIsSystemUser,
+  checkIfIsUser,
   validateIdParam,
   partnerControllers.inactivateOne
 )
@@ -59,7 +59,7 @@ partnerRouter.patch(
 partnerRouter.patch(
   '/:id/delete',
   verifyAccessToken,
-  checkIfIsSystemUser,
+  checkIfIsUser,
   validateIdParam,
   partnerControllers.deleteOne
 )
@@ -68,7 +68,7 @@ partnerRouter.patch(
 partnerRouter.patch(
   '/:id',
   verifyAccessToken,
-  checkIfIsSystemUser,
+  checkIfIsUser,
   validateIdParam,
   partnerMiddlewares.updateOnePayloadValidation,
   partnerControllers.updateOne
@@ -78,7 +78,7 @@ partnerRouter.patch(
 partnerRouter.patch(
   '/:id/image',
   verifyAccessToken,
-  checkIfIsSystemUser,
+  checkIfIsUser,
   validateIdParam,
   multer(multerOptionsForImage).single('image'),
   partnerMiddlewares.updateFilePayloadValidation,
@@ -89,7 +89,7 @@ partnerRouter.patch(
 partnerRouter.patch(
   '/:id/logo',
   verifyAccessToken,
-  checkIfIsSystemUser,
+  checkIfIsUser,
   validateIdParam,
   multer(multerOptionsForImage).single('logo'),
   partnerMiddlewares.updateFilePayloadValidation,

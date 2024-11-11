@@ -1,7 +1,7 @@
 import { HttpStatusCode } from 'axios'
 import { type Request, type Response } from 'express'
 
-import type { ClientToBeCreated } from '../interfaces'
+import type { ClientToBeCreated } from '../clientInterfaces'
 import clientService from '../service'
 
 export async function createOne (req: Request, res: Response): Promise<Response> {

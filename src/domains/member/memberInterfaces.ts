@@ -1,4 +1,5 @@
 import { type Prisma, type Member } from '@prisma/client'
+import type { ClientDataForLogin } from '../client/clientInterfaces'
 
 export interface FindManyMembersQueryParams {
   clientCnpj?: string
@@ -16,5 +17,9 @@ export type MemberToBeCreated = Omit<Member, 'id' | 'password' | 'hasCreatedPass
 export type MemberToBeUpdated = Omit<MemberToBeCreated, 'cpf' | 'statusId'>
 
 export type MemberToBeReturned = Omit<Member, 'password' | 'createdPassword' | 'updatedAt'>
+
+export type MemberWithClientData = Member & { client: ClientDataForLogin | null }
+
+export type MemberLoginInfo = Pick<MemberWithClientData, 'id' | 'name' | 'roleId' | 'client'>
 
 export type MemberToBeReturnedOnFindMany = Omit<MemberToBeReturned, | 'clientId'> & { client: { cnpj: string, fantasyName: string } }

@@ -1,11 +1,11 @@
 import { loginPayloadValidation } from './loginPayloadValidation'
-import { requestResetMemberPasswordPayloadValidation } from './requestResetMemberPasswordPayloadValidation'
-import { resetMemberPasswordPayloadValidation } from './resetMemberPasswordPayloadValidation'
+import { requestResetPasswordPayloadValidation } from './requestResetPasswordPayloadValidation'
+import { resetPasswordPayloadValidation } from './resetPasswordPayloadValidation'
 
 const authMiddlewares = {
   loginPayloadValidation,
-  requestResetMemberPasswordPayloadValidation,
-  resetMemberPasswordPayloadValidation
+  requestResetPasswordPayloadValidation,
+  resetPasswordPayloadValidation
 }
 
 export { authMiddlewares }

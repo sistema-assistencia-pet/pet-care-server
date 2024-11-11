@@ -2,15 +2,18 @@ import { createSecretKey } from 'node:crypto'
 import { SignJWT } from 'jose'
 
 import { getEnvironmentVariable } from './getEnvironmentVariable'
+import type { AccessTokenData } from '../interfaces'
 
-export async function generateAccessToken (id: string, roleId: number): Promise<string> {
+export async function generateAccessToken (accessTokenData: AccessTokenData): Promise<string> {
   const JWT_SECRET = getEnvironmentVariable('JWT_SECRET')
   const JWT_ISSUER = getEnvironmentVariable('JWT_ISSUER')
   const JWT_AUDIENCE = getEnvironmentVariable('JWT_AUDIENCE')
 
   const secretKey = createSecretKey(JWT_SECRET, 'utf8')
 
-  const accessToken = await new SignJWT({ id, roleId })
+  const { id, clientId, roleId } = accessTokenData
+
+  const accessToken = await new SignJWT({ id, clientId, roleId })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setIssuer(JWT_ISSUER)

@@ -2,7 +2,7 @@ import { HttpStatusCode } from 'axios'
 import type { Request, Response } from 'express'
 
 import { memberServices } from '../services/memberServices'
-import type { MemberToBeUpdated } from '../interfaces'
+import type { MemberToBeUpdated } from '../memberInterfaces'
 
 export async function updateOne (req: Request, res: Response): Promise<Response> {
   const MEMBER_SUCCESSFULLY_UPDATED = 'Associado atualizado com sucesso.'

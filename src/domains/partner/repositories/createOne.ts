@@ -2,7 +2,7 @@ import type { Partner } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { BadRequestError, DatabaseError } from '../../../errors'
-import type { PartnerToBeCreated } from '../interfaces'
+import type { PartnerToBeCreated } from '../partnerInterfaces'
 import prismaClient from '../../../database/connection'
 import { prismaErrors } from '../../../enums/prismaErrors'
 

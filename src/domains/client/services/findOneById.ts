@@ -1,5 +1,5 @@
 import clientRepositories from '../repositories'
-import type { ClientToBeReturned } from '../interfaces'
+import type { ClientToBeReturned } from '../clientInterfaces'
 import { NotFoundError } from '../../../errors'
 
 export async function findOneById (id: string): Promise<ClientToBeReturned> {

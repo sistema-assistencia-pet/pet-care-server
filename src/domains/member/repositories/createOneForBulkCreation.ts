@@ -1,7 +1,7 @@
 import type { Member } from '@prisma/client'
 import prismaClient from '../../../database/connection'
 
-import type { MemberToBeCreated } from '../interfaces'
+import type { MemberToBeCreated } from '../memberInterfaces'
 import { role } from '../../../enums/roleEnum'
 
 export async function createOneForBulkCreation (memberToBeCreated: MemberToBeCreated): Promise<Pick<Member, 'id'>> {

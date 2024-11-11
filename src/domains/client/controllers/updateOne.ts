@@ -1,7 +1,7 @@
 import { HttpStatusCode } from 'axios'
 import { type Request, type Response } from 'express'
 
-import type { ClientToBeUpdated } from '../interfaces'
+import type { ClientToBeUpdated } from '../clientInterfaces'
 import clientService from '../service'
 
 export async function updateOne (req: Request, res: Response): Promise<Response> {

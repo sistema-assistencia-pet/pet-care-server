@@ -1,5 +1,5 @@
 import { DatabaseError } from '../../../errors'
-import type { FindManyClientsParams, ClientToBeReturned } from '../interfaces'
+import type { FindManyClientsParams, ClientToBeReturned } from '../clientInterfaces'
 import prismaClient from '../../../database/connection'
 
 export async function findMany ({ skip, take, where }: FindManyClientsParams): Promise<ClientToBeReturned[]> {

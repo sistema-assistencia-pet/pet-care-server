@@ -1,7 +1,7 @@
 import type { Prisma } from '@prisma/client'
 
 import clientRepositories from '../repositories'
-import type { ClientToBeReturned, FindManyClientsQueryParams } from '../interfaces'
+import type { ClientToBeReturned, FindManyClientsQueryParams } from '../clientInterfaces'
 import { NotFoundError } from '../../../errors'
 import type { FindManyResponse } from '../../../interfaces'
 

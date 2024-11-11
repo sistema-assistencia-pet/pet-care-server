@@ -1,5 +1,5 @@
 import { NotFoundError } from '../../../errors'
-import type { MemberToBeReturned } from '../interfaces'
+import type { MemberToBeReturned } from '../memberInterfaces'
 import { memberRepositories } from '../repositories/memberRepositories'
 
 export async function findOneById (id: string): Promise<MemberToBeReturned> {

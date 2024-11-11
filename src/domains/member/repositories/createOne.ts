@@ -3,7 +3,7 @@ import prismaClient from '../../../database/connection'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { BadRequestError, DatabaseError } from '../../../errors'
-import { type MemberToBeCreated } from '../interfaces'
+import { type MemberToBeCreated } from '../memberInterfaces'
 import { prismaErrors } from '../../../enums/prismaErrors'
 import { role } from '../../../enums/roleEnum'
 

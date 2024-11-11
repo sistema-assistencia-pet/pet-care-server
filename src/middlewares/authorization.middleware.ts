@@ -13,7 +13,7 @@ const checkIfIsMasterUser = async (req: Request, _res: Response, next: NextFunct
 }
 
 // Verifica se é um usuário de sistema (MASTER ou CLIENT_ADMIN)
-const checkIfIsSystemUser = async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
+const checkIfIsUser = async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
   const isMaster = req.headers['request-user-role-id'] === JSON.stringify(role.MASTER)
   const isClientAdmin = req.headers['request-user-role-id'] === JSON.stringify(role.CLIENT_ADMIN)
 
@@ -24,7 +24,7 @@ const checkIfIsSystemUser = async (req: Request, _res: Response, next: NextFunct
 
 // Middleware desenvolvido especificamente para o endpoint de detalhes de um associado,
 // que será consumido por usuários (admin) e associados (member)
-const checkIfIsAnyUser = async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
+const checkIfIsUserOrMember = async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
   const isMember = req.headers['request-user-role-id'] === JSON.stringify(role.MEMBER)
   const isMaster = req.headers['request-user-role-id'] === JSON.stringify(role.MASTER)
   const isClientAdmin = req.headers['request-user-role-id'] === JSON.stringify(role.CLIENT_ADMIN)
@@ -34,4 +34,4 @@ const checkIfIsAnyUser = async (req: Request, _res: Response, next: NextFunction
   next() // TODO: Endpoint deverá conferir a role
 }
 
-export { checkIfIsMasterUser, checkIfIsSystemUser, checkIfIsAnyUser }
+export { checkIfIsMasterUser, checkIfIsUser, checkIfIsUserOrMember }

@@ -1,13 +1,21 @@
 import prismaClient from '../../../database/connection'
-import { type User } from '@prisma/client'
 
 import { DatabaseError } from '../../../errors'
 import { status } from '../../../enums/statusEnum'
+import type { UserWithClientData } from '../userInterfaces'
 
-export async function findOneByCpf (cpf: string): Promise<User | null> {
+export async function findOneByCpf (cpf: string): Promise<UserWithClientData | null> {
   try {
     const user = await prismaClient.user.findUnique({
-      where: { cpf, statusId: status.ACTIVE }
+      where: { cpf, statusId: status.ACTIVE },
+      include: {
+        client: {
+          select: {
+            id: true,
+            fantasyName: true
+          }
+        }
+      }
     })
 
     return user

@@ -5,7 +5,7 @@ import { BadRequestError } from '../../../errors'
 import clientRepositories from '../../client/repositories'
 import { convertBufferToStream } from '../../../utils/convertBufferToStream'
 import { memberRepositories } from '../repositories/memberRepositories'
-import { type MemberToBeCreated } from '../interfaces'
+import { type MemberToBeCreated } from '../memberInterfaces'
 import { prismaErrors } from '../../../enums/prismaErrors'
 import { status } from '../../../enums/statusEnum'
 
