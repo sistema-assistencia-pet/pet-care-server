@@ -1,5 +1,6 @@
 import { Router } from 'express'
 
+import { checkIfIsMasterUser, checkIfIsUser } from '../../middlewares/authorization.middleware'
 import { cityControllers } from './controllers/cityControllers'
 import { cityMiddlewares } from './middlewares/cityMiddlewares'
 import { validateNumberIdParam } from '../../middlewares/validateNumberIdParam.middleware'
@@ -19,6 +20,7 @@ cityRouter.get(
 cityRouter.post(
   '/',
   verifyAccessToken,
+  checkIfIsUser,
   cityMiddlewares.createOnePayloadValidation,
   cityControllers.createOne
 )
@@ -27,6 +29,7 @@ cityRouter.post(
 cityRouter.delete(
   '/:id',
   verifyAccessToken,
+  checkIfIsMasterUser,
   validateNumberIdParam,
   cityControllers.deleteOne
 )

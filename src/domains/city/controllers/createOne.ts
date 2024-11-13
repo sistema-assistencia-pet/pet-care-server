@@ -1,8 +1,8 @@
 import { HttpStatusCode } from 'axios'
 import { type Request, type Response } from 'express'
 
-import type { CityToBeCreated } from '../cityInterfaces'
 import { cityServices } from '../services/cityServices'
+import type { CityToBeCreated } from '../cityInterfaces'
 
 export async function createOne (req: Request, res: Response): Promise<Response> {
   const CITY_SUCCESSFULLY_CREATED = 'Cidade cadastrada com sucesso.'

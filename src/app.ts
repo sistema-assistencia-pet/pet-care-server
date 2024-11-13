@@ -16,6 +16,7 @@ const URL_NOT_FOUND = 'URL não encontrada. Por favor, verifique a URL da requis
 dotenv.config()
 
 import { authRouter } from './domains/auth/routes'
+import { categoryRouter } from './domains/category/routes'
 import { cityRouter } from './domains/city/routes'
 // import { clientRouter } from './domains/client/routes'
 // import { memberRouter } from './domains/member/routes'
@@ -35,6 +36,7 @@ app.use(httpLogger)
 app.use('/api/files', express.static(resolve(__dirname, '../public')))
 
 app.use('/api/auth', authRouter)
+app.use('/api/category', categoryRouter)
 app.use('/api/city', cityRouter)
 // app.use('/api/client', clientRouter)
 // app.use('/api/member', memberRouter)
