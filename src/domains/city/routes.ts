@@ -34,4 +34,14 @@ cityRouter.delete(
   cityControllers.deleteOne
 )
 
+// Editar cidade
+cityRouter.patch(
+  '/:id',
+  verifyAccessToken,
+  checkIfIsMasterUser,
+  validateNumberIdParam,
+  cityMiddlewares.updateOnePayloadValidation,
+  cityControllers.updateOne
+)
+
 export { cityRouter }

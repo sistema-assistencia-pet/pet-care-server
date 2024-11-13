@@ -33,4 +33,14 @@ categoryRouter.delete(
   categoryControllers.deleteOne
 )
 
+// Editar categoria
+categoryRouter.patch(
+  '/:id',
+  verifyAccessToken,
+  checkIfIsMasterUser,
+  validateNumberIdParam,
+  categoryMiddlewares.updateOnePayloadValidation,
+  categoryControllers.updateOne
+)
+
 export { categoryRouter }

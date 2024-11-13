@@ -3,8 +3,8 @@ import { z } from 'zod'
 
 import { BadRequestError, GenericError } from '../../../errors'
 
-export function createOnePayloadValidation (req: Request, _res: Response, next: NextFunction): void {
-  const createOnePayloadSchema = z.object({
+export function updateOnePayloadValidation (req: Request, _res: Response, next: NextFunction): void {
+  const updateOnePayloadSchema = z.object({
     name: z
       .string({
         invalid_type_error: 'O campo Nome ("name") deve ser uma string.',
@@ -13,7 +13,7 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
   })
 
   try {
-    createOnePayloadSchema.parse({
+    updateOnePayloadSchema.parse({
       name: req.body.name
     })
   } catch (error) {
