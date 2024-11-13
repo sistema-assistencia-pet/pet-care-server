@@ -3,7 +3,7 @@ import { Router } from 'express'
 import { checkIfIsUser } from '../../middlewares/authorization.middleware'
 import { partnerControllers } from './controllers/partnerControllers'
 import { partnerMiddlewares } from './middlewares/partnerMiddlewares'
-import { validateIdParam } from '../../middlewares/validateIdParam.middleware'
+import { validateUuidParam } from '../../middlewares/validateUuidParam.middleware'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
 import multer from 'multer'
 import { multerOptionsForImage } from '../../multerOptions'
@@ -24,7 +24,7 @@ partnerRouter.get(
   '/:id',
   verifyAccessToken,
   checkIfIsUser,
-  validateIdParam,
+  validateUuidParam,
   partnerControllers.findOneById
 )
 
@@ -42,7 +42,7 @@ partnerRouter.patch(
   '/:id/activate',
   verifyAccessToken,
   checkIfIsUser,
-  validateIdParam,
+  validateUuidParam,
   partnerControllers.activateOne
 )
 
@@ -51,7 +51,7 @@ partnerRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
   checkIfIsUser,
-  validateIdParam,
+  validateUuidParam,
   partnerControllers.inactivateOne
 )
 
@@ -60,7 +60,7 @@ partnerRouter.patch(
   '/:id/delete',
   verifyAccessToken,
   checkIfIsUser,
-  validateIdParam,
+  validateUuidParam,
   partnerControllers.deleteOne
 )
 
@@ -69,7 +69,7 @@ partnerRouter.patch(
   '/:id',
   verifyAccessToken,
   checkIfIsUser,
-  validateIdParam,
+  validateUuidParam,
   partnerMiddlewares.updateOnePayloadValidation,
   partnerControllers.updateOne
 )
@@ -79,7 +79,7 @@ partnerRouter.patch(
   '/:id/image',
   verifyAccessToken,
   checkIfIsUser,
-  validateIdParam,
+  validateUuidParam,
   multer(multerOptionsForImage).single('image'),
   partnerMiddlewares.updateFilePayloadValidation,
   partnerControllers.updateFile
@@ -90,7 +90,7 @@ partnerRouter.patch(
   '/:id/logo',
   verifyAccessToken,
   checkIfIsUser,
-  validateIdParam,
+  validateUuidParam,
   multer(multerOptionsForImage).single('logo'),
   partnerMiddlewares.updateFilePayloadValidation,
   partnerControllers.updateFile

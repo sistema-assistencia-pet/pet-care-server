@@ -3,7 +3,7 @@ import { Router } from 'express'
 import { checkIfIsUser } from '../../middlewares/authorization.middleware'
 import { clientControllers } from './controllers/clientControllers'
 import { clientMiddlewares } from './middlewares/clientMiddlewares'
-import { validateIdParam } from '../../middlewares/validateIdParam.middleware'
+import { validateUuidParam } from '../../middlewares/validateUuidParam.middleware'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
 
 const clientRouter: Router = Router()
@@ -22,7 +22,7 @@ clientRouter.get(
   '/:id',
   verifyAccessToken,
   checkIfIsUser,
-  validateIdParam,
+  validateUuidParam,
   clientControllers.findOneById
 )
 
@@ -40,7 +40,7 @@ clientRouter.patch(
   '/:id/activate',
   verifyAccessToken,
   checkIfIsUser,
-  validateIdParam,
+  validateUuidParam,
   clientControllers.activateOne
 )
 
@@ -49,7 +49,7 @@ clientRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
   checkIfIsUser,
-  validateIdParam,
+  validateUuidParam,
   clientControllers.inactivateOne
 )
 
@@ -58,7 +58,7 @@ clientRouter.patch(
   '/:id/delete',
   verifyAccessToken,
   checkIfIsUser,
-  validateIdParam,
+  validateUuidParam,
   clientControllers.deleteOne
 )
 
@@ -67,7 +67,7 @@ clientRouter.patch(
   '/:id',
   verifyAccessToken,
   checkIfIsUser,
-  validateIdParam,
+  validateUuidParam,
   clientMiddlewares.updateOnePayloadValidation,
   clientControllers.updateOne
 )

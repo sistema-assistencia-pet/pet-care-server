@@ -7,6 +7,7 @@ import { verifyAccessToken } from '../../middlewares/authentication.middleware'
 
 const userRouter: Router = Router()
 
+// Criar usuário
 userRouter.post(
   '/',
   verifyAccessToken,
@@ -16,6 +17,7 @@ userRouter.post(
   userControllers.createOne
 )
 
+// Criar primeiro usuário
 userRouter.post(
   '/first',
   userMiddlewares.createOnePayloadValidation,

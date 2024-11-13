@@ -3,21 +3,18 @@ import { z } from 'zod'
 
 import { BadRequestError, GenericError } from '../errors'
 
-const validateIdParam = (req: Request, _res: Response, next: NextFunction): void => {
+export function validateNumberIdParam (req: Request, _res: Response, next: NextFunction): void {
   const idParamSchema = z.object({
     id: z
-      .string({
-        invalid_type_error: '"id" deve ser uma string.',
+      .number({
+        invalid_type_error: '"id" deve ser um number.',
         required_error: '"id" é obrigatório.'
-      })
-      .uuid({
-        message: '"id" deve ser um UUID válido.'
       })
   })
 
   try {
     idParamSchema.parse({
-      id: req.params.id
+      id: typeof parseInt(req.params.id) === 'number' ? parseInt(req.params.id) : null
     })
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -29,5 +26,3 @@ const validateIdParam = (req: Request, _res: Response, next: NextFunction): void
 
   next()
 }
-
-export { validateIdParam }

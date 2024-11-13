@@ -3,7 +3,7 @@ import { Router } from 'express'
 
 import { checkIfIsUserOrMember, checkIfIsUser } from '../../middlewares/authorization.middleware'
 import { memberMiddlewares } from './middlewares/memberMiddlewares'
-import { validateIdParam } from '../../middlewares/validateIdParam.middleware'
+import { validateUuidParam } from '../../middlewares/validateUuidParam.middleware'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
 import { multerOptionsForCSV } from '../../multerOptions'
 import { memberControllers } from './controllers/memberControllers'
@@ -34,7 +34,7 @@ memberRouter.get(
   '/:id',
   verifyAccessToken,
   checkIfIsUserOrMember,
-  validateIdParam,
+  validateUuidParam,
   memberControllers.findOneById
 )
 
@@ -52,7 +52,7 @@ memberRouter.patch(
   '/:id/activate',
   verifyAccessToken,
   checkIfIsUser,
-  validateIdParam,
+  validateUuidParam,
   memberControllers.activateOne
 )
 
@@ -61,7 +61,7 @@ memberRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
   checkIfIsUser,
-  validateIdParam,
+  validateUuidParam,
   memberControllers.inactivateOne
 )
 
@@ -70,7 +70,7 @@ memberRouter.patch(
   '/:id/delete',
   verifyAccessToken,
   checkIfIsUser,
-  validateIdParam,
+  validateUuidParam,
   memberControllers.deleteOne
 )
 
@@ -79,7 +79,7 @@ memberRouter.patch(
   '/:id',
   verifyAccessToken,
   checkIfIsUser,
-  validateIdParam,
+  validateUuidParam,
   memberMiddlewares.updateOnePayloadValidation,
   memberControllers.updateOne
 )
