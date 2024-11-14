@@ -1,27 +1,9 @@
 import bcrypt from 'bcrypt'
 
-import { ForbiddenError } from '../../../errors'
-import { type AccessTokenData } from '../../../interfaces'
-import { role } from '../../../enums/roleEnum'
 import { userRepositories } from '../repositories/userRepositories'
 import { type UserToBeCreated } from '../userInterfaces'
 
-function checkIfIsCreatingMaster (userToBeCreated: UserToBeCreated): void {
-  if (userToBeCreated.roleId === role.MASTER) throw new ForbiddenError('Usuários de cliente não podem criar usuários master.')
-}
-
-function checkIfIsSameClientId (accessTokenData: AccessTokenData, userToBeCreated: UserToBeCreated): void {
-  if (accessTokenData.clientId !== userToBeCreated.clientId) {
-    throw new ForbiddenError('Operação não permitida. Usuários Admin de Cliente somente podem criar usuários para o mesmo Cliente.')
-  }
-}
-
-export async function createOne (accessTokenData: AccessTokenData, userToBeCreated: UserToBeCreated): Promise<string> {
-  if (accessTokenData.roleId === role.CLIENT_ADMIN) {
-    checkIfIsCreatingMaster(userToBeCreated)
-    checkIfIsSameClientId(accessTokenData, userToBeCreated)
-  }
-
+export async function createOne (userToBeCreated: UserToBeCreated): Promise<string> {
   const encryptedPassword = await bcrypt.hash(userToBeCreated.password, 10)
 
   userToBeCreated.password = encryptedPassword

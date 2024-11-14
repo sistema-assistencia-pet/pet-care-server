@@ -4,7 +4,7 @@ export type ClientToBeCreated = Omit<Client, 'id' | 'totalSavings' | 'createdAt'
 
 export type ClientToBeReturned = Omit<Client, 'updatedAt'>
 
-export type ClientDataForLogin = Pick<Client, 'id' | 'fantasyName'>
+export type ClientMinData = Pick<Client, 'id' | 'fantasyName'>
 
 export type ClientToBeUpdated = Omit<ClientToBeCreated, 'cnpj' | 'statusId'>
 export interface FindManyClientsQueryParams {

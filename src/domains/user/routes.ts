@@ -4,6 +4,7 @@ import { checkIfIsUser } from '../../middlewares/authorization.middleware'
 import { userControllers } from './controllers/userControllers'
 import { userMiddlewares } from './middlewares/userMiddlewares'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
+import { validateUuidParam } from '../../middlewares/validateUuidParam.middleware'
 
 const userRouter: Router = Router()
 
@@ -17,11 +18,28 @@ userRouter.post(
   userControllers.createOne
 )
 
-// Criar primeiro usuário
+// Criar usuário sem validações
 userRouter.post(
-  '/first',
+  '/unvalidated',
   userMiddlewares.createOnePayloadValidation,
-  userControllers.createFirst
+  userControllers.createOne
+)
+
+// Detalhes de um usuário
+userRouter.get(
+  '/:id',
+  verifyAccessToken,
+  validateUuidParam,
+  userControllers.findOneById
+)
+
+// Listar usuários
+userRouter.get(
+  '/',
+  verifyAccessToken,
+  checkIfIsUser,
+  userMiddlewares.findManyQueryParamsValidation,
+  userControllers.findMany
 )
 
 export { userRouter }
