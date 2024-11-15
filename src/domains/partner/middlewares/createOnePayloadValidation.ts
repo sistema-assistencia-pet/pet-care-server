@@ -28,7 +28,18 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
       })
       .min(3, {
         message: 'O campo Nome Fantasia ("fantasyName") deve ter pelo menos 3 caracteres.'
-      }),
+      })
+      .optional(),
+
+    cep: z
+      .string({
+        invalid_type_error: 'O campo CEP ("cep") deve ser uma string.',
+        required_error: 'O campo CEP ("cep") é obrigatório.'
+      })
+      .length(8, {
+        message: 'O campo CEP ("cep") deve ter 14 caracteres.'
+      })
+      .optional(),
 
     address: z
       .string({
@@ -37,25 +48,43 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
       })
       .min(3, {
         message: 'O campo Endereço ("address") deve ter pelo menos 3 caracteres.'
-      }),
-
-    state: z
-      .string({
-        invalid_type_error: 'O campo Estado ("state") deve ser uma string.',
-        required_error: 'O campo Estado ("state") é obrigatório.'
       })
-      .length(2, {
-        message: 'O campo Estado ("state") deve ter 2 caracteres.'
-      }),
+      .optional(),
 
-    city: z
+    number: z
       .string({
-        invalid_type_error: 'O campo Cidade ("city") deve ser uma string.',
-        required_error: 'O campo Cidade ("city") é obrigatório.'
+        invalid_type_error: 'O campo Número ("number") deve ser uma string.',
+        required_error: 'O campo Número ("number") é obrigatório.'
       })
-      .min(3, {
-        message: 'O campo Cidade ("city") deve ter pelo menos 3 caracteres.'
-      }),
+      .optional(),
+
+    complement: z
+      .string({
+        invalid_type_error: 'O campo Complemento ("complement") deve ser uma string.',
+        required_error: 'O campo Complemento ("complement") é obrigatório.'
+      })
+      .optional(),
+
+    neighborhood: z
+      .string({
+        invalid_type_error: 'O campo Bairro ("neighborhood") deve ser uma string.',
+        required_error: 'O campo Bairro ("neighborhood") é obrigatório.'
+      })
+      .optional(),
+
+    cityId: z
+      .number({
+        invalid_type_error: 'O campo Cidade ("cityId") deve ser um number.',
+        required_error: 'O campo Cidade ("cityId") é obrigatório.'
+      })
+      .optional(),
+
+    stateId: z
+      .number({
+        invalid_type_error: 'O campo Estado ("stateId") deve ser um number.',
+        required_error: 'O campo Estado ("stateId") é obrigatório.'
+      })
+      .optional(),
 
     categoryId: z
       .number({
@@ -74,7 +103,8 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
       .boolean({
         invalid_type_error: 'O campo Online ("isOnline") deve ser uma string.',
         required_error: 'O campo Online ("isOnline") é obrigatório.'
-      }),
+      })
+      .optional(),
 
     managerName: z
       .string({
@@ -83,7 +113,8 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
       })
       .min(3, {
         message: 'O campo Nome do Responsável ("managerName") deve ter pelo menos 3 caracteres.'
-      }),
+      })
+      .optional(),
 
     managerPhoneNumber: z
       .string({
@@ -95,16 +126,14 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
       })
       .max(11, {
         message: 'O campo Telefone do Responsável ("managerPhoneNumber") deve ter no máximo 11 caracteres.'
-      }),
+      })
+      .optional(),
 
     managerEmail: z
       .string({
         invalid_type_error: 'O campo E-mail do Responsável ("managerEmail") deve ser uma string.',
         required_error: 'O campo E-mail do Responsável ("managerEmail") é obrigatório.'
       })
-      // .email({
-      //   message: 'O campo E-mail do Responsável ("managerEmail") deve ser um e-mail válido.'
-      // })
       .optional(),
 
     businessPhoneNumber: z
@@ -129,103 +158,6 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
         invalid_type_error: 'O campo Horário de Funcionamento ("openingHours") deve ser uma string.',
         required_error: 'O campo Horário de Funcionamento ("openingHours") é obrigatório.'
       })
-      .optional(),
-
-    instagram: z
-      .string({
-        invalid_type_error: 'O campo Instagram ("instagram") deve ser uma string.',
-        required_error: 'O campo Instagram ("instagram") é obrigatório.'
-      })
-      .optional(),
-
-    webpage: z
-      .string({
-        invalid_type_error: 'O campo Site Oficial ("webpage") deve ser uma string.',
-        required_error: 'O campo Site Oficial ("webpage") é obrigatório.'
-      })
-      // .url({
-      //   message: 'O campo Site Oficial ("webpage") deve ser uma URL válida.'
-      // })
-      .optional(),
-
-    contractUrl: z
-      .string({
-        invalid_type_error: 'O campo URL do Contrato ("contractUrl") deve ser uma string.',
-        required_error: 'O campo URL do Contrato ("contractUrl") é obrigatório.'
-      })
-      // .url({
-      //   message: 'O campo URL do Contrato ("contractUrl") deve ser uma URL válida.'
-      // })
-      .optional(),
-
-    benefit1Title: z
-      .string({
-        invalid_type_error: 'O campo Título do Benefício 1 ("benefit1Title") deve ser uma string.',
-        required_error: 'O campo Título do Benefício 1 ("benefit1Title") é obrigatório.'
-      })
-      .optional(),
-
-    benefit1Description: z
-      .string({
-        invalid_type_error: 'O campo Descrição do Benefício 1 ("benefit1Description") deve ser uma string.',
-        required_error: 'O campo Descrição do Benefício 1 ("benefit1Description") é obrigatório.'
-      })
-      .optional(),
-
-    benefit1Rules: z
-      .string({
-        invalid_type_error: 'O campo Regras do Benefício 1 ("benefit1Rules") deve ser uma string.',
-        required_error: 'O campo Regras do Benefício 1 ("benefit1Rules") é obrigatório.'
-      })
-      .optional(),
-
-    benefit1Link: z
-      .string({
-        invalid_type_error: 'O campo Link do Benefício 1 ("benefit1Link") deve ser uma string.',
-        required_error: 'O campo Link do Benefício 1 ("benefit1Link") é obrigatório.'
-      })
-      .optional(),
-
-    benefit1Voucher: z
-      .string({
-        invalid_type_error: 'O campo Voucher do Benefício 1 ("benefit1Voucher") deve ser uma string.',
-        required_error: 'O campo Voucher do Benefício 1 ("benefit1Voucher") é obrigatório.'
-      })
-      .optional(),
-
-      benefit2Title: z
-      .string({
-        invalid_type_error: 'O campo Título do Benefício 2 ("benefit2Title") deve ser uma string.',
-        required_error: 'O campo Título do Benefício 2 ("benefit2Title") é obrigatório.'
-      })
-      .optional(),
-
-    benefit2Description: z
-      .string({
-        invalid_type_error: 'O campo Descrição do Benefício 2 ("benefit2Description") deve ser uma string.',
-        required_error: 'O campo Descrição do Benefício 2 ("benefit2Description") é obrigatório.'
-      })
-      .optional(),
-
-    benefit2Rules: z
-      .string({
-        invalid_type_error: 'O campo Regras do Benefício 2 ("benefit2Rules") deve ser uma string.',
-        required_error: 'O campo Regras do Benefício 2 ("benefit2Rules") é obrigatório.'
-      })
-      .optional(),
-
-    benefit2Link: z
-      .string({
-        invalid_type_error: 'O campo Link do Benefício 2 ("benefit2Link") deve ser uma string.',
-        required_error: 'O campo Link do Benefício 2 ("benefit2Link") é obrigatório.'
-      })
-      .optional(),
-
-    benefit2Voucher: z
-      .string({
-        invalid_type_error: 'O campo Voucher do Benefício 2 ("benefit2Voucher") deve ser uma string.',
-        required_error: 'O campo Voucher do Benefício 2 ("benefit2Voucher") é obrigatório.'
-      })
       .optional()
   })
 
@@ -234,9 +166,15 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
       cnpj: req.body.cnpj,
       corporateName: req.body.corporateName,
       fantasyName: req.body.fantasyName,
-      address: req.body.address,
-      state: req.body.state,
-      city: req.body.city,
+
+      cep: req.body.address.cep,
+      address: req.body.address.address,
+      number: req.body.address.number,
+      complement: req.body.address.complement,
+      neighborhood: req.body.address.neighborhood,
+      cityId: req.body.address.cityId,
+      stateId: req.body.address.stateId,
+
       categoryId: req.body.categoryId,
       tags: req.body.tags,
       isOnline: req.body.isOnline,
@@ -245,20 +183,7 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
       managerEmail: req.body.managerEmail,
       businessPhoneNumber: req.body.businessPhoneNumber,
       about: req.body.about,
-      openingHours: req.body.openingHours,
-      instagram: req.body.instagram,
-      webpage: req.body.webpage,
-      contractUrl: req.body.contractUrl,
-      benefit1Title: req.body.benefit1Title,
-      benefit1Description: req.body.benefit1Description,
-      benefit1Rules: req.body.benefit1Rules,
-      benefit1Link: req.body.benefit1Link,
-      benefit1Voucher: req.body.benefit1Voucher,
-      benefit2Title: req.body.benefit2Title,
-      benefit2Description: req.body.benefit2Description,
-      benefit2Rules: req.body.benefit2Rules,
-      benefit2Link: req.body.benefit2Link,
-      benefit2Voucher: req.body.benefit2Voucher
+      openingHours: req.body.openingHours
     })
   } catch (error) {
     if (error instanceof z.ZodError) {

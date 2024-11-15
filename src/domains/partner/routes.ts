@@ -1,12 +1,12 @@
+import multer from 'multer'
 import { Router } from 'express'
 
-import { checkIfIsUser } from '../../middlewares/authorization.middleware'
+import { checkIfIsMasterUser, checkIfIsUser } from '../../middlewares/authorization.middleware'
+import { multerOptionsForImage } from '../../multerOptions'
 import { partnerControllers } from './controllers/partnerControllers'
 import { partnerMiddlewares } from './middlewares/partnerMiddlewares'
 import { validateUuidParam } from '../../middlewares/validateUuidParam.middleware'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
-import multer from 'multer'
-import { multerOptionsForImage } from '../../multerOptions'
 
 const partnerRouter: Router = Router()
 
@@ -14,7 +14,7 @@ const partnerRouter: Router = Router()
 partnerRouter.post(
   '/',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterUser,
   partnerMiddlewares.createOnePayloadValidation,
   partnerControllers.createOne
 )
