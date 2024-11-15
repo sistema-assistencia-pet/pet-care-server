@@ -4,8 +4,6 @@ import prismaClient from '../../../database/connection'
 
 export async function findMany ({ skip, take, where }: FindManyPartnersParams): Promise<PartnerToBeReturned[]> {
   try {
-    logger.debug({ where }, 'where')
-
     const partners = await prismaClient.partner.findMany({
       where,
       skip,

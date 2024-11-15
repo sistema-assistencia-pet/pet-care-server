@@ -25,8 +25,6 @@ export async function findMany (queryParams: FindManyCitiesQueryParams): Promise
 
   if (where.OR?.length === 0) delete where.OR
 
-  logger.debug(where, 'where')
-
   const cities = await cityRepositories.findMany(where)
 
   if (cities.length === 0) throw new NotFoundError(CITIES_LIST_NOT_FOUND)

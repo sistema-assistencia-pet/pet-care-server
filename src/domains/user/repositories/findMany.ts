@@ -4,8 +4,6 @@ import prismaClient from '../../../database/connection'
 
 export async function findMany ({ skip, take, where }: FindManyUsersParams): Promise<UserToBeReturnedInFindMany[]> {
   try {
-    logger.debug({ where }, 'where')
-
     const users = await prismaClient.user.findMany({
       where,
       skip,

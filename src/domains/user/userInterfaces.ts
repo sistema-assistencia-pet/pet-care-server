@@ -6,6 +6,8 @@ import type { StatusMinData } from '../status/statusInterfaces'
 
 export type UserToBeCreated = Omit<User, 'id' | 'statusId' | 'createdAt' | 'updatedAt'>
 
+export type UserToBeUpdated = Omit<UserToBeCreated, 'cpf' | 'password'>
+
 export type UserCreated = Pick<User, 'id' | 'name'>
 
 export type UserWithClientData = User & { client: ClientMinData | null }

@@ -1,11 +1,13 @@
-import { createOneAuthorization } from './createOneAuthorization'
 import { createOnePayloadValidation } from './createOnePayloadValidation'
 import { findManyQueryParamsValidation } from './findManyQueryParamsValidation'
+import { manageUserAuthorization } from './manageUserAuthorization'
+import { updateOnePayloadValidation } from './updateOnePayloadValidation'
 
 const userMiddlewares = {
-  createOneAuthorization,
   createOnePayloadValidation,
-  findManyQueryParamsValidation
+  findManyQueryParamsValidation,
+  manageUserAuthorization,
+  updateOnePayloadValidation
 }
 
 export { userMiddlewares }

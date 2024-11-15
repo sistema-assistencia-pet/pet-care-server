@@ -2,6 +2,7 @@
 import { HttpStatusCode } from 'axios'
 import { type Request, type Response } from 'express'
 
+import type { AccessTokenData } from '../../../interfaces'
 import type { FindManyUsersQueryParams } from '../userInterfaces'
 import { userServices } from '../services/userServices'
 
@@ -15,7 +16,13 @@ export async function findMany (req: Request, res: Response): Promise<Response> 
     take: req.query.take ? parseInt(req.query.take as string) : undefined
   }
 
-  const { items: users, totalCount } = await userServices.findMany(queryParams)
+  const accessTokenData: AccessTokenData = {
+    id: req.headers['request-user-id'] as string,
+    clientId: req.headers['request-user-client-id'] as string,
+    roleId: JSON.parse(req.headers['request-user-role-id'] as string)
+  }
+
+  const { items: users, totalCount } = await userServices.findMany(accessTokenData, queryParams)
 
   res.setHeader('x-total-count', totalCount.toString())
 

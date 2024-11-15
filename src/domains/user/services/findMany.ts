@@ -1,11 +1,13 @@
 import { type Prisma } from '@prisma/client'
 
-import type { FindManyResponse } from '../../../interfaces'
+import type { AccessTokenData, FindManyResponse } from '../../../interfaces'
 import type { FindManyUsersQueryParams, UserToBeReturnedInFindMany } from '../userInterfaces'
 import { NotFoundError } from '../../../errors'
 import { userRepositories } from '../repositories/userRepositories'
+import { role } from '../../../enums/roleEnum'
 
 export async function findMany (
+  accessTokenData: AccessTokenData,
   { skip, take, ...queryParams }: FindManyUsersQueryParams
 ): Promise<FindManyResponse<UserToBeReturnedInFindMany>> {
   const USERS_NOT_FOUND = 'Nenhum usuário encontrado.'
@@ -25,6 +27,8 @@ export async function findMany (
       }
     }
   })
+
+  if (accessTokenData.roleId === role.CLIENT_ADMIN) where.OR?.push({ clientId: accessTokenData.clientId })
 
   if (where.OR?.length === 0) delete where.OR
 

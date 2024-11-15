@@ -13,8 +13,6 @@ export async function findMany (req: Request, res: Response): Promise<Response> 
     stateId: req.query['state-id'] ? parseInt(req.query['state-id'] as string) : undefined
   }
 
-  logger.debug(typeof queryParams)
-
   const { items: cities, totalCount } = await cityServices.findMany(queryParams)
 
   res.setHeader('x-total-count', totalCount.toString())

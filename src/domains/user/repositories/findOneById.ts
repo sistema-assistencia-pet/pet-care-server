@@ -1,13 +1,13 @@
 import prismaClient from '../../../database/connection'
 
 import { DatabaseError } from '../../../errors'
-import { status } from '../../../enums/statusEnum'
+import type { Prisma } from '@prisma/client'
 import type { UserToBeReturned } from '../userInterfaces'
 
-export async function findOneById (id: string): Promise<UserToBeReturned | null> {
+export async function findOneById (where: Partial<Prisma.UserWhereInput>): Promise<UserToBeReturned | null> {
   try {
-    const user = await prismaClient.user.findUnique({
-      where: { id, statusId: status.ACTIVE },
+    const [user] = await prismaClient.user.findMany({
+      where,
       select: {
         id: true,
         name: true,
@@ -36,7 +36,7 @@ export async function findOneById (id: string): Promise<UserToBeReturned | null>
       }
     })
 
-    return user
+    return user ?? null
   } catch (error) {
     throw new DatabaseError(error)
   }

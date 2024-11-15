@@ -13,7 +13,7 @@ userRouter.post(
   '/',
   verifyAccessToken,
   checkIfIsUser,
-  userMiddlewares.createOneAuthorization,
+  userMiddlewares.manageUserAuthorization,
   userMiddlewares.createOnePayloadValidation,
   userControllers.createOne
 )
@@ -40,6 +40,47 @@ userRouter.get(
   checkIfIsUser,
   userMiddlewares.findManyQueryParamsValidation,
   userControllers.findMany
+)
+
+// Ativar usuário
+userRouter.patch(
+  '/:id/activate',
+  verifyAccessToken,
+  checkIfIsUser,
+  userMiddlewares.manageUserAuthorization,
+  validateUuidParam,
+  userControllers.activateOne
+)
+
+// Inativar usuário
+userRouter.patch(
+  '/:id/inactivate',
+  verifyAccessToken,
+  checkIfIsUser,
+  userMiddlewares.manageUserAuthorization,
+  validateUuidParam,
+  userControllers.inactivateOne
+)
+
+// Excluir usuário
+userRouter.patch(
+  '/:id/delete',
+  verifyAccessToken,
+  checkIfIsUser,
+  userMiddlewares.manageUserAuthorization,
+  validateUuidParam,
+  userControllers.deleteOne
+)
+
+// Editar usuário
+userRouter.patch(
+  '/:id',
+  verifyAccessToken,
+  checkIfIsUser,
+  userMiddlewares.manageUserAuthorization,
+  validateUuidParam,
+  userMiddlewares.updateOnePayloadValidation,
+  userControllers.updateOne
 )
 
 export { userRouter }

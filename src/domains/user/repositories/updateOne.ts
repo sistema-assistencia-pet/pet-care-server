@@ -5,14 +5,17 @@ import type { User } from '@prisma/client'
 import { DatabaseError, NotFoundError } from '../../../errors'
 import { prismaErrors } from '../../../enums/prismaErrors'
 
-export async function updateOne (id: string, data: Partial<User>): Promise<void> {
+export async function updateOne (id: string, data: Partial<User>): Promise<string> {
   const USER_NOT_FOUND = 'Usuário não encontrado.'
 
   try {
-    await prismaClient.user.update({
+    const { id: userId } = await prismaClient.user.update({
       data,
-      where: { id }
+      where: { id },
+      select: { id: true }
     })
+
+    return userId
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&

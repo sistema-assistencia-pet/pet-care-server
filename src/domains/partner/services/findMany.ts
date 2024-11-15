@@ -15,9 +15,7 @@ export async function findMany (
   const where: Prisma.PartnerWhereInput = { OR: [] }
 
   Object.entries(queryParams).forEach(([key, value]) => {
-    logger.debug({ queryParams }, 'queryParams')
     if (value !== undefined && value !== null) {
-      logger.debug({ key, value }, 'key value')
       switch (key) {
         case 'searchInput':
           where.OR?.push({ cnpj: { contains: value as string } })
