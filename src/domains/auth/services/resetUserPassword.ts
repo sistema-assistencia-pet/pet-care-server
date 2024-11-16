@@ -2,13 +2,14 @@ import * as bcrypt from 'bcrypt'
 
 import { BadRequestError, UnauthorizedError } from '../../../errors'
 import { userRepositories } from '../../user/repositories/userRepositories'
+import { status } from '../../../enums/statusEnum'
 
 export async function resetUserPassword (cpf: string, resetPasswordCode: string, newPassword: string): Promise<void> {
   const INVALID_RESET_PASSWORD_CODE = 'Código de redefinição de senha inválido.'
   const USER_DID_NOT_REQUESTED_PASSWORD_RESET = 'Usuário ainda não requisitou o código de redefinição de senha.'
   const USER_NOT_FOUND = 'Usuário não encontrado.'
 
-  const user = await userRepositories.findOneByCpf(cpf)
+  const user = await userRepositories.findOne({ cpf }, { statusId: status.ACTIVE })
 
   if (user === null) throw new UnauthorizedError(USER_NOT_FOUND)
 

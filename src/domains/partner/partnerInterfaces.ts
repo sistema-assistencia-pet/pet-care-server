@@ -1,8 +1,12 @@
 import type { Prisma, Partner } from '@prisma/client'
 
-export type PartnerToBeCreated = Omit<Partner, 'id' | 'image' | 'logo' | 'statusId' | 'createdAt' | 'updatedAt'>
+import type { AddressToBeCreated, AddressToBeReturned } from '../address/addressInterfaces'
+import type { CategoryToBeReturned } from '../category/categoryInterfaces'
+import type { StatusToBeReturned } from '../status/statusInterfaces'
 
-export type PartnerToBeReturned = Pick<Partner, 'id' | 'cnpj' | 'fantasyName' | 'isOnline' | 'statusId' | 'createdAt'> & { category: { id: number, name: string } }
+export type PartnerToBeCreated = Omit<Partner, 'id' | 'addressId' | 'cityId' | 'stateId' | 'image' | 'logo' | 'statusId' | 'createdAt' | 'updatedAt'> & { address: AddressToBeCreated }
+
+export type PartnerToBeReturned = Omit<Partner, 'stateId' | 'cityId' | 'addressId' | 'categoryId' | 'statusId'> & { category: CategoryToBeReturned } & { address: AddressToBeReturned | null } & { status: StatusToBeReturned }
 
 export type PartnerDetailsToBeReturned = Partner & { category: { id: number, name: string } }
 

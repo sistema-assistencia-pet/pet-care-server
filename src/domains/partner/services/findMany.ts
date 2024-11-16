@@ -1,4 +1,4 @@
-import partnerRepositories from '../repositories'
+import { partnerRepositories } from '../repositories/partnerRepositories'
 import type {
   PartnerToBeReturned,
   FindManyPartnersQueryParams

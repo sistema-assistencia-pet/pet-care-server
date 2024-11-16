@@ -41,13 +41,13 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
       })
       .optional(),
 
-    address: z
+    street: z
       .string({
-        invalid_type_error: 'O campo Endereço ("address") deve ser uma string.',
-        required_error: 'O campo Endereço ("address") é obrigatório.'
+        invalid_type_error: 'O campo Rua ("street") deve ser uma string.',
+        required_error: 'O campo Rua ("street") é obrigatório.'
       })
       .min(3, {
-        message: 'O campo Endereço ("address") deve ter pelo menos 3 caracteres.'
+        message: 'O campo Rua ("street") deve ter pelo menos 3 caracteres.'
       })
       .optional(),
 
@@ -168,7 +168,7 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
       fantasyName: req.body.fantasyName,
 
       cep: req.body.address.cep,
-      address: req.body.address.address,
+      street: req.body.address.street,
       number: req.body.address.number,
       complement: req.body.address.complement,
       neighborhood: req.body.address.neighborhood,

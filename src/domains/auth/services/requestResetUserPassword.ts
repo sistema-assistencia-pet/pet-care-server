@@ -5,6 +5,7 @@ import { userRepositories } from '../../user/repositories/userRepositories'
 import { sendEmail } from '../../../utils/mailer'
 import { systemName } from '../../../apiConfig'
 import { UnauthorizedError } from '../../../errors'
+import { status } from '../../../enums/statusEnum'
 
 export async function generateResetPasswordCode (userId: string): Promise<string> {
   const resetPasswordCode = randomBytes(3).toString('hex')
@@ -29,7 +30,7 @@ export async function requestResetUserPassword (cpf: string): Promise<void> {
   const USER_NOT_FOUND = 'Usuário não encontrado.'
   const USER_EMAIL_NOT_FOUND = 'Usuário não possui email cadastrado.'
 
-  const user = await userRepositories.findOneByCpf(cpf)
+  const user = await userRepositories.findOne({ cpf }, { statusId: status.ACTIVE })
 
   if (user === null) throw new UnauthorizedError(USER_NOT_FOUND)
   if (user.email === null) throw new UnauthorizedError(USER_EMAIL_NOT_FOUND)

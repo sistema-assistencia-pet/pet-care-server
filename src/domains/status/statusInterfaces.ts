@@ -1,3 +1,3 @@
 import type { Status } from '@prisma/client'
 
-export type StatusMinData = Pick<Status, 'id' | 'translation'>
+export type StatusToBeReturned = Pick<Status, 'id' | 'translation'>

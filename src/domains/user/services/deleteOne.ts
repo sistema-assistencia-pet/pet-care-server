@@ -3,7 +3,7 @@ import { NotFoundError } from '../../../errors'
 import { userRepositories } from '../repositories/userRepositories'
 
 export async function deleteOne (userToBeDeletedId: string): Promise<string> {
-  const user = await userRepositories.findOneById({ id: userToBeDeletedId })
+  const user = await userRepositories.findOne({ id: userToBeDeletedId })
 
   if (user === null) throw new NotFoundError('Usuário não encontrado.')
 

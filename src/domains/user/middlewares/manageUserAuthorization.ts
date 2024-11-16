@@ -22,7 +22,7 @@ export async function manageUserAuthorization (req: Request, _res: Response, nex
 
   if (requestUserRoleId === role.CLIENT_ADMIN) {
     if (userToBeManagedClientId === undefined || userToBeManagedRoleId === undefined) {
-      const user = await userRepositories.findOneById({ id: req.params.id })
+      const user = await userRepositories.findOne({ id: req.params.id })
 
       if (user === null) throw new NotFoundError('Usuário não encontrado.')
       if (user.client === null) throw new ForbiddenError('Usuários de cliente não podem gerenciar usuários master.') // client somente é null para usuários master

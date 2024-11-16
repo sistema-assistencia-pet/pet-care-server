@@ -1,13 +1,15 @@
-import partnerRepositories from '../repositories'
-import type { PartnerToBeReturned } from '../partnerInterfaces'
-import { NotFoundError } from '../../../errors'
-import { getEnvironmentVariable } from '../../../utils/getEnvironmentVariable'
+import type { Partner } from '@prisma/client'
 
-export async function findOneById (id: string): Promise<PartnerToBeReturned> {
+import { getEnvironmentVariable } from '../../../utils/getEnvironmentVariable'
+import { NotFoundError } from '../../../errors'
+import { partnerRepositories } from '../repositories/partnerRepositories'
+import type { PartnerToBeReturned } from '../partnerInterfaces'
+
+export async function findOneById (id: Partner['id']): Promise<PartnerToBeReturned> {
   const PARTNER_NOT_FOUND = 'Estabelecimento não encontrado.'
   const API_BASE_URL = getEnvironmentVariable('API_BASE_URL')
 
-  const partner = await partnerRepositories.findOneById(id)
+  const partner = await partnerRepositories.findOne({ id })
 
   if (partner === null) throw new NotFoundError(PARTNER_NOT_FOUND)
 
@@ -19,7 +21,5 @@ export async function findOneById (id: string): Promise<PartnerToBeReturned> {
     ? `${API_BASE_URL}/api/files/${partner.logo}`
     : partner.logo
 
-  const { updatedAt, ...partnerToBeReturned } = partner
-
-  return partnerToBeReturned
+  return partner
 }

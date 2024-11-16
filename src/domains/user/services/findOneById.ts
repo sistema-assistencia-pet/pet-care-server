@@ -4,21 +4,19 @@ import type { Prisma } from '@prisma/client'
 import { userRepositories } from '../repositories/userRepositories'
 import type { UserToBeReturned } from '../userInterfaces'
 import { role } from '../../../enums/roleEnum'
-import { status } from '../../../enums/statusEnum'
 
-export async function findOneById (accessTokenData: AccessTokenData, id: string): Promise<UserToBeReturned> {
+export async function findOneById (accessTokenData: AccessTokenData, id: string): Promise<Omit<UserToBeReturned, 'password'>> {
   const USER_NOT_FOUND = 'Usuário não encontrado.'
 
-  const where: Prisma.UserWhereInput = { OR: [] }
+  const where: Prisma.UserWhereInput = {}
 
-  where.OR?.push({ id })
-  where.OR?.push({ statusId: status.ACTIVE })
+  if (accessTokenData.roleId === role.CLIENT_ADMIN) Object.assign(where, { clientId: accessTokenData.clientId })
 
-  if (accessTokenData.roleId === role.CLIENT_ADMIN) where.OR?.push({ clientId: accessTokenData.clientId })
-
-  const user = await userRepositories.findOneById(where)
+  const user = await userRepositories.findOne({ id }, where)
 
   if (user === null) throw new NotFoundError(USER_NOT_FOUND)
 
-  return user
+  const { password, ...userWithoutPassword } = user
+
+  return userWithoutPassword
 }

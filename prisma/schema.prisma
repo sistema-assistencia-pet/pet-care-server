@@ -101,7 +101,7 @@ model City {
 model Address {
   id           Int      @id @default(autoincrement())
   cep          String?
-  address      String?  @map("endereco")
+  street      String?  @map("rua")
   number       String?  @map("numero")
   complement   String?  @map("complemento")
   neighborhood String?  @map("bairro")

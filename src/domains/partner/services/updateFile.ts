@@ -1,4 +1,4 @@
-import partnerRepositories from '../repositories'
+import { partnerRepositories } from '../repositories/partnerRepositories'
 import type { FILE_FIELD_NAMES } from '../../../enums/fileFieldNames'
 
 export async function updateFile (

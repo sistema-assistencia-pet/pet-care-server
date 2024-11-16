@@ -4,8 +4,12 @@ import { DatabaseError } from '../../../errors'
 import type { Prisma } from '@prisma/client'
 import type { UserToBeReturned } from '../userInterfaces'
 
-export async function findOneById (where: Partial<Prisma.UserWhereInput>): Promise<UserToBeReturned | null> {
+export async function findOne (uniqueProps: Prisma.UserWhereUniqueInput, filter?: Prisma.UserWhereInput): Promise<UserToBeReturned | null> {
   try {
+    const where = { ...uniqueProps }
+
+    if (filter !== undefined) Object.assign(where, filter)
+
     const [user] = await prismaClient.user.findMany({
       where,
       select: {
@@ -13,6 +17,7 @@ export async function findOneById (where: Partial<Prisma.UserWhereInput>): Promi
         name: true,
         cpf: true,
         email: true,
+        password: true,
         createdAt: true,
         updatedAt: true,
         status: {
