@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { HttpStatusCode } from 'axios'
 import { type Request, type Response } from 'express'
 
@@ -13,9 +14,11 @@ export async function findMany (req: Request, res: Response): Promise<Response> 
 
   const queryParams: FindManyPartnersQueryParams = {
     categoryId: req.query['category-id'] ? parseInt(req.query['category-id'] as string) : undefined,
+    cityId: req.query['city-id'] ? parseInt(req.query['city-id'] as string) : undefined,
     isOnline,
     searchInput: req.query['search-input'] as string | undefined,
     skip: req.query.skip ? parseInt(req.query.skip as string) : undefined,
+    stateId: req.query['state-id'] ? parseInt(req.query['state-id'] as string) : undefined,
     statusId: req.query['status-id'] ? parseInt(req.query['status-id'] as string) : undefined,
     take: req.query.take ? parseInt(req.query.take as string) : undefined
   }

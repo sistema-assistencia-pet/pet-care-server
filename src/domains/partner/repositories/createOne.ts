@@ -8,7 +8,7 @@ import { prismaErrors } from '../../../enums/prismaErrors'
 
 export async function createOne (
   { address, ...partnerToBeCreated }: PartnerToBeCreated,
-  addressId: Address['id']
+  addressId: Address['id'] | null
 ): Promise<Pick<Partner, 'id'>> {
   const PARTNER_ALREADY_EXISTS = 'Estabelecimento já cadastrado.'
 
@@ -16,13 +16,11 @@ export async function createOne (
     const partner = await prismaClient.partner.create({
       data: {
         addressId,
-        cityId: address.cityId,
-        stateId: address.stateId,
+        cityId: address === null ? null : address.cityId,
+        stateId: address === null ? null : address.stateId,
         ...partnerToBeCreated
       },
-      select: {
-        id: true
-      }
+      select: { id: true }
     })
 
     return partner

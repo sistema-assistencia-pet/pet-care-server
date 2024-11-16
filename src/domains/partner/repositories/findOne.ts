@@ -4,25 +4,25 @@ import { DatabaseError } from '../../../errors'
 import type { PartnerToBeReturned } from '../partnerInterfaces'
 import prismaClient from '../../../database/connection'
 
-export async function findOne (uniqueProps: Prisma.PartnerWhereUniqueInput, filter?: Prisma.PartnerWhereInput): Promise<PartnerToBeReturned | null> {
+export async function findOne (uniqueProps: Prisma.PartnerWhereUniqueInput, fullInfo: boolean, optionalFilter?: Prisma.PartnerWhereInput): Promise<PartnerToBeReturned | null> {
   try {
     const where = { ...uniqueProps }
 
-    if (filter !== undefined) Object.assign(where, filter)
+    if (optionalFilter !== undefined) Object.assign(where, optionalFilter)
 
     const partner = await prismaClient.partner.findUnique({
       where,
       select: {
         id: true,
         cnpj: true,
-        corporateName: true,
+        corporateName: fullInfo,
         fantasyName: true,
         tags: true,
         isOnline: true,
-        managerName: true,
-        managerPhoneNumber: true,
-        managerEmail: true,
-        businessPhoneNumber: true,
+        managerName: fullInfo,
+        managerPhoneNumber: fullInfo,
+        managerEmail: fullInfo,
+        businessPhoneNumber: fullInfo,
         about: true,
         openingHours: true,
         image: true,
@@ -56,8 +56,8 @@ export async function findOne (uniqueProps: Prisma.PartnerWhereUniqueInput, filt
             name: true
           }
         },
-        createdAt: true,
-        updatedAt: true
+        createdAt: fullInfo,
+        updatedAt: fullInfo
       }
     })
 

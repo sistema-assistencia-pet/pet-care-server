@@ -1,8 +1,8 @@
 import { DatabaseError } from '../../../errors'
-import type { FindManyPartnersParams, PartnerToBeReturned } from '../partnerInterfaces'
+import type { FindManyPartnersParams, PartnerToBeReturnedInFindMany } from '../partnerInterfaces'
 import prismaClient from '../../../database/connection'
 
-export async function findMany ({ skip, take, where }: FindManyPartnersParams): Promise<PartnerToBeReturned[]> {
+export async function findMany ({ skip, take, where }: FindManyPartnersParams): Promise<PartnerToBeReturnedInFindMany[]> {
   try {
     const partners = await prismaClient.partner.findMany({
       where,
@@ -15,8 +15,13 @@ export async function findMany ({ skip, take, where }: FindManyPartnersParams): 
         category: {
           select: { id: true, name: true }
         },
+        city: {
+          select: { id: true, name: true }
+        },
+        state: {
+          select: { id: true, name: true }
+        },
         isOnline: true,
-        statusId: true,
         createdAt: true
       },
       orderBy: { createdAt: 'desc' }

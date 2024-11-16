@@ -1,17 +1,14 @@
 import type { Partner } from '@prisma/client'
 
+import type { AccessTokenData } from '../../../interfaces'
 import { getEnvironmentVariable } from '../../../utils/getEnvironmentVariable'
 import { NotFoundError } from '../../../errors'
 import { partnerRepositories } from '../repositories/partnerRepositories'
 import type { PartnerToBeReturned } from '../partnerInterfaces'
+import { role } from '../../../enums/roleEnum'
 
-export async function findOneById (id: Partner['id']): Promise<PartnerToBeReturned> {
-  const PARTNER_NOT_FOUND = 'Estabelecimento não encontrado.'
+function formatPartnerImages (partner: PartnerToBeReturned): PartnerToBeReturned {
   const API_BASE_URL = getEnvironmentVariable('API_BASE_URL')
-
-  const partner = await partnerRepositories.findOne({ id })
-
-  if (partner === null) throw new NotFoundError(PARTNER_NOT_FOUND)
 
   partner.image = partner.image !== null
     ? `${API_BASE_URL}/api/files/${partner.image}`
@@ -22,4 +19,18 @@ export async function findOneById (id: Partner['id']): Promise<PartnerToBeReturn
     : partner.logo
 
   return partner
+}
+
+export async function findOneById (accessTokenData: AccessTokenData, id: Partner['id']): Promise<PartnerToBeReturned> {
+  const PARTNER_NOT_FOUND = 'Estabelecimento não encontrado.'
+
+  const shouldReturnFullData = accessTokenData.roleId === role.MASTER
+
+  const partner = await partnerRepositories.findOne({ id }, shouldReturnFullData)
+
+  if (partner === null) throw new NotFoundError(PARTNER_NOT_FOUND)
+
+  const partnerToBeReturned = formatPartnerImages(partner)
+
+  return partnerToBeReturned
 }

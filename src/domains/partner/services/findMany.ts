@@ -1,15 +1,16 @@
+import { type Prisma } from '@prisma/client'
+
+import type { FindManyResponse } from '../../../interfaces'
+import { NotFoundError } from '../../../errors'
 import { partnerRepositories } from '../repositories/partnerRepositories'
 import type {
-  PartnerToBeReturned,
-  FindManyPartnersQueryParams
+  FindManyPartnersQueryParams,
+  PartnerToBeReturnedInFindMany
 } from '../partnerInterfaces'
-import { NotFoundError } from '../../../errors'
-import type { FindManyResponse } from '../../../interfaces'
-import { type Prisma } from '@prisma/client'
 
 export async function findMany (
   { skip, take, ...queryParams }: FindManyPartnersQueryParams
-): Promise<FindManyResponse<PartnerToBeReturned>> {
+): Promise<FindManyResponse<PartnerToBeReturnedInFindMany>> {
   const PARTNERS_NOT_FOUND = 'Nenhum estabelecimento encontrado.'
 
   const where: Prisma.PartnerWhereInput = { OR: [] }
@@ -21,6 +22,9 @@ export async function findMany (
           where.OR?.push({ cnpj: { contains: value as string } })
           where.OR?.push({ fantasyName: { contains: value as string } })
           where.OR?.push({ tags: { contains: value as string } })
+          where.OR?.push({ city: { name: { contains: value as string } } })
+          where.OR?.push({ state: { name: { contains: value as string } } })
+          where.OR?.push({ category: { name: { contains: value as string } } })
           break
         default:
           Object.assign(where, { [key]: value })

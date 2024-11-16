@@ -50,8 +50,22 @@ export function findManyQueryParamsValidation (req: Request, _res: Response, nex
 
     categoryId: z
       .number({
-        invalid_type_error: 'O campo Categoria ("categoryId") deve ser um number.',
-        required_error: 'O campo Categoria ("categoryId") é obrigatório.'
+        invalid_type_error: 'O campo Id da Categoria ("categoryId") deve ser um number.',
+        required_error: 'O campo Id da Categoria ("categoryId") é obrigatório.'
+      })
+      .optional(),
+
+    cityId: z
+      .number({
+        invalid_type_error: 'O campo Id da Cidade ("cityId") deve ser um number.',
+        required_error: 'O campo Id da Cidade ("cityId") é obrigatório.'
+      })
+      .optional(),
+
+    stateId: z
+      .number({
+        invalid_type_error: 'O campo Id do Estado ("stateId") deve ser um number.',
+        required_error: 'O campo Id do Estado ("stateId") é obrigatório.'
       })
       .optional(),
 
@@ -70,9 +84,11 @@ export function findManyQueryParamsValidation (req: Request, _res: Response, nex
   try {
     findManyQueryParamsSchema.parse({
       categoryId: typeof req.query['category-id'] === 'string' ? parseInt(req.query['category-id']) : undefined,
+      cityId: typeof req.query['city-id'] === 'string' ? parseInt(req.query['city-id']) : undefined,
       isOnline,
       searchInput: req.query['search-input'],
       skip: typeof req.query.skip === 'string' ? parseInt(req.query.skip) : undefined,
+      stateId: typeof req.query['state-id'] === 'string' ? parseInt(req.query['state-id']) : undefined,
       statusId: typeof req.query['status-id'] === 'string' ? parseInt(req.query['status-id']) : undefined,
       take: typeof req.query.take === 'string' ? parseInt(req.query.take) : undefined
     })

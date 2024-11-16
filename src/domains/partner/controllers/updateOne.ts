@@ -9,12 +9,20 @@ export async function updateOne (req: Request, res: Response): Promise<Response>
 
   const partnerId = req.params.id
 
-  const partnerToBeUpdated: Partial<PartnerToBeUpdated> = {
+  const partnerToBeUpdated: PartnerToBeUpdated = {
+    cnpj: req.body.cnpj,
     corporateName: req.body.corporateName,
     fantasyName: req.body.fantasyName,
-    address: req.body.address,
-    state: req.body.state,
-    city: req.body.city,
+    address: {
+      id: req.body.address.id,
+      cep: req.body.address.cep,
+      street: req.body.address.street,
+      number: req.body.address.number,
+      complement: req.body.address.complement,
+      neighborhood: req.body.address.neighborhood,
+      cityId: req.body.address.cityId,
+      stateId: req.body.address.stateId
+    },
     categoryId: req.body.categoryId,
     tags: req.body.tags,
     isOnline: req.body.isOnline,
@@ -23,23 +31,10 @@ export async function updateOne (req: Request, res: Response): Promise<Response>
     managerEmail: req.body.managerEmail,
     businessPhoneNumber: req.body.businessPhoneNumber,
     about: req.body.about,
-    openingHours: req.body.openingHours,
-    instagram: req.body.instagram,
-    webpage: req.body.webpage,
-    contractUrl: req.body.contractUrl,
-    benefit1Title: req.body.benefit1Title,
-    benefit1Description: req.body.benefit1Description,
-    benefit1Rules: req.body.benefit1Rules,
-    benefit1Link: req.body.benefit1Link,
-    benefit1Voucher: req.body.benefit1Voucher,
-    benefit2Title: req.body.benefit2Title,
-    benefit2Description: req.body.benefit2Description,
-    benefit2Rules: req.body.benefit2Rules,
-    benefit2Link: req.body.benefit2Link,
-    benefit2Voucher: req.body.benefit2Voucher
+    openingHours: req.body.openingHours
   }
 
-  await partnerServices.updateOne(partnerId, partnerToBeUpdated)
+  const parterId = await partnerServices.updateOne(partnerId, partnerToBeUpdated)
 
-  return res.status(HttpStatusCode.Ok).json({ message: PARTNER_SUCCESSFULLY_UPDATED })
+  return res.status(HttpStatusCode.Ok).json({ message: PARTNER_SUCCESSFULLY_UPDATED, parterId })
 }

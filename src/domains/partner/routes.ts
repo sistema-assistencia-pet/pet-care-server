@@ -23,6 +23,7 @@ partnerRouter.post(
 partnerRouter.get(
   '/:id',
   verifyAccessToken,
+  checkIfIsUser,
   validateUuidParam,
   partnerControllers.findOneById
 )
@@ -31,6 +32,7 @@ partnerRouter.get(
 partnerRouter.get(
   '/',
   verifyAccessToken,
+  checkIfIsUser,
   partnerMiddlewares.findManyQueryParamsValidation,
   partnerControllers.findMany
 )

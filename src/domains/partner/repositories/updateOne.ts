@@ -5,14 +5,20 @@ import { DatabaseError, NotFoundError } from '../../../errors'
 import prismaClient from '../../../database/connection'
 import { prismaErrors } from '../../../enums/prismaErrors'
 
-export async function updateOne (id: string, data: Partial<Partner>): Promise<void> {
+export async function updateOne (
+  id: string,
+  data: Partial<Partner>
+): Promise<Partner['id']> {
   const PARTNER_NOT_FOUND = 'Estabelecimento não encontrado.'
 
   try {
-    await prismaClient.partner.update({
+    const partner = await prismaClient.partner.update({
       data,
-      where: { id }
+      where: { id },
+      select: { id: true }
     })
+
+    return partner.id
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
