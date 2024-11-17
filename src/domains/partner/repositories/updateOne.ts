@@ -1,7 +1,7 @@
 import type { Partner } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
-import { DatabaseError, NotFoundError } from '../../../errors'
+import { BadRequestError, DatabaseError, NotFoundError } from '../../../errors'
 import prismaClient from '../../../database/connection'
 import { prismaErrors } from '../../../enums/prismaErrors'
 
@@ -9,6 +9,8 @@ export async function updateOne (
   id: string,
   data: Partial<Partner>
 ): Promise<Partner['id']> {
+  const INVALID_FOREIGN_KEY = 'Campo FIELD_NAME inválido.'
+  const PARTNER_ALREADY_EXISTS = 'Estabelecimento já cadastrado. Campo FIELD_NAME já existe.'
   const PARTNER_NOT_FOUND = 'Estabelecimento não encontrado.'
 
   try {
@@ -24,6 +26,16 @@ export async function updateOne (
       (error instanceof PrismaClientKnownRequestError) &&
       (error.code === prismaErrors.NOT_FOUND)
     ) throw new NotFoundError(PARTNER_NOT_FOUND)
+
+    if (
+      (error instanceof PrismaClientKnownRequestError) &&
+      (error.code === prismaErrors.FOREIGN_KEY_CONSTRAINT_FAIL)
+    ) throw new BadRequestError(INVALID_FOREIGN_KEY.replace('FIELD_NAME', error.meta?.field_name as string ?? ''))
+
+    if (
+      (error instanceof PrismaClientKnownRequestError) &&
+      (error.code === prismaErrors.ALREADY_EXITS)
+    ) throw new BadRequestError(PARTNER_ALREADY_EXISTS.replace('FIELD_NAME', error.meta?.target as string ?? ''))
 
     throw new DatabaseError(error)
   }

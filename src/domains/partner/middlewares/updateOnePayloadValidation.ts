@@ -32,68 +32,6 @@ export async function updateOnePayloadValidation (req: Request, _res: Response, 
       })
       .optional(),
 
-    addressId: z
-      .number({
-        invalid_type_error: 'O campo Id do Endereço ("addressId") deve ser um number.',
-        required_error: 'O campo Id do Endereço ("addressId") é obrigatório.'
-      })
-      .optional(),
-
-    cep: z
-      .string({
-        invalid_type_error: 'O campo CEP ("cep") deve ser uma string.',
-        required_error: 'O campo CEP ("cep") é obrigatório.'
-      })
-      .length(8, {
-        message: 'O campo CEP ("cep") deve ter 14 caracteres.'
-      })
-      .optional(),
-
-    street: z
-      .string({
-        invalid_type_error: 'O campo Rua ("street") deve ser uma string.',
-        required_error: 'O campo Rua ("street") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Rua ("street") deve ter pelo menos 3 caracteres.'
-      })
-      .optional(),
-
-    number: z
-      .string({
-        invalid_type_error: 'O campo Número ("number") deve ser uma string.',
-        required_error: 'O campo Número ("number") é obrigatório.'
-      })
-      .optional(),
-
-    complement: z
-      .string({
-        invalid_type_error: 'O campo Complemento ("complement") deve ser uma string.',
-        required_error: 'O campo Complemento ("complement") é obrigatório.'
-      })
-      .optional(),
-
-    neighborhood: z
-      .string({
-        invalid_type_error: 'O campo Bairro ("neighborhood") deve ser uma string.',
-        required_error: 'O campo Bairro ("neighborhood") é obrigatório.'
-      })
-      .optional(),
-
-    cityId: z
-      .number({
-        invalid_type_error: 'O campo Cidade ("cityId") deve ser um number.',
-        required_error: 'O campo Cidade ("cityId") é obrigatório.'
-      })
-      .optional(),
-
-    stateId: z
-      .number({
-        invalid_type_error: 'O campo Estado ("stateId") deve ser um number.',
-        required_error: 'O campo Estado ("stateId") é obrigatório.'
-      })
-      .optional(),
-
     categoryId: z
       .number({
         invalid_type_error: 'O campo Categoria ("categoryId") deve ser um number.',
@@ -174,16 +112,6 @@ export async function updateOnePayloadValidation (req: Request, _res: Response, 
       cnpj: req.body.cnpj,
       corporateName: req.body.corporateName,
       fantasyName: req.body.fantasyName,
-
-      addressId: req.body.address.id,
-      cep: req.body.address.cep,
-      street: req.body.address.street,
-      number: req.body.address.number,
-      complement: req.body.address.complement,
-      neighborhood: req.body.address.neighborhood,
-      cityId: req.body.address.cityId,
-      stateId: req.body.address.stateId,
-
       categoryId: req.body.categoryId,
       tags: req.body.tags,
       isOnline: req.body.isOnline,
@@ -202,14 +130,100 @@ export async function updateOnePayloadValidation (req: Request, _res: Response, 
     throw new GenericError(error)
   }
 
-  const cities = await cityRepositories.findMany({ id: req.body.address.cityId })
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+  if (req.body.address) {
+    const updateAddressPayloadSchema = z.object({
+      id: z
+        .number({
+          invalid_type_error: 'O campo Id ("id") deve ser um number.',
+          required_error: 'O campo Id ("id") é obrigatório.'
+        })
+        .optional(),
 
-  if (cities.length === 0) {
-    throw new BadRequestError('Cidade não encontrada.')
-  }
+      cep: z
+        .string({
+          invalid_type_error: 'O campo CEP ("cep") deve ser uma string.',
+          required_error: 'O campo CEP ("cep") é obrigatório.'
+        })
+        .length(8, {
+          message: 'O campo CEP ("cep") deve ter 14 caracteres.'
+        })
+        .optional(),
 
-  if (cities[0].stateId !== req.body.address.stateId) {
-    throw new BadRequestError('Cidade não pertence ao estado informado.')
+      street: z
+        .string({
+          invalid_type_error: 'O campo Rua ("street") deve ser uma string.',
+          required_error: 'O campo Rua ("street") é obrigatório.'
+        })
+        .min(3, {
+          message: 'O campo Rua ("street") deve ter pelo menos 3 caracteres.'
+        })
+        .optional(),
+
+      number: z
+        .string({
+          invalid_type_error: 'O campo Número ("number") deve ser uma string.',
+          required_error: 'O campo Número ("number") é obrigatório.'
+        })
+        .optional(),
+
+      complement: z
+        .string({
+          invalid_type_error: 'O campo Complemento ("complement") deve ser uma string.',
+          required_error: 'O campo Complemento ("complement") é obrigatório.'
+        })
+        .optional(),
+
+      neighborhood: z
+        .string({
+          invalid_type_error: 'O campo Bairro ("neighborhood") deve ser uma string.',
+          required_error: 'O campo Bairro ("neighborhood") é obrigatório.'
+        })
+        .optional(),
+
+      cityId: z
+        .number({
+          invalid_type_error: 'O campo Cidade ("cityId") deve ser um number.',
+          required_error: 'O campo Cidade ("cityId") é obrigatório.'
+        })
+        .optional(),
+
+      stateId: z
+        .number({
+          invalid_type_error: 'O campo Estado ("stateId") deve ser um number.',
+          required_error: 'O campo Estado ("stateId") é obrigatório.'
+        })
+        .optional()
+    })
+
+    try {
+      updateAddressPayloadSchema.parse({
+        id: req.body.address.id,
+        cep: req.body.address.cep,
+        street: req.body.address.street,
+        number: req.body.address.number,
+        complement: req.body.address.complement,
+        neighborhood: req.body.address.neighborhood,
+        cityId: req.body.address.cityId,
+        stateId: req.body.address.stateId
+      })
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        throw new BadRequestError(error.issues.reduce((acc, issue) => `${acc} ${issue.message}`, ''))
+      }
+
+      throw new GenericError(error)
+    }
+
+    const cities = await cityRepositories.findMany({ id: req.body.address.cityId })
+
+    if (cities.length === 0) {
+      throw new BadRequestError('Cidade não encontrada.')
+    }
+
+    if (cities[0].stateId !== req.body.address.stateId) {
+      throw new BadRequestError('Cidade não pertence ao estado informado.')
+    }
   }
 
   next()

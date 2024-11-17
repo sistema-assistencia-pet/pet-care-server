@@ -11,8 +11,7 @@ export type PartnerToBeReturned = Omit<Partner, 'stateId' | 'cityId' | 'addressI
 
 export type PartnerToBeReturnedInFindMany = Pick<PartnerToBeReturned, 'id' | 'cnpj' | 'fantasyName' | 'category' | 'isOnline' | 'createdAt'> & { city: Omit<CityToBeReturned, 'stateId'> | null } & { state: State | null }
 
-export type PartnerToBeUpdated = Omit<PartnerToBeCreated, 'address'> & { address: AddressToBeCreated & { id: Partner['id'] } | null }
-
+export type PartnerToBeUpdated = Partial<PartnerToBeCreated>
 export interface FindManyPartnersQueryParams {
   categoryId?: number | typeof NaN
   cityId?: number | typeof NaN

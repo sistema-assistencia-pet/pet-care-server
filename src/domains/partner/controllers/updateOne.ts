@@ -13,16 +13,18 @@ export async function updateOne (req: Request, res: Response): Promise<Response>
     cnpj: req.body.cnpj,
     corporateName: req.body.corporateName,
     fantasyName: req.body.fantasyName,
-    address: {
-      id: req.body.address.id,
-      cep: req.body.address.cep,
-      street: req.body.address.street,
-      number: req.body.address.number,
-      complement: req.body.address.complement,
-      neighborhood: req.body.address.neighborhood,
-      cityId: req.body.address.cityId,
-      stateId: req.body.address.stateId
-    },
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    address: req.body.address
+      ? {
+          cep: req.body.address.cep,
+          street: req.body.address.street,
+          number: req.body.address.number,
+          complement: req.body.address.complement,
+          neighborhood: req.body.address.neighborhood,
+          cityId: req.body.address.cityId,
+          stateId: req.body.address.stateId
+        }
+      : null,
     categoryId: req.body.categoryId,
     tags: req.body.tags,
     isOnline: req.body.isOnline,
