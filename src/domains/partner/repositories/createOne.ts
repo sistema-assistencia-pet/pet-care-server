@@ -4,7 +4,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { BadRequestError, DatabaseError } from '../../../errors'
 import type { PartnerToBeCreated } from '../partnerInterfaces'
 import prismaClient from '../../../database/connection'
-import { prismaErrors } from '../../../enums/prismaErrors'
+import { prismaError } from '../../../enums/prismaError'
 
 export async function createOne (
   { address, ...partnerToBeCreated }: PartnerToBeCreated,
@@ -27,7 +27,7 @@ export async function createOne (
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.ALREADY_EXITS)
+      (error.code === prismaError.ALREADY_EXITS)
     ) throw new BadRequestError(PARTNER_ALREADY_EXISTS)
 
     throw new DatabaseError(error)

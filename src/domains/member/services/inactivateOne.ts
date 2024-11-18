@@ -1,4 +1,4 @@
-import { status } from '../../../enums/statusEnum'
+import { status } from '../../../enums/status'
 import { memberRepositories } from '../repositories/memberRepositories'
 
 export async function inactivateOne (id: string): Promise<void> {

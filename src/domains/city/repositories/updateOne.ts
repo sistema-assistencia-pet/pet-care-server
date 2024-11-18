@@ -4,7 +4,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { BadRequestError, DatabaseError } from '../../../errors'
 import type { CityToBeUpdated } from '../cityInterfaces'
 import prismaClient from '../../../database/connection'
-import { prismaErrors } from '../../../enums/prismaErrors'
+import { prismaError } from '../../../enums/prismaError'
 
 export async function updateOne (cityToBeUpdated: CityToBeUpdated): Promise<Pick<City, 'id'>> {
   const CITY_ALREADY_EXISTS = 'Cidade já cadastrada.'
@@ -25,12 +25,12 @@ export async function updateOne (cityToBeUpdated: CityToBeUpdated): Promise<Pick
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.ALREADY_EXITS)
+      (error.code === prismaError.ALREADY_EXITS)
     ) throw new BadRequestError(CITY_ALREADY_EXISTS)
 
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.NOT_FOUND)
+      (error.code === prismaError.NOT_FOUND)
     ) throw new BadRequestError(CITY_NOT_FOUND)
 
     throw new DatabaseError(error)

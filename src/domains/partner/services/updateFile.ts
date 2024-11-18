@@ -1,8 +1,8 @@
 import { partnerRepositories } from '../repositories/partnerRepositories'
-import type { FILE_FIELD_NAMES } from '../../../enums/fileFieldNames'
+import type { fileFieldName } from '../../../enums/fileFieldName'
 
 export async function updateFile (
-  { id, fileName, fieldName }: { id: string, fileName: string, fieldName: FILE_FIELD_NAMES }
+  { id, fileName, fieldName }: { id: string, fileName: string, fieldName: fileFieldName }
 ): Promise<void> {
   await partnerRepositories.updateOne(id, { [fieldName]: fileName })
 }

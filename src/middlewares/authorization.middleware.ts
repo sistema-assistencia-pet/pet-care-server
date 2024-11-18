@@ -1,7 +1,7 @@
 import { type NextFunction, type Request, type Response } from 'express'
 
 import { ForbiddenError } from '../errors'
-import { role } from '../enums/roleEnum'
+import { role } from '../enums/role'
 
 // Verifica se é usuário MASTER
 export async function checkIfIsMasterUser (req: Request, _res: Response, next: NextFunction): Promise<void> {

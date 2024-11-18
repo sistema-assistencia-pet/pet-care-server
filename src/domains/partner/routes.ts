@@ -41,7 +41,7 @@ partnerRouter.get(
 partnerRouter.patch(
   '/:id/activate',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterUser,
   validateUuidParam,
   partnerControllers.activateOne
 )
@@ -50,7 +50,7 @@ partnerRouter.patch(
 partnerRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterUser,
   validateUuidParam,
   partnerControllers.inactivateOne
 )
@@ -59,7 +59,7 @@ partnerRouter.patch(
 partnerRouter.patch(
   '/:id/delete',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterUser,
   validateUuidParam,
   partnerControllers.deleteOne
 )
@@ -68,7 +68,7 @@ partnerRouter.patch(
 partnerRouter.patch(
   '/:id',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterUser,
   validateUuidParam,
   partnerMiddlewares.updateOnePayloadValidation,
   partnerControllers.updateOne
@@ -78,8 +78,9 @@ partnerRouter.patch(
 partnerRouter.patch(
   '/:id/image',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterUser,
   validateUuidParam,
+  partnerMiddlewares.partnerIdValidation,
   multer(multerOptionsForImage).single('image'),
   partnerMiddlewares.updateFilePayloadValidation,
   partnerControllers.updateFile
@@ -89,8 +90,9 @@ partnerRouter.patch(
 partnerRouter.patch(
   '/:id/logo',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterUser,
   validateUuidParam,
+  partnerMiddlewares.partnerIdValidation,
   multer(multerOptionsForImage).single('logo'),
   partnerMiddlewares.updateFilePayloadValidation,
   partnerControllers.updateFile

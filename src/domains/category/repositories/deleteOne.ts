@@ -3,7 +3,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { BadRequestError, DatabaseError } from '../../../errors'
 import prismaClient from '../../../database/connection'
-import { prismaErrors } from '../../../enums/prismaErrors'
+import { prismaError } from '../../../enums/prismaError'
 
 export async function deleteOne (id: number): Promise<Pick<Category, 'id'>> {
   const CATEGORY_NOT_FOUND = 'Categoria não encontrada.'
@@ -20,7 +20,7 @@ export async function deleteOne (id: number): Promise<Pick<Category, 'id'>> {
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.NOT_FOUND)
+      (error.code === prismaError.NOT_FOUND)
     ) throw new BadRequestError(CATEGORY_NOT_FOUND)
 
     throw new DatabaseError(error)

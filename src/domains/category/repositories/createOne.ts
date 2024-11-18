@@ -4,7 +4,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { BadRequestError, DatabaseError } from '../../../errors'
 import type { CategoryToBeCreated } from '../categoryInterfaces'
 import prismaClient from '../../../database/connection'
-import { prismaErrors } from '../../../enums/prismaErrors'
+import { prismaError } from '../../../enums/prismaError'
 
 export async function createOne (categoryToBeCreated: CategoryToBeCreated): Promise<Pick<Category, 'id'>> {
   const CATEGORY_ALREADY_EXISTS = 'Categoria já cadastrada.'
@@ -21,7 +21,7 @@ export async function createOne (categoryToBeCreated: CategoryToBeCreated): Prom
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.ALREADY_EXITS)
+      (error.code === prismaError.ALREADY_EXITS)
     ) throw new BadRequestError(CATEGORY_ALREADY_EXISTS)
 
     throw new DatabaseError(error)

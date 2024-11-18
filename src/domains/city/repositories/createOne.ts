@@ -4,7 +4,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { BadRequestError, DatabaseError } from '../../../errors'
 import type { CityToBeCreated } from '../cityInterfaces'
 import prismaClient from '../../../database/connection'
-import { prismaErrors } from '../../../enums/prismaErrors'
+import { prismaError } from '../../../enums/prismaError'
 
 export async function createOne (cityToBeCreated: CityToBeCreated): Promise<Pick<City, 'id'>> {
   const CITY_ALREADY_EXISTS = 'Cidade já cadastrada.'
@@ -22,12 +22,12 @@ export async function createOne (cityToBeCreated: CityToBeCreated): Promise<Pick
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.ALREADY_EXITS)
+      (error.code === prismaError.ALREADY_EXITS)
     ) throw new BadRequestError(CITY_ALREADY_EXISTS)
 
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.FOREIGN_KEY_CONSTRAINT_FAIL)
+      (error.code === prismaError.FOREIGN_KEY_CONSTRAINT_FAIL)
     ) throw new BadRequestError(INVALID_FOREIGN_KEY.replace('FIELD_NAME', error.meta?.field_name as string ?? ''))
 
     throw new DatabaseError(error)

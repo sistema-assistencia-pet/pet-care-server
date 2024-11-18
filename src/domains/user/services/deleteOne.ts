@@ -1,4 +1,4 @@
-import { status } from '../../../enums/statusEnum'
+import { status } from '../../../enums/status'
 import { NotFoundError } from '../../../errors'
 import { userRepositories } from '../repositories/userRepositories'
 

@@ -4,7 +4,7 @@ import type { AccessTokenData, FindManyResponse } from '../../../interfaces'
 import type { FindManyUsersQueryParams, UserToBeReturnedInFindMany } from '../userInterfaces'
 import { NotFoundError } from '../../../errors'
 import { userRepositories } from '../repositories/userRepositories'
-import { role } from '../../../enums/roleEnum'
+import { role } from '../../../enums/role'
 
 export async function findMany (
   accessTokenData: AccessTokenData,

@@ -3,7 +3,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { DatabaseError, NotFoundError } from '../../../errors'
 import prismaClient from '../../../database/connection'
-import { prismaErrors } from '../../../enums/prismaErrors'
+import { prismaError } from '../../../enums/prismaError'
 
 export async function updateOne (id: string, data: Partial<Client>): Promise<void> {
   const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
@@ -16,7 +16,7 @@ export async function updateOne (id: string, data: Partial<Client>): Promise<voi
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.NOT_FOUND)
+      (error.code === prismaError.NOT_FOUND)
     ) throw new NotFoundError(CLIENT_NOT_FOUND)
 
     throw new DatabaseError(error)

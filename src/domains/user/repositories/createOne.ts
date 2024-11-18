@@ -3,7 +3,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { type User } from '@prisma/client'
 
 import { BadRequestError, DatabaseError } from '../../../errors'
-import { prismaErrors } from '../../../enums/prismaErrors'
+import { prismaError } from '../../../enums/prismaError'
 import { type UserToBeCreated } from '../userInterfaces'
 
 export async function createOne (userToBeCreated: UserToBeCreated): Promise<Pick<User, 'id'>> {
@@ -19,7 +19,7 @@ export async function createOne (userToBeCreated: UserToBeCreated): Promise<Pick
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.ALREADY_EXITS)
+      (error.code === prismaError.ALREADY_EXITS)
     ) throw new BadRequestError('CPF ou e-mail já cadastrado.')
 
     throw new DatabaseError(error)

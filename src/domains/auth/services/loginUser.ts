@@ -2,10 +2,10 @@ import * as bcrypt from 'bcrypt'
 
 import { generateAccessToken } from '../../../utils/generateAccessToken'
 import type { IUserLoginResponse } from '../authInterfaces'
-import { role } from '../../../enums/roleEnum'
+import { role } from '../../../enums/role'
 import { UnauthorizedError } from '../../../errors'
 import { userRepositories } from '../../user/repositories/userRepositories'
-import { status } from '../../../enums/statusEnum'
+import { status } from '../../../enums/status'
 
 export async function loginUser (cpf: string, password: string): Promise<IUserLoginResponse> {
   const BAD_CREDENTIALS = 'Credenciais inválidas.'

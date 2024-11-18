@@ -1,7 +1,7 @@
 import type { Client } from '@prisma/client'
 import { DatabaseError } from '../../../errors'
 import prismaClient from '../../../database/connection'
-import { status } from '../../../enums/statusEnum'
+import { status } from '../../../enums/status'
 
 export async function findOneByCnpj (cnpj: string): Promise<Client | null> {
   try {

@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt'
 import { generateAccessToken } from '../../../utils/generateAccessToken'
 import type { IMemberLoginResponse } from '../authInterfaces'
 import { memberRepositories } from '../../member/repositories/memberRepositories'
-import { role } from '../../../enums/roleEnum'
+import { role } from '../../../enums/role'
 import { UnauthorizedError } from '../../../errors'
 
 export async function loginMember (cpf: string, password: string): Promise<IMemberLoginResponse> {

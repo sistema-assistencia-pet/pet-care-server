@@ -3,7 +3,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { type Address } from '@prisma/client'
 
 import { BadRequestError, DatabaseError } from '../../../errors'
-import { prismaErrors } from '../../../enums/prismaErrors'
+import { prismaError } from '../../../enums/prismaError'
 
 export async function deleteOne (addressId: Address['id']): Promise<Address['id']> {
   try {
@@ -18,7 +18,7 @@ export async function deleteOne (addressId: Address['id']): Promise<Address['id'
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.ALREADY_EXITS)
+      (error.code === prismaError.ALREADY_EXITS)
     ) throw new BadRequestError('Endereço já cadastrado.')
 
     throw new DatabaseError(error)

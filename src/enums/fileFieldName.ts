@@ -1,4 +1,4 @@
-export enum FILE_FIELD_NAMES {
+export enum fileFieldName {
   image = 'Imagem',
   logo = 'Logo'
 }

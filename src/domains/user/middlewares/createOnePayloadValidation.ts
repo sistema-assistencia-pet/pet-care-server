@@ -2,7 +2,7 @@ import { type NextFunction, type Request, type Response } from 'express'
 import { z } from 'zod'
 
 import { BadRequestError, GenericError } from '../../../errors'
-import { role } from '../../../enums/roleEnum'
+import { role } from '../../../enums/role'
 
 export function createOnePayloadValidation (req: Request, _res: Response, next: NextFunction): void {
   const createOnePayloadSchema = z.object({

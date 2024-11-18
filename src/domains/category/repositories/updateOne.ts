@@ -4,7 +4,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { BadRequestError, DatabaseError } from '../../../errors'
 import type { CategoryToBeUpdated } from '../categoryInterfaces'
 import prismaClient from '../../../database/connection'
-import { prismaErrors } from '../../../enums/prismaErrors'
+import { prismaError } from '../../../enums/prismaError'
 
 export async function updateOne (categoryToBeUpdated: CategoryToBeUpdated): Promise<Pick<Category, 'id'>> {
   const CATEGORY_ALREADY_EXISTS = 'Categoria já cadastrada.'
@@ -25,12 +25,12 @@ export async function updateOne (categoryToBeUpdated: CategoryToBeUpdated): Prom
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.ALREADY_EXITS)
+      (error.code === prismaError.ALREADY_EXITS)
     ) throw new BadRequestError(CATEGORY_ALREADY_EXISTS)
 
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.NOT_FOUND)
+      (error.code === prismaError.NOT_FOUND)
     ) throw new BadRequestError(CATEGORY_NOT_FOUND)
 
     throw new DatabaseError(error)

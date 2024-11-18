@@ -6,8 +6,8 @@ import clientRepositories from '../../client/repositories'
 import { convertBufferToStream } from '../../../utils/convertBufferToStream'
 import { memberRepositories } from '../repositories/memberRepositories'
 import { type MemberToBeCreated } from '../memberInterfaces'
-import { prismaErrors } from '../../../enums/prismaErrors'
-import { status } from '../../../enums/statusEnum'
+import { prismaError } from '../../../enums/prismaError'
+import { status } from '../../../enums/status'
 
 export async function createMany (clientId: string, fileBuffer: Buffer): Promise<void> {
   const INVALID_CLIENT = 'Cliente inválido.'
@@ -37,7 +37,7 @@ export async function createMany (clientId: string, fileBuffer: Buffer): Promise
       } catch (error) {
         if (
           (error instanceof PrismaClientKnownRequestError) &&
-          (error.code === prismaErrors.ALREADY_EXITS)
+          (error.code === prismaError.ALREADY_EXITS)
         ) {
           logger.error(`O associado de CPF ${row.cpf} não foi cadastrado: esse CPF já existe no banco de dados.`)
         }

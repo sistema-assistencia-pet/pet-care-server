@@ -3,7 +3,7 @@ import type { Member, Prisma } from '@prisma/client'
 
 import { DatabaseError, NotFoundError } from '../../../errors'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
-import { prismaErrors } from '../../../enums/prismaErrors'
+import { prismaError } from '../../../enums/prismaError'
 
 export async function updateMany (
   data: Partial<Member>,
@@ -19,7 +19,7 @@ export async function updateMany (
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.NOT_FOUND)
+      (error.code === prismaError.NOT_FOUND)
     ) throw new NotFoundError(`${MEMBER_NOT_FOUND}${('id' in data) ? ' (id: ' + data.id + ')' : ''}`)
 
     throw new DatabaseError(error)

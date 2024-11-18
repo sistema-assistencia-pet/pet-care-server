@@ -5,7 +5,7 @@ import { getEnvironmentVariable } from '../../../utils/getEnvironmentVariable'
 import { NotFoundError } from '../../../errors'
 import { partnerRepositories } from '../repositories/partnerRepositories'
 import type { PartnerToBeReturned } from '../partnerInterfaces'
-import { role } from '../../../enums/roleEnum'
+import { role } from '../../../enums/role'
 
 function formatPartnerImages (partner: PartnerToBeReturned): PartnerToBeReturned {
   const API_BASE_URL = getEnvironmentVariable('API_BASE_URL')

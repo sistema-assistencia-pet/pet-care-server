@@ -1,7 +1,7 @@
 import { type NextFunction, type Request, type Response } from 'express'
 
 import { ForbiddenError, NotFoundError } from '../../../errors'
-import { role } from '../../../enums/roleEnum'
+import { role } from '../../../enums/role'
 import { userRepositories } from '../repositories/userRepositories'
 
 function checkIfIsCreatingMaster (userToBeManagedRoleId: number): void {

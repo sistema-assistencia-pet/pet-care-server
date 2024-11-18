@@ -3,7 +3,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { BadRequestError, DatabaseError } from '../../../errors'
 import prismaClient from '../../../database/connection'
-import { prismaErrors } from '../../../enums/prismaErrors'
+import { prismaError } from '../../../enums/prismaError'
 
 export async function deleteOne (id: number): Promise<Pick<City, 'id'>> {
   const CITY_NOT_FOUND = 'Cidade não encontrada.'
@@ -20,7 +20,7 @@ export async function deleteOne (id: number): Promise<Pick<City, 'id'>> {
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.NOT_FOUND)
+      (error.code === prismaError.NOT_FOUND)
     ) throw new BadRequestError(CITY_NOT_FOUND)
 
     throw new DatabaseError(error)

@@ -3,7 +3,7 @@ import { NotFoundError } from '../../../errors'
 import type { Prisma } from '@prisma/client'
 import { userRepositories } from '../repositories/userRepositories'
 import type { UserToBeReturned } from '../userInterfaces'
-import { role } from '../../../enums/roleEnum'
+import { role } from '../../../enums/role'
 
 export async function findOneById (accessTokenData: AccessTokenData, id: string): Promise<Omit<UserToBeReturned, 'password'>> {
   const USER_NOT_FOUND = 'Usuário não encontrado.'

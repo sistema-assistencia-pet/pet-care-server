@@ -1,4 +1,4 @@
-export enum prismaErrors {
+export enum prismaError {
   ALREADY_EXITS = 'P2002',
   FOREIGN_KEY_CONSTRAINT_FAIL = 'P2003',
   NOT_FOUND = 'P2025'

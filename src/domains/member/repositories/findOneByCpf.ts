@@ -1,7 +1,7 @@
 import { DatabaseError } from '../../../errors'
 import type { MemberWithClientData } from '../memberInterfaces'
 import prismaClient from '../../../database/connection'
-import { status } from '../../../enums/statusEnum'
+import { status } from '../../../enums/status'
 
 export async function findOneByCpf (cpf: string): Promise<MemberWithClientData | null> {
   try {

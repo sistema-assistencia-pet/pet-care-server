@@ -5,7 +5,7 @@ import { userRepositories } from '../../user/repositories/userRepositories'
 import { sendEmail } from '../../../utils/mailer'
 import { systemName } from '../../../apiConfig'
 import { UnauthorizedError } from '../../../errors'
-import { status } from '../../../enums/statusEnum'
+import { status } from '../../../enums/status'
 
 export async function generateResetPasswordCode (userId: string): Promise<string> {
   const resetPasswordCode = randomBytes(3).toString('hex')

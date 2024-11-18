@@ -3,7 +3,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { BadRequestError, DatabaseError, NotFoundError } from '../../../errors'
 import prismaClient from '../../../database/connection'
-import { prismaErrors } from '../../../enums/prismaErrors'
+import { prismaError } from '../../../enums/prismaError'
 
 export async function updateOne (
   id: string,
@@ -24,17 +24,17 @@ export async function updateOne (
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.NOT_FOUND)
+      (error.code === prismaError.NOT_FOUND)
     ) throw new NotFoundError(PARTNER_NOT_FOUND)
 
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.FOREIGN_KEY_CONSTRAINT_FAIL)
+      (error.code === prismaError.FOREIGN_KEY_CONSTRAINT_FAIL)
     ) throw new BadRequestError(INVALID_FOREIGN_KEY.replace('FIELD_NAME', error.meta?.field_name as string ?? ''))
 
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.ALREADY_EXITS)
+      (error.code === prismaError.ALREADY_EXITS)
     ) throw new BadRequestError(PARTNER_ALREADY_EXISTS.replace('FIELD_NAME', error.meta?.target as string ?? ''))
 
     throw new DatabaseError(error)

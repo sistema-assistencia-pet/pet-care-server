@@ -2,7 +2,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import prismaClient from '../../../database/connection'
 
 import { DatabaseError, NotFoundError } from '../../../errors'
-import { prismaErrors } from '../../../enums/prismaErrors'
+import { prismaError } from '../../../enums/prismaError'
 
 export async function deleteOneResetPasswordCode (userId: string): Promise<void> {
   const USER_NOT_FOUND = 'Usuário não encontrado.'
@@ -14,7 +14,7 @@ export async function deleteOneResetPasswordCode (userId: string): Promise<void>
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.NOT_FOUND)
+      (error.code === prismaError.NOT_FOUND)
     ) throw new NotFoundError(USER_NOT_FOUND)
 
     throw new DatabaseError(error)

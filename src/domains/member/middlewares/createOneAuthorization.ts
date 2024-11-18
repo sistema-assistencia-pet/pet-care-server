@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express'
 
 import { ForbiddenError } from '../../../errors'
-import { role } from '../../../enums/roleEnum'
+import { role } from '../../../enums/role'
 
 export async function createOneAuthorization (req: Request, _res: Response, next: NextFunction): Promise<void> {
   if (

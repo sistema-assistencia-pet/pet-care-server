@@ -3,7 +3,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import type { User } from '@prisma/client'
 
 import { DatabaseError, NotFoundError } from '../../../errors'
-import { prismaErrors } from '../../../enums/prismaErrors'
+import { prismaError } from '../../../enums/prismaError'
 
 export async function updateOne (id: string, data: Partial<User>): Promise<string> {
   const USER_NOT_FOUND = 'Usuário não encontrado.'
@@ -19,7 +19,7 @@ export async function updateOne (id: string, data: Partial<User>): Promise<strin
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.NOT_FOUND)
+      (error.code === prismaError.NOT_FOUND)
     ) throw new NotFoundError(USER_NOT_FOUND)
 
     throw new DatabaseError(error)

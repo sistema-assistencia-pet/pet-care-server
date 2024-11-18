@@ -4,7 +4,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { BadRequestError, DatabaseError } from '../../../errors'
 import type { ClientToBeCreated } from '../clientInterfaces'
 import prismaClient from '../../../database/connection'
-import { prismaErrors } from '../../../enums/prismaErrors'
+import { prismaError } from '../../../enums/prismaError'
 
 export async function createOne (clientToBeCreated: ClientToBeCreated): Promise<Pick<Client, 'id'>> {
   const CLIENT_ALREADY_EXISTS = 'CNPJ já cadastrado.'
@@ -21,7 +21,7 @@ export async function createOne (clientToBeCreated: ClientToBeCreated): Promise<
   } catch (error) {
     if (
       (error instanceof PrismaClientKnownRequestError) &&
-      (error.code === prismaErrors.ALREADY_EXITS)
+      (error.code === prismaError.ALREADY_EXITS)
     ) throw new BadRequestError(CLIENT_ALREADY_EXISTS)
 
     throw new DatabaseError(error)

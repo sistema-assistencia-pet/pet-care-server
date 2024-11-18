@@ -2,7 +2,7 @@ import * as bcrypt from 'bcrypt'
 
 import { BadRequestError, UnauthorizedError } from '../../../errors'
 import { userRepositories } from '../../user/repositories/userRepositories'
-import { status } from '../../../enums/statusEnum'
+import { status } from '../../../enums/status'
 
 export async function resetUserPassword (cpf: string, resetPasswordCode: string, newPassword: string): Promise<void> {
   const INVALID_RESET_PASSWORD_CODE = 'Código de redefinição de senha inválido.'
