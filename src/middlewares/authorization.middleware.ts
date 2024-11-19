@@ -22,7 +22,20 @@ export async function checkIfIsMasterOrClient (req: Request, _res: Response, nex
   next()
 }
 
+// Verifica se é um usuário de sistema ou associado (MASTER ou CLIENT_ADMIN ou MEMBER)
+// Middleware criado para o endpoint um token de partner não deve poder acessar
+export async function checkIfIsMasterOrClientOrMember (req: Request, _res: Response, next: NextFunction): Promise<void> {
+  const isMaster = req.headers['request-user-role-id'] === JSON.stringify(role.MASTER)
+  const isClientAdmin = req.headers['request-user-role-id'] === JSON.stringify(role.CLIENT_ADMIN)
+  const isPartnerAdmin = req.headers['request-user-role-id'] === JSON.stringify(role.PARTNER_ADMIN)
+
+  if (!isMaster && !isClientAdmin && !isPartnerAdmin) throw new ForbiddenError()
+
+  next()
+}
+
 // Verifica se é um usuário de sistema ou estabelecimento (MASTER ou CLIENT_ADMIN ou PARTNER_ADMIN)
+// Middleware criado para o endpoint de validação de voucher
 export async function checkIfIsMasterOrClientOrPartner (req: Request, _res: Response, next: NextFunction): Promise<void> {
   const isMaster = req.headers['request-user-role-id'] === JSON.stringify(role.MASTER)
   const isClientAdmin = req.headers['request-user-role-id'] === JSON.stringify(role.CLIENT_ADMIN)

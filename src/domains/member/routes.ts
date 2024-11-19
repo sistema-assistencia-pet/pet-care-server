@@ -15,6 +15,7 @@ memberRouter.post(
   '/',
   verifyAccessToken,
   checkIfIsMasterOrClient,
+  memberMiddlewares.createOneAuthorization,
   memberMiddlewares.createOnePayloadValidation,
   memberControllers.createOne
 )
@@ -24,6 +25,7 @@ memberRouter.post(
   '/:clientId/create-members-in-bulk',
   verifyAccessToken,
   checkIfIsMasterOrClient,
+  memberMiddlewares.createOneAuthorization,
   memberMiddlewares.createManyPayloadValidation,
   multer(multerOptionsForCSV).single('file'), // salva o arquivo e o disponibiliza em req.file
   memberControllers.createMany

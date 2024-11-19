@@ -29,6 +29,7 @@ userRouter.post(
 userRouter.get(
   '/:id',
   verifyAccessToken,
+  checkIfIsMasterOrClient,
   validateUuidParam,
   userControllers.findOneById
 )

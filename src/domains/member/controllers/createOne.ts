@@ -2,7 +2,6 @@ import { HttpStatusCode } from 'axios'
 import { type Request, type Response } from 'express'
 
 import { type MemberToBeCreated } from '../memberInterfaces'
-import { type AccessTokenData } from '../../../interfaces'
 import { memberServices } from '../services/memberServices'
 
 export async function createOne (req: Request, res: Response): Promise<Response> {
@@ -10,7 +9,15 @@ export async function createOne (req: Request, res: Response): Promise<Response>
 
   const memberToBeCreated: MemberToBeCreated = {
     birthDate: req.body.birthDate,
-    addressId: req.body.addressId,
+    address: {
+      cep: req.body.address.cep,
+      street: req.body.address.street,
+      number: req.body.address.number,
+      complement: req.body.address.complement,
+      neighborhood: req.body.address.neighborhood,
+      cityId: req.body.address.cityId,
+      stateId: req.body.address.stateId
+    },
     clientId: req.body.clientId,
     cpf: req.body.cpf,
     email: req.body.email,
@@ -18,13 +25,7 @@ export async function createOne (req: Request, res: Response): Promise<Response>
     phoneNumber: req.body.phoneNumber
   }
 
-  const accessTokenData: AccessTokenData = {
-    id: req.headers['request-user-id'] as string,
-    clientId: req.headers['request-user-client-id'] as string,
-    roleId: JSON.parse(req.headers['request-user-role-id'] as string)
-  }
-
-  const memberId = await memberServices.createOne(accessTokenData, memberToBeCreated)
+  const memberId = await memberServices.createOne(memberToBeCreated)
 
   return res.status(HttpStatusCode.Created).json({ message: MEMBER_SUCCESSFULLY_CREATED, memberId })
 }

@@ -2,7 +2,7 @@ import { Router } from 'express'
 
 import { categoryControllers } from './controllers/categoryControllers'
 import { categoryMiddlewares } from './middlewares/categoryMiddlewares'
-import { checkIfIsMaster, checkIfIsMasterOrClient } from '../../middlewares/authorization.middleware'
+import { checkIfIsMaster, checkIfIsMasterOrClient, checkIfIsMasterOrClientOrMember } from '../../middlewares/authorization.middleware'
 import { validateNumberIdParam } from '../../middlewares/validateNumberIdParam.middleware'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
 
@@ -12,6 +12,7 @@ const categoryRouter: Router = Router()
 categoryRouter.get(
   '/',
   verifyAccessToken,
+  checkIfIsMasterOrClientOrMember,
   categoryControllers.findAll
 )
 

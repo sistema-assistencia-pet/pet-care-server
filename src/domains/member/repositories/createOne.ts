@@ -1,4 +1,4 @@
-import { type Member } from '@prisma/client'
+import type { Address, Member } from '@prisma/client'
 import prismaClient from '../../../database/connection'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
@@ -7,13 +7,20 @@ import { type MemberToBeCreated } from '../memberInterfaces'
 import { prismaError } from '../../../enums/prismaError'
 import { role } from '../../../enums/role'
 
-export async function createOne (memberToBeCreated: MemberToBeCreated): Promise<Pick<Member, 'id'>> {
+export async function createOne (
+  { address, ...memberToBeCreated }: MemberToBeCreated,
+  addressId: Address['id'] | null
+): Promise<Pick<Member, 'id'>> {
   const INVALID_FOREIGN_KEY = 'Campo FIELD_NAME inválido.'
   const MEMBER_ALREADY_EXISTS = 'CPF ou e-mail já cadastrado.'
 
   try {
     const member = await prismaClient.member.create({
-      data: { ...memberToBeCreated, roleId: role.MEMBER },
+      data: {
+        addressId,
+        roleId: role.MEMBER,
+        ...memberToBeCreated
+      },
       select: {
         id: true
       }

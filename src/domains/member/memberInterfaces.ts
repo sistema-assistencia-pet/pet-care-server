@@ -1,4 +1,6 @@
-import { type Prisma, type Member } from '@prisma/client'
+import type { Prisma, Member, Address } from '@prisma/client'
+
+import type { AddressToBeCreated } from '../address/addressInterfaces'
 import type { ClientMinData } from '../client/clientInterfaces'
 
 export interface FindManyMembersQueryParams {
@@ -12,7 +14,9 @@ export interface FindManyMembersQueryParams {
 
 export type FindManyMembersWhere = Pick<Prisma.MemberWhereInput, 'cpf' | 'clientId' | 'name' | 'statusId'>
 
-export type MemberToBeCreated = Omit<Member, 'id' | 'password' | 'hasCreatedPassword' | 'roleId' | 'statusId' | 'createdAt' | 'updatedAt'>
+export type MemberToBeCreated = Pick<Member, 'name' | 'cpf' | 'email' | 'phoneNumber' | 'birthDate' | 'clientId'> & { address: AddressToBeCreated | null }
+
+export type MemberToBeCreatedInBulk = Pick<Member, 'name' | 'cpf' | 'email' | 'phoneNumber' | 'birthDate' | 'clientId' | 'statusId'> & { addressId: Address['id'] | null }
 
 export type MemberToBeUpdated = Omit<MemberToBeCreated, 'cpf' | 'statusId'>
 

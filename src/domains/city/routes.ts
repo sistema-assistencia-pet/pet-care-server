@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { checkIfIsMaster, checkIfIsMasterOrClient } from '../../middlewares/authorization.middleware'
+import { checkIfIsMaster, checkIfIsMasterOrClient, checkIfIsMasterOrClientOrMember } from '../../middlewares/authorization.middleware'
 import { cityControllers } from './controllers/cityControllers'
 import { cityMiddlewares } from './middlewares/cityMiddlewares'
 import { validateNumberIdParam } from '../../middlewares/validateNumberIdParam.middleware'
@@ -12,6 +12,7 @@ const cityRouter: Router = Router()
 cityRouter.get(
   '/',
   verifyAccessToken,
+  checkIfIsMasterOrClientOrMember,
   cityMiddlewares.findManyQueryParamsValidation,
   cityControllers.findMany
 )
