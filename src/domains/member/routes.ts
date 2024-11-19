@@ -1,7 +1,7 @@
 import multer from 'multer'
 import { Router } from 'express'
 
-import { checkIfIsUserOrMember, checkIfIsUser } from '../../middlewares/authorization.middleware'
+import { checkIfIsMasterOrClientOrMember, checkIfIsMasterOrClient } from '../../middlewares/authorization.middleware'
 import { memberMiddlewares } from './middlewares/memberMiddlewares'
 import { validateUuidParam } from '../../middlewares/validateUuidParam.middleware'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
@@ -14,7 +14,7 @@ const memberRouter: Router = Router()
 memberRouter.post(
   '/',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   memberMiddlewares.createOnePayloadValidation,
   memberControllers.createOne
 )
@@ -23,7 +23,7 @@ memberRouter.post(
 memberRouter.post(
   '/:clientId/create-members-in-bulk',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   memberMiddlewares.createManyPayloadValidation,
   multer(multerOptionsForCSV).single('file'), // salva o arquivo e o disponibiliza em req.file
   memberControllers.createMany
@@ -33,7 +33,7 @@ memberRouter.post(
 memberRouter.get(
   '/:id',
   verifyAccessToken,
-  checkIfIsUserOrMember,
+  checkIfIsMasterOrClientOrMember,
   validateUuidParam,
   memberControllers.findOneById
 )
@@ -42,7 +42,7 @@ memberRouter.get(
 memberRouter.get(
   '/',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   memberMiddlewares.findManyQueryParamsValidation,
   memberControllers.findMany
 )
@@ -51,7 +51,7 @@ memberRouter.get(
 memberRouter.patch(
   '/:id/activate',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   validateUuidParam,
   memberControllers.activateOne
 )
@@ -60,7 +60,7 @@ memberRouter.patch(
 memberRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   validateUuidParam,
   memberControllers.inactivateOne
 )
@@ -69,7 +69,7 @@ memberRouter.patch(
 memberRouter.patch(
   '/:id/delete',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   validateUuidParam,
   memberControllers.deleteOne
 )
@@ -78,7 +78,7 @@ memberRouter.patch(
 memberRouter.patch(
   '/:id',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   validateUuidParam,
   memberMiddlewares.updateOnePayloadValidation,
   memberControllers.updateOne

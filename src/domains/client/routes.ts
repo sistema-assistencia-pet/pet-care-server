@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { checkIfIsUser } from '../../middlewares/authorization.middleware'
+import { checkIfIsMasterOrClient } from '../../middlewares/authorization.middleware'
 import { clientControllers } from './controllers/clientControllers'
 import { clientMiddlewares } from './middlewares/clientMiddlewares'
 import { validateUuidParam } from '../../middlewares/validateUuidParam.middleware'
@@ -12,7 +12,7 @@ const clientRouter: Router = Router()
 clientRouter.post(
   '/',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   clientMiddlewares.createOnePayloadValidation,
   clientControllers.createOne
 )
@@ -21,7 +21,7 @@ clientRouter.post(
 clientRouter.get(
   '/:id',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   validateUuidParam,
   clientControllers.findOneById
 )
@@ -30,7 +30,7 @@ clientRouter.get(
 clientRouter.get(
   '/',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   clientMiddlewares.findManyQueryParamsValidation,
   clientControllers.findMany
 )
@@ -39,7 +39,7 @@ clientRouter.get(
 clientRouter.patch(
   '/:id/activate',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   validateUuidParam,
   clientControllers.activateOne
 )
@@ -48,7 +48,7 @@ clientRouter.patch(
 clientRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   validateUuidParam,
   clientControllers.inactivateOne
 )
@@ -57,7 +57,7 @@ clientRouter.patch(
 clientRouter.patch(
   '/:id/delete',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   validateUuidParam,
   clientControllers.deleteOne
 )
@@ -66,7 +66,7 @@ clientRouter.patch(
 clientRouter.patch(
   '/:id',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   validateUuidParam,
   clientMiddlewares.updateOnePayloadValidation,
   clientControllers.updateOne

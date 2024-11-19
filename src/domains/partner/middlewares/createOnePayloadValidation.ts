@@ -15,6 +15,15 @@ export async function createOnePayloadValidation (req: Request, _res: Response, 
         message: 'O campo CNPJ ("cnpj") deve ter 14 caracteres.'
       }),
 
+    password: z
+      .string({
+        invalid_type_error: 'O campo Senha ("password") deve ser uma string.',
+        required_error: 'O campo Senha ("password") é obrigatório.'
+      })
+      .min(8, {
+        message: 'O campo Senha ("password") deve ter pelo menos 8 caracteres.'
+      }),
+
     corporateName: z
       .string({
         invalid_type_error: 'O campo Razão Social ("corporateName") deve ser uma string.',
@@ -165,6 +174,7 @@ export async function createOnePayloadValidation (req: Request, _res: Response, 
   try {
     createOnePayloadSchema.parse({
       cnpj: req.body.cnpj,
+      password: req.body.password,
       corporateName: req.body.corporateName,
       fantasyName: req.body.fantasyName,
 

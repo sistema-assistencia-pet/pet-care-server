@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { checkIfIsUser } from '../../middlewares/authorization.middleware'
+import { checkIfIsMasterOrClient } from '../../middlewares/authorization.middleware'
 import { userControllers } from './controllers/userControllers'
 import { userMiddlewares } from './middlewares/userMiddlewares'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
@@ -12,7 +12,7 @@ const userRouter: Router = Router()
 userRouter.post(
   '/',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   userMiddlewares.manageUserAuthorization,
   userMiddlewares.createOnePayloadValidation,
   userControllers.createOne
@@ -37,7 +37,7 @@ userRouter.get(
 userRouter.get(
   '/',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   userMiddlewares.findManyQueryParamsValidation,
   userControllers.findMany
 )
@@ -46,7 +46,7 @@ userRouter.get(
 userRouter.patch(
   '/:id/activate',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   userMiddlewares.manageUserAuthorization,
   validateUuidParam,
   userControllers.activateOne
@@ -56,7 +56,7 @@ userRouter.patch(
 userRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   userMiddlewares.manageUserAuthorization,
   validateUuidParam,
   userControllers.inactivateOne
@@ -66,7 +66,7 @@ userRouter.patch(
 userRouter.patch(
   '/:id/delete',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   userMiddlewares.manageUserAuthorization,
   validateUuidParam,
   userControllers.deleteOne
@@ -76,7 +76,7 @@ userRouter.patch(
 userRouter.patch(
   '/:id',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   userMiddlewares.manageUserAuthorization,
   validateUuidParam,
   userMiddlewares.updateOnePayloadValidation,

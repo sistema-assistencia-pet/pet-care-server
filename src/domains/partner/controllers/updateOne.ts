@@ -11,6 +11,7 @@ export async function updateOne (req: Request, res: Response): Promise<Response>
 
   const partnerToBeUpdated: PartnerToBeUpdated = {
     cnpj: req.body.cnpj,
+    password: req.body.password,
     corporateName: req.body.corporateName,
     fantasyName: req.body.fantasyName,
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions

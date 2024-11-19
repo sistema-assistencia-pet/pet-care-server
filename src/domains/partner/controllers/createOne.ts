@@ -9,6 +9,7 @@ export async function createOne (req: Request, res: Response): Promise<Response>
 
   const partnerToBeCreated: PartnerToBeCreated = {
     cnpj: req.body.cnpj,
+    password: req.body.password,
     corporateName: req.body.corporateName,
     fantasyName: req.body.fantasyName,
     address: {

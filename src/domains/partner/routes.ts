@@ -1,7 +1,7 @@
 import multer from 'multer'
 import { Router } from 'express'
 
-import { checkIfIsMasterUser, checkIfIsUser } from '../../middlewares/authorization.middleware'
+import { checkIfIsMaster, checkIfIsMasterOrClient } from '../../middlewares/authorization.middleware'
 import { multerOptionsForImage } from '../../multerOptions'
 import { partnerControllers } from './controllers/partnerControllers'
 import { partnerMiddlewares } from './middlewares/partnerMiddlewares'
@@ -14,7 +14,7 @@ const partnerRouter: Router = Router()
 partnerRouter.post(
   '/',
   verifyAccessToken,
-  checkIfIsMasterUser,
+  checkIfIsMaster,
   partnerMiddlewares.createOnePayloadValidation,
   partnerControllers.createOne
 )
@@ -23,7 +23,7 @@ partnerRouter.post(
 partnerRouter.get(
   '/:id',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   validateUuidParam,
   partnerControllers.findOneById
 )
@@ -32,7 +32,7 @@ partnerRouter.get(
 partnerRouter.get(
   '/',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   partnerMiddlewares.findManyQueryParamsValidation,
   partnerControllers.findMany
 )
@@ -41,7 +41,7 @@ partnerRouter.get(
 partnerRouter.patch(
   '/:id/activate',
   verifyAccessToken,
-  checkIfIsMasterUser,
+  checkIfIsMaster,
   validateUuidParam,
   partnerControllers.activateOne
 )
@@ -50,7 +50,7 @@ partnerRouter.patch(
 partnerRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
-  checkIfIsMasterUser,
+  checkIfIsMaster,
   validateUuidParam,
   partnerControllers.inactivateOne
 )
@@ -59,7 +59,7 @@ partnerRouter.patch(
 partnerRouter.patch(
   '/:id/delete',
   verifyAccessToken,
-  checkIfIsMasterUser,
+  checkIfIsMaster,
   validateUuidParam,
   partnerControllers.deleteOne
 )
@@ -68,7 +68,7 @@ partnerRouter.patch(
 partnerRouter.patch(
   '/:id',
   verifyAccessToken,
-  checkIfIsMasterUser,
+  checkIfIsMaster,
   validateUuidParam,
   partnerMiddlewares.updateOnePayloadValidation,
   partnerControllers.updateOne
@@ -78,7 +78,7 @@ partnerRouter.patch(
 partnerRouter.patch(
   '/:id/image',
   verifyAccessToken,
-  checkIfIsMasterUser,
+  checkIfIsMaster,
   validateUuidParam,
   partnerMiddlewares.partnerIdValidation,
   multer(multerOptionsForImage).single('image'),
@@ -90,7 +90,7 @@ partnerRouter.patch(
 partnerRouter.patch(
   '/:id/logo',
   verifyAccessToken,
-  checkIfIsMasterUser,
+  checkIfIsMaster,
   validateUuidParam,
   partnerMiddlewares.partnerIdValidation,
   multer(multerOptionsForImage).single('logo'),

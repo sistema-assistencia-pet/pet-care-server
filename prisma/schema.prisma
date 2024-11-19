@@ -49,6 +49,7 @@ model Role {
   // Relation
   users   User[]
   members Member[]
+  partners Partner[]
 
   @@map("cargo")
 }
@@ -173,6 +174,7 @@ model ClientRecharge {
 model Partner {
   id                  String   @id @default(uuid())
   cnpj                String   @unique
+  password            String   @map("senha")
   corporateName       String?  @map("razao_social")
   fantasyName         String?  @map("nome_fantasia")
   addressId           Int?     @map("id_endereco")
@@ -189,12 +191,14 @@ model Partner {
   openingHours        String?  @map("horario_de_funcionamento")
   image               String?  @map("imagem")
   logo                String?
+  roleId              Int      @map("id_cargo") @default(4)
   statusId            Int      @default(1) @map("id_status")
   createdAt           DateTime @default(now()) @map("data_de_criacao")
   updatedAt           DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
   status             Status              @relation(fields: [statusId], references: [id])
+  role             Role              @relation(fields: [roleId], references: [id])
   category           Category            @relation(fields: [categoryId], references: [id])
   address            Address?            @relation(fields: [addressId], references: [id])
   state              State?              @relation(fields: [stateId], references: [id])

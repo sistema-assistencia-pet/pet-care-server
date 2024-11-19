@@ -4,10 +4,10 @@ import type { AccessTokenData } from '../../../interfaces'
 import { getEnvironmentVariable } from '../../../utils/getEnvironmentVariable'
 import { NotFoundError } from '../../../errors'
 import { partnerRepositories } from '../repositories/partnerRepositories'
-import type { PartnerToBeReturned } from '../partnerInterfaces'
+import type { PartnerToBeReturnedWithoutPassword } from '../partnerInterfaces'
 import { role } from '../../../enums/role'
 
-function formatPartnerImages (partner: PartnerToBeReturned): PartnerToBeReturned {
+function formatPartnerImages (partner: PartnerToBeReturnedWithoutPassword): PartnerToBeReturnedWithoutPassword {
   const API_BASE_URL = getEnvironmentVariable('API_BASE_URL')
 
   partner.image = partner.image !== null
@@ -21,7 +21,7 @@ function formatPartnerImages (partner: PartnerToBeReturned): PartnerToBeReturned
   return partner
 }
 
-export async function findOneById (accessTokenData: AccessTokenData, id: Partner['id']): Promise<PartnerToBeReturned> {
+export async function findOneById (accessTokenData: AccessTokenData, id: Partner['id']): Promise<PartnerToBeReturnedWithoutPassword> {
   const PARTNER_NOT_FOUND = 'Estabelecimento não encontrado.'
 
   const shouldReturnFullData = accessTokenData.roleId === role.MASTER
@@ -30,7 +30,9 @@ export async function findOneById (accessTokenData: AccessTokenData, id: Partner
 
   if (partner === null) throw new NotFoundError(PARTNER_NOT_FOUND)
 
-  const partnerToBeReturned = formatPartnerImages(partner)
+  const { password, ...partnerToBeReturnedWithoutPassword } = partner
+
+  const partnerToBeReturned = formatPartnerImages(partnerToBeReturnedWithoutPassword)
 
   return partnerToBeReturned
 }

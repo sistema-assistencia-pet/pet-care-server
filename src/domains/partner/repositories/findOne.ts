@@ -27,6 +27,8 @@ export async function findOne (uniqueProps: Prisma.PartnerWhereUniqueInput, full
         openingHours: true,
         image: true,
         logo: true,
+        roleId: true,
+        password: fullInfo,
         address: {
           select: {
             id: true,

@@ -47,4 +47,11 @@ authRouter.post(
   authControllers.resetMemberPassword
 )
 
+// Login de estabelecimento
+authRouter.post(
+  '/partner/login',
+  authMiddlewares.partnerLoginPayloadValidation,
+  authControllers.loginPartner
+)
+
 export { authRouter }

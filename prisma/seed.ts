@@ -21,7 +21,8 @@ async function seedRole (): Promise<void> {
       data: [
         { id: 1, name: 'member', translation: 'Associado' },
         { id: 2, name: 'master', translation: 'Master' },
-        { id: 3, name: 'admin_client', translation: 'Cliente Admin' }
+        { id: 3, name: 'client_admin', translation: 'Cliente Admin' },
+        { id: 4, name: 'partner_admin', translation: 'Estabelecimento Admin' }
       ]
     })
   } catch (error) {

@@ -2,7 +2,7 @@ import { Router } from 'express'
 
 import { categoryControllers } from './controllers/categoryControllers'
 import { categoryMiddlewares } from './middlewares/categoryMiddlewares'
-import { checkIfIsMasterUser, checkIfIsUser } from '../../middlewares/authorization.middleware'
+import { checkIfIsMaster, checkIfIsMasterOrClient } from '../../middlewares/authorization.middleware'
 import { validateNumberIdParam } from '../../middlewares/validateNumberIdParam.middleware'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
 
@@ -19,7 +19,7 @@ categoryRouter.get(
 categoryRouter.post(
   '/',
   verifyAccessToken,
-  checkIfIsUser,
+  checkIfIsMasterOrClient,
   categoryMiddlewares.createOnePayloadValidation,
   categoryControllers.createOne
 )
@@ -28,7 +28,7 @@ categoryRouter.post(
 categoryRouter.delete(
   '/:id',
   verifyAccessToken,
-  checkIfIsMasterUser,
+  checkIfIsMaster,
   validateNumberIdParam,
   categoryControllers.deleteOne
 )
@@ -37,7 +37,7 @@ categoryRouter.delete(
 categoryRouter.patch(
   '/:id',
   verifyAccessToken,
-  checkIfIsMasterUser,
+  checkIfIsMaster,
   validateNumberIdParam,
   categoryMiddlewares.updateOnePayloadValidation,
   categoryControllers.updateOne
