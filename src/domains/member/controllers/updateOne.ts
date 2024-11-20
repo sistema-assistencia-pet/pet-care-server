@@ -9,15 +9,26 @@ export async function updateOne (req: Request, res: Response): Promise<Response>
 
   const memberId = req.params.id
 
-  const memberToBeUpdated: Partial<MemberToBeUpdated> = {
+  const memberToBeUpdated: MemberToBeUpdated = {
     birthDate: req.body.birthDate,
-    cep: req.body.cep,
     email: req.body.email,
     name: req.body.name,
-    phoneNumber: req.body.phoneNumber
+    phoneNumber: req.body.phoneNumber,
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    address: req.body.address
+      ? {
+          cep: req.body.address.cep,
+          street: req.body.address.street,
+          number: req.body.address.number,
+          complement: req.body.address.complement,
+          neighborhood: req.body.address.neighborhood,
+          cityId: req.body.address.cityId,
+          stateId: req.body.address.stateId
+        }
+      : null
   }
 
-  await memberServices.updateOne(memberId, memberToBeUpdated)
+  const memberIdReturned = await memberServices.updateOne(memberId, memberToBeUpdated)
 
-  return res.status(HttpStatusCode.NoContent).json({ message: MEMBER_SUCCESSFULLY_UPDATED })
+  return res.status(HttpStatusCode.NoContent).json({ message: MEMBER_SUCCESSFULLY_UPDATED, memberId: memberIdReturned })
 }

@@ -6,7 +6,7 @@ import prismaClient from '../../../database/connection'
 import { prismaError } from '../../../enums/prismaError'
 
 export async function updateOne (
-  id: string,
+  id: Partner['id'],
   data: Partial<Partner>
 ): Promise<Partner['id']> {
   const INVALID_FOREIGN_KEY = 'Campo FIELD_NAME inválido.'

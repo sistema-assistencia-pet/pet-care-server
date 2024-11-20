@@ -1,27 +1,27 @@
-import { BadRequestError, NotFoundError } from '../../../errors'
-import clientRepositories from '../../client/repositories'
+import type { Prisma } from '@prisma/client'
+
+import type { FindManyMembersQueryParams, MemberToBeReturnedOnFindMany } from '../memberInterfaces'
+import type { AccessTokenData, FindManyResponse } from '../../../interfaces'
 import { memberRepositories } from '../repositories/memberRepositories'
-import type { FindManyMembersQueryParams, FindManyMembersWhere, MemberToBeReturnedOnFindMany } from '../memberInterfaces'
-import type { FindManyResponse } from '../../../interfaces'
+import { NotFoundError } from '../../../errors'
+import { role } from '../../../enums/role'
 
-export async function findMany ({ skip, take, ...queryParams }: FindManyMembersQueryParams): Promise<FindManyResponse<MemberToBeReturnedOnFindMany>> {
+export async function findMany (
+  accessTokenData: AccessTokenData,
+  { skip, take, ...queryParams }: FindManyMembersQueryParams
+): Promise<FindManyResponse<MemberToBeReturnedOnFindMany>> {
   const MEMBERS_NOT_FOUND = 'Nenhum associado encontrado.'
-  const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
 
-  const where: Partial<FindManyMembersWhere> = {}
+  const where: Prisma.MemberWhereInput = { OR: [] }
 
   Object.entries(queryParams).forEach(([key, value]) => {
-    if (
-      value !== undefined &&
-        value !== null &&
-        key !== 'clientCnpj'
-    ) {
+    if (value !== undefined && value !== null) {
       switch (key) {
-        case 'cpf':
-          Object.assign(where, { cpf: { contains: value } })
-          break
-        case 'name':
-          Object.assign(where, { name: { contains: value } })
+        case 'searchInput':
+          where.OR?.push({ cpf: { contains: value as string } })
+          where.OR?.push({ name: { contains: value as string } })
+          where.OR?.push({ client: { cnpj: { contains: value as string } } })
+          where.OR?.push({ client: { fantasyName: { contains: value as string } } })
           break
         default:
           Object.assign(where, { [key]: value })
@@ -30,15 +30,11 @@ export async function findMany ({ skip, take, ...queryParams }: FindManyMembersQ
     }
   })
 
-  if (queryParams.clientCnpj !== undefined) {
-    const client = await clientRepositories.findOneByCnpj(queryParams.clientCnpj)
+  if (accessTokenData.roleId === role.CLIENT_ADMIN) where.OR?.push({ clientId: accessTokenData.clientId })
 
-    if (client === null) throw new BadRequestError(CLIENT_NOT_FOUND)
+  if (where.OR?.length === 0) delete where.OR
 
-    Object.assign(where, { clientId: { contains: client.id } })
-  }
-
-  const members = await memberRepositories.findMany(skip, take, where)
+  const members = await memberRepositories.findMany({ skip, take, where })
 
   if (members.length === 0) throw new NotFoundError(MEMBERS_NOT_FOUND)
 

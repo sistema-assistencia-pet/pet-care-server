@@ -4,7 +4,7 @@ import { createOneForBulkCreation } from './createOneForBulkCreation'
 import { deleteOneResetPasswordCode } from './deleteOneResetPasswordCode'
 import { findMany } from './findMany'
 import { findOneByCpf } from './findOneByCpf'
-import { findOneById } from './findOneById'
+import { findOne } from './findOne'
 import { findOneResetPasswordCode } from './findOneResetPasswordCode'
 import { updateMany } from './updateMany'
 import { updateOne } from './updateOne'
@@ -17,7 +17,7 @@ const memberRepositories = {
   deleteOneResetPasswordCode,
   findMany,
   findOneByCpf,
-  findOneById,
+  findOne,
   findOneResetPasswordCode,
   updateMany,
   updateOne,

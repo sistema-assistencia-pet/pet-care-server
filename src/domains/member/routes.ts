@@ -7,6 +7,7 @@ import { validateUuidParam } from '../../middlewares/validateUuidParam.middlewar
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
 import { multerOptionsForCSV } from '../../multerOptions'
 import { memberControllers } from './controllers/memberControllers'
+import { checkIfIsSameMemberId } from './middlewares/checkIfIsSameMemberId'
 
 const memberRouter: Router = Router()
 
@@ -15,7 +16,7 @@ memberRouter.post(
   '/',
   verifyAccessToken,
   checkIfIsMasterOrClient,
-  memberMiddlewares.createOneAuthorization,
+  memberMiddlewares.checkIfIsSameClientId,
   memberMiddlewares.createOnePayloadValidation,
   memberControllers.createOne
 )
@@ -25,7 +26,7 @@ memberRouter.post(
   '/:clientId/create-members-in-bulk',
   verifyAccessToken,
   checkIfIsMasterOrClient,
-  memberMiddlewares.createOneAuthorization,
+  memberMiddlewares.checkIfIsSameClientId,
   memberMiddlewares.createManyPayloadValidation,
   multer(multerOptionsForCSV).single('file'), // salva o arquivo e o disponibiliza em req.file
   memberControllers.createMany
@@ -36,7 +37,8 @@ memberRouter.get(
   '/:id',
   verifyAccessToken,
   checkIfIsMasterOrClientOrMember,
-  validateUuidParam,
+  validateUuidParam, // verifica UUID antes de verificar se é do mesmo associado
+  checkIfIsSameMemberId,
   memberControllers.findOneById
 )
 
@@ -54,7 +56,8 @@ memberRouter.patch(
   '/:id/activate',
   verifyAccessToken,
   checkIfIsMasterOrClient,
-  validateUuidParam,
+  validateUuidParam, // verifica UUID antes de verificar se é do mesmo cliente
+  memberMiddlewares.checkIfIsSameClientId,
   memberControllers.activateOne
 )
 
@@ -63,7 +66,8 @@ memberRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
   checkIfIsMasterOrClient,
-  validateUuidParam,
+  validateUuidParam, // verifica UUID antes de verificar se é do mesmo cliente
+  memberMiddlewares.checkIfIsSameClientId,
   memberControllers.inactivateOne
 )
 
@@ -72,7 +76,8 @@ memberRouter.patch(
   '/:id/delete',
   verifyAccessToken,
   checkIfIsMasterOrClient,
-  validateUuidParam,
+  validateUuidParam, // verifica UUID antes de verificar se é do mesmo cliente
+  memberMiddlewares.checkIfIsSameClientId,
   memberControllers.deleteOne
 )
 
@@ -81,7 +86,8 @@ memberRouter.patch(
   '/:id',
   verifyAccessToken,
   checkIfIsMasterOrClient,
-  validateUuidParam,
+  validateUuidParam, // verifica UUID antes de verificar se é do mesmo cliente
+  memberMiddlewares.checkIfIsSameClientId,
   memberMiddlewares.updateOnePayloadValidation,
   memberControllers.updateOne
 )

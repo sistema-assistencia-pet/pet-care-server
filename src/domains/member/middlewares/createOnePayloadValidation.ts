@@ -2,8 +2,9 @@ import type { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
 
 import { BadRequestError, GenericError } from '../../../errors'
+import { cityRepositories } from '../../city/repositories/cityRepositories'
 
-export function createOnePayloadValidation (req: Request, _res: Response, next: NextFunction): void {
+export async function createOnePayloadValidation (req: Request, _res: Response, next: NextFunction): Promise<void> {
   const createOnePayloadSchema = z.object({
     birthDate: z
       .string({
@@ -156,6 +157,16 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
     ) {
       throw new BadRequestError('"birthDate" deve estar no formato AAAA-MM-DD.')
     }
+  }
+
+  const cities = await cityRepositories.findMany({ id: req.body.address.cityId })
+
+  if (cities.length === 0) {
+    throw new BadRequestError('Cidade não encontrada.')
+  }
+
+  if (cities[0].stateId !== req.body.address.stateId) {
+    throw new BadRequestError('Cidade não pertence ao estado informado.')
   }
 
   next()

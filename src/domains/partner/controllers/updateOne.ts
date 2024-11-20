@@ -37,7 +37,7 @@ export async function updateOne (req: Request, res: Response): Promise<Response>
     openingHours: req.body.openingHours
   }
 
-  const parterId = await partnerServices.updateOne(partnerId, partnerToBeUpdated)
+  const partnerIdReturned = await partnerServices.updateOne(partnerId, partnerToBeUpdated)
 
-  return res.status(HttpStatusCode.Ok).json({ message: PARTNER_SUCCESSFULLY_UPDATED, parterId })
+  return res.status(HttpStatusCode.Ok).json({ message: PARTNER_SUCCESSFULLY_UPDATED, partnerId: partnerIdReturned })
 }

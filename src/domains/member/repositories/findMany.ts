@@ -1,13 +1,9 @@
 import prismaClient from '../../../database/connection'
 
 import { DatabaseError } from '../../../errors'
-import type { FindManyMembersWhere, MemberToBeReturnedOnFindMany } from '../memberInterfaces'
+import type { FindManyMembersParams, MemberToBeReturnedOnFindMany } from '../memberInterfaces'
 
-export async function findMany (
-  skip: number,
-  take: number,
-  where: Partial<FindManyMembersWhere>
-): Promise<MemberToBeReturnedOnFindMany[]> {
+export async function findMany ({ skip, take, where }: FindManyMembersParams): Promise<MemberToBeReturnedOnFindMany[]> {
   try {
     const members = await prismaClient.member.findMany({
       where,
@@ -15,21 +11,10 @@ export async function findMany (
       take,
       select: {
         id: true,
-        roleId: true,
-        client: {
-          select: {
-            cnpj: true,
-            fantasyName: true
-          }
-        },
-        name: true,
         cpf: true,
-        email: true,
-        birthDate: true,
-        phoneNumber: true,
-        cep: true,
-        totalSavings: true,
-        statusId: true,
+        name: true,
+        client: { select: { id: true, cnpj: true, fantasyName: true } },
+        status: { select: { id: true, translation: true } },
         createdAt: true
       },
       orderBy: { createdAt: 'desc' }
