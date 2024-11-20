@@ -4,7 +4,11 @@ import { DatabaseError } from '../../../errors'
 import type { PartnerToBeReturned } from '../partnerInterfaces'
 import prismaClient from '../../../database/connection'
 
-export async function findOne (uniqueProps: Prisma.PartnerWhereUniqueInput, fullInfo: boolean, optionalFilter?: Prisma.PartnerWhereInput): Promise<PartnerToBeReturned | null> {
+export async function findOne (
+  uniqueProps: Prisma.PartnerWhereUniqueInput,
+  fullInfo: boolean,
+  optionalFilter?: Prisma.PartnerWhereInput
+): Promise<PartnerToBeReturned | null> {
   try {
     const where = { ...uniqueProps }
 

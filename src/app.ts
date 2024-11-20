@@ -19,10 +19,12 @@ import { authRouter } from './domains/auth/routes'
 import { categoryRouter } from './domains/category/routes'
 import { cityRouter } from './domains/city/routes'
 // import { clientRouter } from './domains/client/routes'
-// import { memberRouter } from './domains/member/routes'
+import { memberRouter } from './domains/member/routes'
 import { partnerRouter } from './domains/partner/routes'
 import { stateRouter } from './domains/state/routes'
 import { userRouter } from './domains/user/routes'
+import { voucherRouter } from './domains/voucher/routes'
+import { voucherCodeRouter } from './domains/voucherCode/routes'
 
 const app = express()
 
@@ -39,10 +41,12 @@ app.use('/api/auth', authRouter)
 app.use('/api/category', categoryRouter)
 app.use('/api/city', cityRouter)
 // app.use('/api/client', clientRouter)
-// app.use('/api/member', memberRouter)
+app.use('/api/member', memberRouter)
 app.use('/api/partner', partnerRouter)
 app.use('/api/state', stateRouter)
 app.use('/api/user', userRouter)
+app.use('/api/voucher', voucherRouter)
+app.use('/api/voucher-code', voucherCodeRouter)
 
 app.get('/api/health-check', (_req: Request, res: Response) => {
   res.status(HttpStatusCode.Ok).json(API_RUNNING)

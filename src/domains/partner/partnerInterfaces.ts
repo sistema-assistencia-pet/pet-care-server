@@ -37,3 +37,5 @@ export interface FindManyPartnersParams {
   take?: number
   where: Partial<Prisma.PartnerWhereInput>
 }
+
+export type PartnerMinData = Pick<Partner, 'id' | 'cnpj' | 'fantasyName'>

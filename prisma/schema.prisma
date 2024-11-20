@@ -91,7 +91,7 @@ model City {
   updatedAt DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
-  states    State     @relation(fields: [stateId], references: [id])
+  state    State     @relation(fields: [stateId], references: [id])
   addresses Address[]
   clients   Client[]
   partners  Partner[]
@@ -292,7 +292,7 @@ model VoucherCode {
   id          Int      @id @default(autoincrement())
   code        String   @map("codigo")
   voucherId   String   @map("id_voucher")
-  wasredeemed Boolean  @default(false) @map("foi_resgatado")
+  wasRedeemed Boolean  @default(false) @map("foi_resgatado")
   statusId    Int      @default(1) @map("id_status")
   createdAt   DateTime @default(now()) @map("data_de_criacao")
   updatedAt   DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
