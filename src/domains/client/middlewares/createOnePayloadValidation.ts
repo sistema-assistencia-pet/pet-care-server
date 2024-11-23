@@ -101,6 +101,24 @@ export async function createOnePayloadValidation (req: Request, _res: Response, 
         message: 'O campo Nome do Responsável ("managerName") deve ter pelo menos 3 caracteres.'
       }),
 
+    managerCpf: z
+      .string({
+        invalid_type_error: 'O campo CPF do Responsável ("managerCpf") deve ser uma string.',
+        required_error: 'O campo CPF do Responsável ("managerCpf") é obrigatório.'
+      })
+      .length(11, {
+        message: 'O campo CPF do Responsável ("managerCpf") deve ter 11 caracteres.'
+      }),
+
+    managerPassword: z
+      .string({
+        invalid_type_error: 'O campo Senha do Responsável ("managerPassword") deve ser uma string.',
+        required_error: 'O campo Senha do Responsável ("managerPassword") é obrigatório.'
+      })
+      .min(8, {
+        message: 'O campo Senha do Responsável ("managerPassword") deve ter pelo menos 8 caracteres.'
+      }),
+
     managerPhoneNumber: z
       .string({
         invalid_type_error: 'O campo Telefone do Responsável ("managerPhoneNumber") deve ser uma string.',
@@ -178,6 +196,8 @@ export async function createOnePayloadValidation (req: Request, _res: Response, 
       stateId: req.body.address.stateId,
 
       managerName: req.body.managerName,
+      managerCpf: req.body.managerCpf,
+      managerPassword: req.body.managerPassword,
       managerPhoneNumber: req.body.managerPhoneNumber,
       managerEmail: req.body.managerEmail,
       financePhoneNumber: req.body.financePhoneNumber,

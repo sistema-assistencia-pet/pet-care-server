@@ -22,6 +22,8 @@ export async function createOne (req: Request, res: Response): Promise<Response>
       stateId: req.body.address.stateId
     },
     managerName: req.body.managerName,
+    managerCpf: req.body.managerCpf,
+    managerPassword: req.body.managerPassword,
     managerPhoneNumber: req.body.managerPhoneNumber,
     managerEmail: req.body.managerEmail,
     financePhoneNumber: req.body.financePhoneNumber,

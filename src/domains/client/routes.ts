@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { checkIfIsMaster, checkIfIsMasterOrClient } from '../../middlewares/authorization.middleware'
+import { checkIfIsMaster } from '../../middlewares/authorization.middleware'
 import { clientControllers } from './controllers/clientControllers'
 import { clientMiddlewares } from './middlewares/clientMiddlewares'
 import { validateUuidParam } from '../../middlewares/validateUuidParam.middleware'
@@ -21,7 +21,7 @@ clientRouter.post(
 clientRouter.get(
   '/:id',
   verifyAccessToken,
-  checkIfIsMasterOrClient,
+  checkIfIsMaster,
   validateUuidParam,
   clientControllers.findOneById
 )
@@ -30,7 +30,7 @@ clientRouter.get(
 clientRouter.get(
   '/',
   verifyAccessToken,
-  checkIfIsMasterOrClient,
+  checkIfIsMaster,
   clientMiddlewares.findManyQueryParamsValidation,
   clientControllers.findMany
 )
@@ -39,7 +39,7 @@ clientRouter.get(
 clientRouter.patch(
   '/:id/activate',
   verifyAccessToken,
-  checkIfIsMasterOrClient,
+  checkIfIsMaster,
   validateUuidParam,
   clientControllers.activateOne
 )
@@ -48,7 +48,7 @@ clientRouter.patch(
 clientRouter.patch(
   '/:id/inactivate',
   verifyAccessToken,
-  checkIfIsMasterOrClient,
+  checkIfIsMaster,
   validateUuidParam,
   clientControllers.inactivateOne
 )
@@ -57,7 +57,7 @@ clientRouter.patch(
 clientRouter.patch(
   '/:id/delete',
   verifyAccessToken,
-  checkIfIsMasterOrClient,
+  checkIfIsMaster,
   validateUuidParam,
   clientControllers.deleteOne
 )

@@ -13,7 +13,8 @@ export async function updateOnePayloadValidation (req: Request, _res: Response, 
       })
       .length(14, {
         message: 'O campo CNPJ ("cnpj") deve ter 14 caracteres.'
-      }),
+      })
+      .optional(),
 
     corporateName: z
       .string({
@@ -22,7 +23,8 @@ export async function updateOnePayloadValidation (req: Request, _res: Response, 
       })
       .min(3, {
         message: 'O campo Razão Social ("corporateName") deve ter pelo menos 3 caracteres.'
-      }),
+      })
+      .optional(),
 
     fantasyName: z
       .string({
@@ -31,13 +33,15 @@ export async function updateOnePayloadValidation (req: Request, _res: Response, 
       })
       .min(3, {
         message: 'O campo Nome Fantasia ("fantasyName") deve ter pelo menos 3 caracteres.'
-      }),
+      })
+      .optional(),
 
     segment: z
       .string({
         invalid_type_error: 'O campo Segmento ("segment") deve ser uma string.',
         required_error: 'O campo Segmento ("segment") é obrigatório.'
-      }),
+      })
+      .optional(),
 
     managerName: z
       .string({
@@ -46,7 +50,8 @@ export async function updateOnePayloadValidation (req: Request, _res: Response, 
       })
       .min(3, {
         message: 'O campo Nome do Responsável ("managerName") deve ter pelo menos 3 caracteres.'
-      }),
+      })
+      .optional(),
 
     managerPhoneNumber: z
       .string({
@@ -58,7 +63,8 @@ export async function updateOnePayloadValidation (req: Request, _res: Response, 
       })
       .max(11, {
         message: 'O campo Telefone do Responsável ("managerPhoneNumber") deve ter no máximo 11 caracteres.'
-      }),
+      })
+      .optional(),
 
     managerEmail: z
       .string({
@@ -67,7 +73,8 @@ export async function updateOnePayloadValidation (req: Request, _res: Response, 
       })
       .email({
         message: 'O campo E-mail do Responsável ("managerEmail") deve ser um e-mail válido.'
-      }),
+      })
+      .optional(),
 
     financePhoneNumber: z
       .string({
@@ -79,7 +86,8 @@ export async function updateOnePayloadValidation (req: Request, _res: Response, 
       })
       .max(11, {
         message: 'O campo Telefone do Responsável ("financePhoneNumber") deve ter no máximo 11 caracteres.'
-      }),
+      })
+      .optional(),
 
     lumpSum: z
       .number({
@@ -115,7 +123,6 @@ export async function updateOnePayloadValidation (req: Request, _res: Response, 
       corporateName: req.body.corporateName,
       fantasyName: req.body.fantasyName,
       segment: req.body.segment,
-
       managerName: req.body.managerName,
       managerPhoneNumber: req.body.managerPhoneNumber,
       managerEmail: req.body.managerEmail,

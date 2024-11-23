@@ -1,7 +1,8 @@
-import clientRepositories from '../repositories'
+import { clientRepositories } from '../repositories/clientRepositories'
 import { memberRepositories } from '../../member/repositories/memberRepositories'
+import { status } from '../../../enums/status'
 
 export async function deleteOne (id: string): Promise<void> {
-  await clientRepositories.updateOne(id, { statusId: 3 })
-  await memberRepositories.updateMany({ statusId: 3 }, { clientId: id })
+  await clientRepositories.updateOne(id, { statusId: status.DELETED })
+  await memberRepositories.updateMany({ statusId: status.DELETED }, { clientId: id })
 }

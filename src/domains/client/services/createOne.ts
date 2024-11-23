@@ -1,9 +1,12 @@
 import type { Address, Client } from '@prisma/client'
 
 import { addressRepositories } from '../../address/repositories/addressRepositories'
-import { BadRequestError } from '../../../errors'
+import { BadRequestError, InternalServerError } from '../../../errors'
 import { clientRepositories } from '../repositories/clientRepositories'
 import type { ClientToBeCreated } from '../clientInterfaces'
+import { userRepositories } from '../../user/repositories/userRepositories'
+import type { UserToBeCreated } from '../../user/userInterfaces'
+import { role } from '../../../enums/role'
 
 export async function createOne (clientToBeCreated: ClientToBeCreated): Promise<Client['id']> {
   const CLIENT_ALREADY_EXISTS = 'Cliente já cadastrado.'
@@ -22,6 +25,22 @@ export async function createOne (clientToBeCreated: ClientToBeCreated): Promise<
   }
 
   const { id } = await clientRepositories.createOne(clientToBeCreated, addressId)
+
+  try {
+    const managerUserToBeCreated: UserToBeCreated = {
+      name: clientToBeCreated.managerName,
+      cpf: clientToBeCreated.managerCpf,
+      email: clientToBeCreated.managerEmail,
+      password: clientToBeCreated.managerPassword,
+      roleId: role.CLIENT_ADMIN,
+      clientId: id
+    }
+
+    await userRepositories.createOne(managerUserToBeCreated)
+  } catch (error) {
+    logger.error(error)
+    throw new InternalServerError('O cliente foi cadastrado com sucesso, mas houve um erro ao criar usuário administrador do cliente. Favor criar um usuário para o cliente manualmente.')
+  }
 
   return id
 }
