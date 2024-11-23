@@ -2,20 +2,30 @@ import { HttpStatusCode } from 'axios'
 import { type Request, type Response } from 'express'
 
 import type { ClientToBeUpdated } from '../clientInterfaces'
-import clientService from '../service'
+import { clientServices } from '../services/clientServices'
 
 export async function updateOne (req: Request, res: Response): Promise<Response> {
   const CLIENT_SUCCESSFULLY_UPDATED = 'Cliente atualizado com sucesso.'
 
   const clientId = req.params.id
 
-  const clientToBeUpdated: Partial<ClientToBeUpdated> = {
+  const clientToBeUpdated: ClientToBeUpdated = {
+    cnpj: req.body.cnpj,
     corporateName: req.body.corporateName,
     fantasyName: req.body.fantasyName,
     segment: req.body.segment,
-    address: req.body.address,
-    state: req.body.state,
-    city: req.body.city,
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    address: req.body.address
+      ? {
+          cep: req.body.address.cep,
+          street: req.body.address.street,
+          number: req.body.address.number,
+          complement: req.body.address.complement,
+          neighborhood: req.body.address.neighborhood,
+          cityId: req.body.address.cityId,
+          stateId: req.body.address.stateId
+        }
+      : null,
     managerName: req.body.managerName,
     managerPhoneNumber: req.body.managerPhoneNumber,
     managerEmail: req.body.managerEmail,
@@ -25,7 +35,7 @@ export async function updateOne (req: Request, res: Response): Promise<Response>
     contractUrl: req.body.contractUrl
   }
 
-  await clientService.updateOne(clientId, clientToBeUpdated)
+  const clientIdReturned = await clientServices.updateOne(clientId, clientToBeUpdated)
 
-  return res.status(HttpStatusCode.NoContent).json({ message: CLIENT_SUCCESSFULLY_UPDATED })
+  return res.status(HttpStatusCode.Ok).json({ message: CLIENT_SUCCESSFULLY_UPDATED, clientId: clientIdReturned })
 }

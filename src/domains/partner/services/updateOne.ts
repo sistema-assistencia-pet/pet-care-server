@@ -7,7 +7,7 @@ import { partnerRepositories } from '../repositories/partnerRepositories'
 import type { PartnerToBeUpdated } from '../partnerInterfaces'
 
 export async function updateOne (
-  partnerId: string,
+  partnerId: Partner['id'],
   partnerToBeUpdated: PartnerToBeUpdated
 ): Promise<Partner['id']> {
   const PARTNER_NOT_FOUND = 'Estabelecimento não encontrado.'

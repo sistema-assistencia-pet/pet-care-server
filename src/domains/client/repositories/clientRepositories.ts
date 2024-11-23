@@ -1,9 +1,11 @@
 import { createOne } from './createOne'
 import { findOne } from './findOne'
+import { updateOne } from './updateOne'
 
 const clientRepositories = {
   createOne,
-  findOne
+  findOne,
+  updateOne
 }
 
 export { clientRepositories }

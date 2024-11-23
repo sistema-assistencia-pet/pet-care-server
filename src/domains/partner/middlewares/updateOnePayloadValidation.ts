@@ -13,7 +13,8 @@ export async function updateOnePayloadValidation (req: Request, _res: Response, 
       })
       .length(14, {
         message: 'O campo CNPJ ("cnpj") deve ter 14 caracteres.'
-      }),
+      })
+      .optional(),
 
     password: z
       .string({
@@ -22,7 +23,8 @@ export async function updateOnePayloadValidation (req: Request, _res: Response, 
       })
       .min(8, {
         message: 'O campo Senha ("password") deve ter pelo menos 8 caracteres.'
-      }),
+      })
+      .optional(),
 
     corporateName: z
       .string({

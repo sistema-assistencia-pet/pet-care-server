@@ -66,7 +66,7 @@ clientRouter.patch(
 clientRouter.patch(
   '/:id',
   verifyAccessToken,
-  checkIfIsMasterOrClient,
+  checkIfIsMaster,
   validateUuidParam,
   clientMiddlewares.updateOnePayloadValidation,
   clientControllers.updateOne

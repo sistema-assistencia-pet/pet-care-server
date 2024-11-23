@@ -9,7 +9,8 @@ export type ClientToBeReturned = Omit<Client, 'stateId' | 'cityId' | 'addressId'
 
 export type ClientMinData = Pick<Client, 'id' | 'fantasyName'>
 
-export type ClientToBeUpdated = Omit<ClientToBeCreated, 'cnpj' | 'statusId'>
+export type ClientToBeUpdated = Partial<ClientToBeCreated>
+
 export interface FindManyClientsQueryParams {
   cnpj?: string
   take?: number
