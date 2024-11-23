@@ -7,6 +7,8 @@ import type { PartnerToBeCreated } from '../partnerInterfaces'
 export async function createOne (partnerToBeCreated: PartnerToBeCreated): Promise<Partner['id']> {
   const PARTNER_ALREADY_EXISTS = 'Estabelecimento já cadastrado.'
 
+  // Verifica se o estabelecimento já existe para antes de cadastrar o endereço
+  // para não cadastrar endereço em casos de erro
   const partner = await partnerRepositories.findOne({ cnpj: partnerToBeCreated.cnpj }, false)
 
   if (partner !== null) throw new BadRequestError(PARTNER_ALREADY_EXISTS)

@@ -2,8 +2,9 @@ import type { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
 
 import { BadRequestError, GenericError } from '../../../errors'
+import { cityRepositories } from '../../city/repositories/cityRepositories'
 
-export function createOnePayloadValidation (req: Request, _res: Response, next: NextFunction): void {
+export async function createOnePayloadValidation (req: Request, _res: Response, next: NextFunction): Promise<void> {
   const createOnePayloadSchema = z.object({
     cnpj: z
       .string({
@@ -36,36 +37,59 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
       .string({
         invalid_type_error: 'O campo Segmento ("segment") deve ser uma string.',
         required_error: 'O campo Segmento ("segment") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Segmento ("segment") deve ter pelo menos 3 caracteres.'
       }),
 
-    address: z
+    cep: z
       .string({
-        invalid_type_error: 'O campo Endereço ("address") deve ser uma string.',
-        required_error: 'O campo Endereço ("address") é obrigatório.'
+        invalid_type_error: 'O campo CEP ("cep") deve ser uma string.',
+        required_error: 'O campo CEP ("cep") é obrigatório.'
+      })
+      .length(8, {
+        message: 'O campo CEP ("cep") deve ter 14 caracteres.'
+      })
+      .optional(),
+
+    street: z
+      .string({
+        invalid_type_error: 'O campo Rua ("street") deve ser uma string.',
+        required_error: 'O campo Rua ("street") é obrigatório.'
       })
       .min(3, {
-        message: 'O campo Endereço ("address") deve ter pelo menos 3 caracteres.'
+        message: 'O campo Rua ("street") deve ter pelo menos 3 caracteres.'
+      })
+      .optional(),
+
+    number: z
+      .string({
+        invalid_type_error: 'O campo Número ("number") deve ser uma string.',
+        required_error: 'O campo Número ("number") é obrigatório.'
+      })
+      .optional(),
+
+    complement: z
+      .string({
+        invalid_type_error: 'O campo Complemento ("complement") deve ser uma string.',
+        required_error: 'O campo Complemento ("complement") é obrigatório.'
+      })
+      .optional(),
+
+    neighborhood: z
+      .string({
+        invalid_type_error: 'O campo Bairro ("neighborhood") deve ser uma string.',
+        required_error: 'O campo Bairro ("neighborhood") é obrigatório.'
+      })
+      .optional(),
+
+    stateId: z
+      .number({
+        invalid_type_error: 'O campo Id do Estado ("stateId") deve ser uma number.',
+        required_error: 'O campo Id do Estado ("stateId") é obrigatório.'
       }),
 
-    state: z
-      .string({
-        invalid_type_error: 'O campo Estado ("state") deve ser uma string.',
-        required_error: 'O campo Estado ("state") é obrigatório.'
-      })
-      .length(2, {
-        message: 'O campo Estado ("state") deve ter 2 caracteres.'
-      }),
-
-    city: z
-      .string({
-        invalid_type_error: 'O campo Cidade ("city") deve ser uma string.',
-        required_error: 'O campo Cidade ("city") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Cidade ("city") deve ter pelo menos 3 caracteres.'
+    cityId: z
+      .number({
+        invalid_type_error: 'O campo Id da Cidade ("cityId") deve ser uma number.',
+        required_error: 'O campo Id da Cidade ("cityId") é obrigatório.'
       }),
 
     managerName: z
@@ -135,22 +159,7 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
         invalid_type_error: 'O campo URL do Contrato ("contractUrl") deve ser uma string.',
         required_error: 'O campo URL do Contrato ("contractUrl") é obrigatório.'
       })
-      .url({
-        message: 'O campo URL do Contrato ("contractUrl") deve ser uma URL válida.'
-      })
-      .optional(),
-
-    statusId: z
-      .number({
-        invalid_type_error: 'O campo Status ("statusId") deve ser um number.',
-        required_error: 'O campo Status ("statusId") é obrigatório.'
-      })
-      .gte(1, {
-        message: 'O campo Status ("statusId") deve 1 (ativo), 2 (inativo) ou 3 (excluído).'
-      })
-      .lte(3, {
-        message: 'O campo Status ("statusId") deve 1 (ativo), 2 (inativo) ou 3 (excluído).'
-      })
+      .optional()
   })
 
   try {
@@ -159,17 +168,22 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
       corporateName: req.body.corporateName,
       fantasyName: req.body.fantasyName,
       segment: req.body.segment,
-      address: req.body.address,
-      state: req.body.state,
-      city: req.body.city,
+
+      cep: req.body.address.cep,
+      street: req.body.address.street,
+      number: req.body.address.number,
+      complement: req.body.address.complement,
+      neighborhood: req.body.address.neighborhood,
+      cityId: req.body.address.cityId,
+      stateId: req.body.address.stateId,
+
       managerName: req.body.managerName,
       managerPhoneNumber: req.body.managerPhoneNumber,
       managerEmail: req.body.managerEmail,
       financePhoneNumber: req.body.financePhoneNumber,
       lumpSum: req.body.lumpSum,
       unitValue: req.body.unitValue,
-      contractUrl: req.body.contractUrl,
-      statusId: req.body.statusId
+      contractUrl: req.body.contractUrl
     })
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -177,6 +191,16 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
     }
 
     throw new GenericError(error)
+  }
+
+  const cities = await cityRepositories.findMany({ id: req.body.address.cityId })
+
+  if (cities.length === 0) {
+    throw new BadRequestError('Cidade não encontrada.')
+  }
+
+  if (cities[0].stateId !== req.body.address.stateId) {
+    throw new BadRequestError('Cidade não pertence ao estado informado.')
   }
 
   next()

@@ -1,8 +1,11 @@
 import type { Prisma, Client } from '@prisma/client'
 
-export type ClientToBeCreated = Omit<Client, 'id' | 'totalSavings' | 'createdAt' | 'updatedAt'>
+import type { AddressToBeCreated, AddressToBeReturned } from '../address/addressInterfaces'
+import type { StatusToBeReturned } from '../status/statusInterfaces'
 
-export type ClientToBeReturned = Omit<Client, 'updatedAt'>
+export type ClientToBeCreated = Omit<Client, 'id' | 'availableBalance' | 'addressId' | 'cityId' | 'stateId' | 'statusId' | 'createdAt' | 'updatedAt'> & { address: AddressToBeCreated | null }
+
+export type ClientToBeReturned = Omit<Client, 'stateId' | 'cityId' | 'addressId' | 'statusId'> & { address: AddressToBeReturned | null } & { status: StatusToBeReturned }
 
 export type ClientMinData = Pick<Client, 'id' | 'fantasyName'>
 
