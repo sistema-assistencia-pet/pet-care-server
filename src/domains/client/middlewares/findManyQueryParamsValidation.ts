@@ -5,10 +5,10 @@ import { BadRequestError, GenericError } from '../../../errors'
 
 export function findManyQueryParamsValidation (req: Request, _res: Response, next: NextFunction): void {
   const findManyQueryParamsSchema = z.object({
-    cnpj: z
+    searchInput: z
       .string({
-        invalid_type_error: 'O campo CNPJ ("cnpj") deve ser uma string.',
-        required_error: 'O campo CNPJ ("cnpj") é obrigatório.'
+        invalid_type_error: 'O campo Busca ("searchInput") deve ser uma string.',
+        required_error: 'O campo Busca ("searchInput") é obrigatório.'
       })
       .optional(),
 
@@ -22,16 +22,6 @@ export function findManyQueryParamsValidation (req: Request, _res: Response, nex
       })
       .lte(50, {
         message: 'O campo Quantidade de Registros ("take") deve ser menor ou igual a 50.'
-      })
-      .optional(),
-
-    fantasyName: z
-      .string({
-        invalid_type_error: 'O campo Nome Fantasia ("fantasyName") deve ser uma string.',
-        required_error: 'O campo Nome Fantasia ("fantasyName") é obrigatório.'
-      })
-      .min(3, {
-        message: 'O campo Nome Fantasia ("fantasyName") deve ter pelo menos 3 caracteres.'
       })
       .optional(),
 
@@ -61,9 +51,8 @@ export function findManyQueryParamsValidation (req: Request, _res: Response, nex
 
   try {
     findManyQueryParamsSchema.parse({
-      cnpj: req.query.cnpj,
+      searchInput: req.query['search-input'],
       take: typeof req.query.take === 'string' ? parseInt(req.query.take) : undefined,
-      fantasyName: req.query['fantasy-name'],
       skip: typeof req.query.skip === 'string' ? parseInt(req.query.skip) : undefined,
       statusId: typeof req.query['status-id'] === 'string' ? parseInt(req.query['status-id']) : undefined
     })

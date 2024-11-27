@@ -10,7 +10,7 @@ export async function findMany (queryParams: FindManyVoucherCodesQueryParams): P
 
   const where: Prisma.VoucherCodeWhereInput = { OR: [{ voucherId: queryParams.voucherId }] }
 
-  if ('wasRedeemed' in queryParams) where.OR?.push({ wasredeemed: queryParams.wasRedeemed })
+  if ('wasRedeemed' in queryParams) where.OR?.push({ wasRedeemed: queryParams.wasRedeemed })
 
   if (where.OR?.length === 0) delete where.OR
 

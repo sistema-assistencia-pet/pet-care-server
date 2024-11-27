@@ -27,8 +27,8 @@ export async function createOne (req: Request, res: Response): Promise<Response>
     managerPhoneNumber: req.body.managerPhoneNumber,
     managerEmail: req.body.managerEmail,
     financePhoneNumber: req.body.financePhoneNumber,
-    lumpSum: req.body.lumpSum,
-    unitValue: req.body.unitValue,
+    lumpSumInCents: req.body.lumpSumInCents,
+    unitValueInCents: req.body.unitValueInCents,
     contractUrl: req.body.contractUrl
   }
 

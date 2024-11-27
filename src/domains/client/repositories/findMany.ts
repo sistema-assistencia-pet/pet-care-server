@@ -1,8 +1,8 @@
 import { DatabaseError } from '../../../errors'
-import type { FindManyClientsParams, ClientToBeReturned } from '../clientInterfaces'
+import type { ClientToBeReturnedInFindMany, FindManyClientsParams } from '../clientInterfaces'
 import prismaClient from '../../../database/connection'
 
-export async function findMany ({ skip, take, where }: FindManyClientsParams): Promise<ClientToBeReturned[]> {
+export async function findMany ({ skip, take, where }: FindManyClientsParams): Promise<ClientToBeReturnedInFindMany[]> {
   try {
     const clients = await prismaClient.client.findMany({
       where,
@@ -11,21 +11,15 @@ export async function findMany ({ skip, take, where }: FindManyClientsParams): P
       select: {
         id: true,
         cnpj: true,
-        corporateName: true,
         fantasyName: true,
         segment: true,
-        address: true,
-        state: true,
-        city: true,
-        managerName: true,
-        managerPhoneNumber: true,
-        managerEmail: true,
-        financePhoneNumber: true,
-        lumpSum: true,
-        unitValue: true,
-        totalSavings: true,
-        contractUrl: true,
-        statusId: true,
+        availableBalanceInCents: true,
+        city: {
+          select: { id: true, name: true }
+        },
+        state: {
+          select: { id: true, name: true }
+        },
         createdAt: true
       },
       orderBy: { createdAt: 'desc' }

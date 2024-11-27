@@ -1,25 +1,24 @@
 import type { Prisma } from '@prisma/client'
 
-import clientRepositories from '../repositories'
-import type { ClientToBeReturned, FindManyClientsQueryParams } from '../clientInterfaces'
+import { clientRepositories } from '../repositories/clientRepositories'
+import type { ClientToBeReturnedInFindMany, FindManyClientsQueryParams } from '../clientInterfaces'
 import { NotFoundError } from '../../../errors'
 import type { FindManyResponse } from '../../../interfaces'
 
 export async function findMany (
   { skip, take, ...queryParams }: FindManyClientsQueryParams
-): Promise<FindManyResponse<ClientToBeReturned>> {
+): Promise<FindManyResponse<ClientToBeReturnedInFindMany>> {
   const CLIENTS_NOT_FOUND = 'Nenhum cliente encontrado.'
 
-  const where: Prisma.ClientWhereInput = {}
+  const where: Prisma.ClientWhereInput = { OR: [] }
 
   Object.entries(queryParams).forEach(([key, value]) => {
     if (value !== undefined && value !== null) {
       switch (key) {
-        case 'cnpj':
+        case 'searchInput':
           Object.assign(where, { cnpj: { contains: value } })
-          break
-        case 'fantasyName':
           Object.assign(where, { fantasyName: { contains: value } })
+          Object.assign(where, { segment: { contains: value } })
           break
         default:
           Object.assign(where, { [key]: value })
@@ -27,6 +26,8 @@ export async function findMany (
       }
     }
   })
+
+  if (where.OR?.length === 0) delete where.OR
 
   const clients = await clientRepositories.findMany({ skip, take, where })
 

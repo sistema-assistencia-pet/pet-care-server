@@ -26,10 +26,10 @@ export async function findOne (
         managerPhoneNumber: fullInfo,
         managerEmail: fullInfo,
         financePhoneNumber: fullInfo,
-        lumpSum: fullInfo,
-        unitValue: fullInfo,
+        lumpSumInCents: fullInfo,
+        unitValueInCents: fullInfo,
         contractUrl: fullInfo,
-        availableBalance: fullInfo,
+        availableBalanceInCents: fullInfo,
         address: {
           select: {
             id: true,

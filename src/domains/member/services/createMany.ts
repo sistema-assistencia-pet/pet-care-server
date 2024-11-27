@@ -14,7 +14,7 @@ import { status } from '../../../enums/status'
 export async function createMany (clientId: string, fileBuffer: Buffer): Promise<void> {
   const INVALID_CLIENT = 'Cliente inválido.'
 
-  const client = await clientRepositories.findOneById(clientId, { statusId: status.ACTIVE }) // TODO: verificar
+  const client = await clientRepositories.findOne({ id: clientId }, false, { statusId: status.ACTIVE })
 
   if (client === null) throw new BadRequestError(INVALID_CLIENT)
 

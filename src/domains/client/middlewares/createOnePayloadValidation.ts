@@ -152,23 +152,23 @@ export async function createOnePayloadValidation (req: Request, _res: Response, 
         message: 'O campo Telefone do Responsável ("financePhoneNumber") deve ter no máximo 11 caracteres.'
       }),
 
-    lumpSum: z
+    lumpSumInCents: z
       .number({
-        invalid_type_error: 'O campo Valor Fixo ("lumpSum") deve ser um number.',
-        required_error: 'O campo Valor Fixo ("lumpSum") é obrigatório.'
+        invalid_type_error: 'O campo Valor Fixo ("lumpSumInCents") deve ser um number.',
+        required_error: 'O campo Valor Fixo ("lumpSumInCents") é obrigatório.'
       })
       .gte(0, {
-        message: 'O campo Valor Fixo ("lumpSum") deve ser maior ou igual a 0.'
+        message: 'O campo Valor Fixo ("lumpSumInCents") deve ser maior ou igual a 0.'
       })
       .optional(),
 
-    unitValue: z
+    unitValueInCents: z
       .number({
-        invalid_type_error: 'O campo Valor Unitário ("unitValue") deve ser um number.',
-        required_error: 'O campo Valor Unitário ("unitValue") é obrigatório.'
+        invalid_type_error: 'O campo Valor Unitário ("unitValueInCents") deve ser um number.',
+        required_error: 'O campo Valor Unitário ("unitValueInCents") é obrigatório.'
       })
       .gte(0, {
-        message: 'O campo Valor Unitário ("unitValue") deve ser maior ou igual a 0.'
+        message: 'O campo Valor Unitário ("unitValueInCents") deve ser maior ou igual a 0.'
       })
       .optional(),
 
@@ -201,8 +201,8 @@ export async function createOnePayloadValidation (req: Request, _res: Response, 
       managerPhoneNumber: req.body.managerPhoneNumber,
       managerEmail: req.body.managerEmail,
       financePhoneNumber: req.body.financePhoneNumber,
-      lumpSum: req.body.lumpSum,
-      unitValue: req.body.unitValue,
+      lumpSumInCents: req.body.lumpSumInCents,
+      unitValueInCents: req.body.unitValueInCents,
       contractUrl: req.body.contractUrl
     })
   } catch (error) {

@@ -134,10 +134,10 @@ model Client {
   managerPhoneNumber String?  @map("telefone_do_responsavel")
   managerEmail       String  @map("email_do_responsavel")
   financePhoneNumber String?  @map("telefone_do_financeiro")
-  lumpSum            Float?   @map("valor_do_boleto")
-  unitValue          Float?   @map("valor_unitario")
+  lumpSumInCents            Float?   @map("valor_do_boleto_em_centavos")
+  unitValueInCents          Float?   @map("valor_unitario_em_centavos")
   contractUrl        String?  @map("url_do_contrato")
-  availableBalance   Float?   @default(0) @map("saldo_disponivel")
+  availableBalanceInCents   Int?   @default(0) @map("saldo_disponivel_em_centavos")
   statusId           Int      @default(1) @map("id_status")
   createdAt          DateTime @default(now()) @map("data_de_criacao")
   updatedAt          DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
@@ -161,7 +161,7 @@ model Client {
 model ClientRecharge {
   id        String   @id @default(uuid())
   clientId  String   @map("id_cliente")
-  amount    Float    @map("valor")
+  amount_in_cents    Int    @map("valor")
   createdAt DateTime @default(now()) @map("data_de_criacao")
   updatedAt DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
@@ -343,7 +343,7 @@ model MemberVoucherWaitingLine {
 model VoucherSettingsByClient {
   clientId         String   @map("id_cliente")
   voucherId        String   @map("id_voucher")
-  reservedBalance  Float    @default(0) @map("saldo_reservado")
+  reservedBalanceInCents  Float    @default(0) @map("saldo_reservado_em_centavos")
   watingTimeInDays Int      @default(0) @map("tempo_de_espera_em_dias")
   createdAt        DateTime @default(now()) @map("data_de_criacao")
   updatedAt        DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
