@@ -1,8 +1,9 @@
-import type { Prisma, Client, User, State } from '@prisma/client'
+import type { Prisma, Client, User, State, ClientRecharge, VoucherSettingsByClient } from '@prisma/client'
 
 import type { AddressToBeCreated, AddressToBeReturned } from '../address/addressInterfaces'
-import type { StatusToBeReturned } from '../status/statusInterfaces'
+import type { balanceDistributionSetting } from '../../enums/balanceDistributionSetting'
 import type { CityToBeReturned } from '../city/cityInterfaces'
+import type { StatusToBeReturned } from '../status/statusInterfaces'
 
 export type ClientToBeCreated = Omit<Client, 'id' | 'availableBalanceInCents' | 'addressId' | 'cityId' | 'stateId' | 'statusId' | 'createdAt' | 'updatedAt'> & { address: AddressToBeCreated | null } & { managerCpf: User['cpf'], managerPassword: User['password'] }
 
@@ -25,4 +26,11 @@ export interface FindManyClientsParams {
   skip?: number
   take?: number
   where: Partial<Prisma.ClientWhereInput>
+}
+
+export interface ClientBalanceRechargeData {
+  clientId: Client['id']
+  rechargeAmountInCents: ClientRecharge['amountInCents']
+  balanceDistributionSetting: balanceDistributionSetting
+  watingTimeInDays?: VoucherSettingsByClient['watingTimeInDays']
 }

@@ -35,6 +35,15 @@ clientRouter.get(
   clientControllers.findMany
 )
 
+clientRouter.post(
+  '/:id/balance/recharge',
+  verifyAccessToken,
+  checkIfIsMaster,
+  validateUuidParam,
+  clientMiddlewares.rechargeBalancePayloadValidation,
+  clientControllers.rechargeBalance
+)
+
 // Ativar cliente
 clientRouter.patch(
   '/:id/activate',

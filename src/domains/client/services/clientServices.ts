@@ -4,6 +4,7 @@ import { deleteOne } from './deleteOne'
 import { findMany } from './findMany'
 import { findOneById } from './findOneById'
 import { inactivateOne } from './inactivateOne'
+import { rechargeBalance } from './rechargeBalance'
 import { updateOne } from './updateOne'
 
 const clientServices = {
@@ -13,6 +14,7 @@ const clientServices = {
   findMany,
   findOneById,
   inactivateOne,
+  rechargeBalance,
   updateOne
 }
 
