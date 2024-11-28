@@ -35,6 +35,7 @@ clientRouter.get(
   clientControllers.findMany
 )
 
+// Recarregar saldo do cliente
 clientRouter.post(
   '/:id/balance/recharge',
   verifyAccessToken,
@@ -42,6 +43,16 @@ clientRouter.post(
   validateUuidParam,
   clientMiddlewares.rechargeBalancePayloadValidation,
   clientControllers.rechargeBalance
+)
+
+// Distribuir saldo do cliente
+clientRouter.post(
+  '/:id/balance/distribute',
+  verifyAccessToken,
+  checkIfIsMaster,
+  validateUuidParam,
+  clientMiddlewares.distributeBalancePayloadValidation,
+  clientControllers.distributeBalance
 )
 
 // Ativar cliente

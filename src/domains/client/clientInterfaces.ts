@@ -34,3 +34,5 @@ export interface ClientBalanceRechargeData {
   balanceDistributionSetting: balanceDistributionSetting
   watingTimeInDays?: VoucherSettingsByClient['watingTimeInDays']
 }
+
+export type ClientBalanceDistributionData = Omit<ClientBalanceRechargeData, 'rechargeAmountInCents'>

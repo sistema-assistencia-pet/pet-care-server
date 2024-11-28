@@ -1,6 +1,7 @@
 import { activateOne } from './activateOne'
 import { createOne } from './createOne'
 import { deleteOne } from './deleteOne'
+import { distributeBalance } from './distributeBalance'
 import { findMany } from './findMany'
 import { findOneById } from './findOneById'
 import { inactivateOne } from './inactivateOne'
@@ -11,6 +12,7 @@ const clientControllers = {
   activateOne,
   createOne,
   deleteOne,
+  distributeBalance,
   findMany,
   findOneById,
   inactivateOne,
