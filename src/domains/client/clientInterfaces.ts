@@ -1,4 +1,4 @@
-import type { Prisma, Client, User, State, ClientRecharge, VoucherSettingsByClient } from '@prisma/client'
+import type { Prisma, Client, User, State, VoucherSettingsByClient, ClientBalanceTransaction } from '@prisma/client'
 
 import type { AddressToBeCreated, AddressToBeReturned } from '../address/addressInterfaces'
 import type { balanceDistributionSetting } from '../../enums/balanceDistributionSetting'
@@ -30,7 +30,7 @@ export interface FindManyClientsParams {
 
 export interface ClientBalanceRechargeData {
   clientId: Client['id']
-  rechargeAmountInCents: ClientRecharge['amountInCents']
+  rechargeAmountInCents: ClientBalanceTransaction['amountInCents']
   balanceDistributionSetting: balanceDistributionSetting
   watingTimeInDays?: VoucherSettingsByClient['watingTimeInDays']
 }

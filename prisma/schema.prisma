@@ -47,8 +47,8 @@ model Role {
   translation String @map("traducao")
 
   // Relation
-  users   User[]
-  members Member[]
+  users    User[]
+  members  Member[]
   partners Partner[]
 
   @@map("cargo")
@@ -91,7 +91,7 @@ model City {
   updatedAt DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
-  state    State     @relation(fields: [stateId], references: [id])
+  state     State     @relation(fields: [stateId], references: [id])
   addresses Address[]
   clients   Client[]
   partners  Partner[]
@@ -102,7 +102,7 @@ model City {
 model Address {
   id           Int      @id @default(autoincrement())
   cep          String?
-  street      String?  @map("rua")
+  street       String?  @map("rua")
   number       String?  @map("numero")
   complement   String?  @map("complemento")
   neighborhood String?  @map("bairro")
@@ -122,53 +122,54 @@ model Address {
 }
 
 model Client {
-  id                 String   @id @default(uuid())
-  cnpj               String   @unique
-  corporateName      String?  @map("razao_social")
-  fantasyName        String?  @map("nome_fantasia")
-  segment            String?  @map("segmento")
-  addressId          Int?     @map("id_endereco")
-  stateId            Int?     @map("id_estado")
-  cityId             Int?     @map("id_cidade")
-  managerName        String  @map("nome_do_responsavel")
-  managerPhoneNumber String?  @map("telefone_do_responsavel")
-  managerEmail       String  @map("email_do_responsavel")
-  financePhoneNumber String?  @map("telefone_do_financeiro")
-  lumpSumInCents            Float?   @map("valor_do_boleto_em_centavos")
-  unitValueInCents          Float?   @map("valor_unitario_em_centavos")
-  contractUrl        String?  @map("url_do_contrato")
-  availableBalanceInCents   Int?   @default(0) @map("saldo_disponivel_em_centavos")
-  statusId           Int      @default(1) @map("id_status")
-  createdAt          DateTime @default(now()) @map("data_de_criacao")
-  updatedAt          DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
+  id                      String   @id @default(uuid())
+  cnpj                    String   @unique
+  corporateName           String?  @map("razao_social")
+  fantasyName             String?  @map("nome_fantasia")
+  segment                 String?  @map("segmento")
+  addressId               Int?     @map("id_endereco")
+  stateId                 Int?     @map("id_estado")
+  cityId                  Int?     @map("id_cidade")
+  managerName             String   @map("nome_do_responsavel")
+  managerPhoneNumber      String?  @map("telefone_do_responsavel")
+  managerEmail            String   @map("email_do_responsavel")
+  financePhoneNumber      String?  @map("telefone_do_financeiro")
+  lumpSumInCents          Float?   @map("valor_do_boleto_em_centavos")
+  unitValueInCents        Float?   @map("valor_unitario_em_centavos")
+  contractUrl             String?  @map("url_do_contrato")
+  availableBalanceInCents Int?     @default(0) @map("saldo_disponivel_em_centavos")
+  statusId                Int      @default(1) @map("id_status")
+  createdAt               DateTime @default(now()) @map("data_de_criacao")
+  updatedAt               DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
-  status                   Status                    @relation(fields: [statusId], references: [id])
-  address                  Address?                  @relation(fields: [addressId], references: [id])
-  state                    State?                    @relation(fields: [stateId], references: [id])
-  city                     City?                     @relation(fields: [cityId], references: [id])
-  members                  Member[]
-  users                    User[]
-  clientRecharges          ClientRecharge[]
-  voucherRedemptions       VoucherRedemption[]
-  voucherSettingsByClients VoucherSettingsByClient[]
+  status                    Status                     @relation(fields: [statusId], references: [id])
+  address                   Address?                   @relation(fields: [addressId], references: [id])
+  state                     State?                     @relation(fields: [stateId], references: [id])
+  city                      City?                      @relation(fields: [cityId], references: [id])
+  members                   Member[]
+  users                     User[]
+  clientBalanceTransactions ClientBalanceTransaction[]
+  voucherRedemptions        VoucherRedemption[]
+  voucherSettingsByClients  VoucherSettingsByClient[]
 
   @@index(fantasyName)
   @@index(segment)
   @@map("cliente")
 }
 
-model ClientRecharge {
-  id        String   @id @default(uuid())
-  clientId  String   @map("id_cliente")
-  amountInCents    Int    @map("valor_em_centavos")
-  createdAt DateTime @default(now()) @map("data_de_criacao")
-  updatedAt DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
+model ClientBalanceTransaction {
+  id            String   @id @default(uuid())
+  clientId      String   @map("id_cliente")
+  amountInCents Int      @map("valor_em_centavos")
+  type          String   @map("tipo")
+  createdAt     DateTime @default(now()) @map("data_de_criacao")
+  updatedAt     DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
   client Client @relation(fields: [clientId], references: [id])
 
-  @@map("recarga_cliente")
+  @@map("transacao_de_saldo_do_cliente")
 }
 
 model Partner {
@@ -191,14 +192,14 @@ model Partner {
   openingHours        String?  @map("horario_de_funcionamento")
   image               String?  @map("imagem")
   logo                String?
-  roleId              Int      @map("id_cargo") @default(4)
+  roleId              Int      @default(4) @map("id_cargo")
   statusId            Int      @default(1) @map("id_status")
   createdAt           DateTime @default(now()) @map("data_de_criacao")
   updatedAt           DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
   status             Status              @relation(fields: [statusId], references: [id])
-  role             Role              @relation(fields: [roleId], references: [id])
+  role               Role                @relation(fields: [roleId], references: [id])
   category           Category            @relation(fields: [categoryId], references: [id])
   address            Address?            @relation(fields: [addressId], references: [id])
   state              State?              @relation(fields: [stateId], references: [id])
@@ -341,12 +342,12 @@ model MemberVoucherWaitingLine {
 }
 
 model VoucherSettingsByClient {
-  clientId         String   @map("id_cliente")
-  voucherId        String   @map("id_voucher")
-  reservedBalanceInCents  Float    @default(0) @map("saldo_reservado_em_centavos")
-  watingTimeInDays Int      @default(0) @map("tempo_de_espera_em_dias")
-  createdAt        DateTime @default(now()) @map("data_de_criacao")
-  updatedAt        DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
+  clientId               String   @map("id_cliente")
+  voucherId              String   @map("id_voucher")
+  reservedBalanceInCents Float    @default(0) @map("saldo_reservado_em_centavos")
+  watingTimeInDays       Int      @default(0) @map("tempo_de_espera_em_dias")
+  createdAt              DateTime @default(now()) @map("data_de_criacao")
+  updatedAt              DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
   client  Client  @relation(fields: [clientId], references: [id])

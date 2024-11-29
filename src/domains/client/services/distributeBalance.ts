@@ -1,11 +1,12 @@
 import { balanceDistributionSetting } from '../../../enums/balanceDistributionSetting'
+import { BadRequestError, InternalServerError, NotFoundError } from '../../../errors'
 import type { ClientBalanceDistributionData, ClientBalanceRechargeData } from '../clientInterfaces'
+import { clientBalanceTransactionRepositories } from '../../clientBalanceTransaction/repositories/clientBalanceTransactionRepositories'
+import { clientBalanceTransactionType } from '../../../enums/clientBalanceTransactionType'
+import { clientRepositories } from '../repositories/clientRepositories'
 import { distributeRechargeAmongAllVouchers } from '../utils/distributeRechargeAmongAllVouchers'
 import { distributeRechargeAmongClientCurrentVouchers } from '../utils/distributeRechargeAmongClientCurrentVouchers'
-import { BadRequestError, InternalServerError, NotFoundError } from '../../../errors'
-import { clientRepositories } from '../repositories/clientRepositories'
 import { status } from '../../../enums/status'
-import { clientRechargeRepositories } from '../../clientRecharge/repositories/clientRechargeRepositories'
 
 export async function distributeBalance (clientBalanceDistributionData: ClientBalanceDistributionData): Promise<void> {
   const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
@@ -28,10 +29,11 @@ export async function distributeBalance (clientBalanceDistributionData: ClientBa
     { availableBalanceInCents: { decrement: client.availableBalanceInCents } }
   )
 
-  // Registra a operaçãio de resgate de saldo do cliente
-  await clientRechargeRepositories.createOne({
+  // Registra a operação de consumo do saldo do cliente
+  await clientBalanceTransactionRepositories.createOne({
     clientId: clientBalanceDistributionData.clientId,
-    amountInCents: -(client.availableBalanceInCents)
+    amountInCents: -(client.availableBalanceInCents),
+    type: clientBalanceTransactionType.USAGE
   })
 
   switch (clientBalanceDistributionData.balanceDistributionSetting) {

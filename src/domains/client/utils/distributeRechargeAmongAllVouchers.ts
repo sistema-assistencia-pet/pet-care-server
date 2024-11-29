@@ -1,4 +1,6 @@
 import type { ClientBalanceRechargeData } from '../clientInterfaces'
+import { clientBalanceTransactionRepositories } from '../../clientBalanceTransaction/repositories/clientBalanceTransactionRepositories'
+import { clientBalanceTransactionType } from '../../../enums/clientBalanceTransactionType'
 import { clientRepositories } from '../repositories/clientRepositories'
 import { InternalServerError } from '../../../errors'
 import { status } from '../../../enums/status'
@@ -28,12 +30,19 @@ export async function distributeRechargeAmongAllVouchers (clientBalanceRechargeD
     // Calcula o resto da divisão do valor de recarga pelo número de vouchers
     const rechargeAmountRemainder = clientBalanceRechargeData.rechargeAmountInCents % allVouchers.length
 
-    // Se houver resto na divisão, adiciona o resto ao saldo do cliente
+    // Se houver resto na divisão, devolve o resto ao saldo do cliente
     if (rechargeAmountRemainder > 0) {
       await clientRepositories.updateOne(
         clientBalanceRechargeData.clientId,
         { availableBalanceInCents: { increment: rechargeAmountRemainder } }
       )
+
+      // Registra a operação de devolução de resto ao saldo do cliente
+      await clientBalanceTransactionRepositories.createOne({
+        clientId: clientBalanceRechargeData.clientId,
+        amountInCents: rechargeAmountRemainder,
+        type: clientBalanceTransactionType.REMAINDER_REFUND
+      })
     }
   } catch (error) {
     logger.error(error)
