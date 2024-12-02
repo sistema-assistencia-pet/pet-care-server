@@ -1,9 +1,10 @@
-import type { Prisma, Client, User, State, VoucherSettingsByClient, ClientBalanceTransaction } from '@prisma/client'
+import type { Prisma, Client, User, State, VoucherSettingsByClient, ClientBalanceTransaction, Voucher } from '@prisma/client'
 
 import type { AddressToBeCreated, AddressToBeReturned } from '../address/addressInterfaces'
 import type { balanceDistributionSetting } from '../../enums/balanceDistributionSetting'
 import type { CityToBeReturned } from '../city/cityInterfaces'
 import type { StatusToBeReturned } from '../status/statusInterfaces'
+import type { voucherBalanceOperationType } from '../../enums/voucherBalanceOperationType'
 
 export type ClientToBeCreated = Omit<Client, 'id' | 'availableBalanceInCents' | 'addressId' | 'cityId' | 'stateId' | 'statusId' | 'createdAt' | 'updatedAt'> & { address: AddressToBeCreated | null } & { managerCpf: User['cpf'], managerPassword: User['password'] }
 
@@ -36,3 +37,11 @@ export interface ClientBalanceRechargeData {
 }
 
 export type ClientBalanceDistributionData = Omit<ClientBalanceRechargeData, 'rechargeAmountInCents'>
+
+export interface ConfigureVoucherData {
+  clientId: Client['id']
+  voucherId: Voucher['id']
+  rechargeAmountInCents: ClientBalanceTransaction['amountInCents']
+  watingTimeInDays?: VoucherSettingsByClient['watingTimeInDays']
+  voucherBalanceOperationType: voucherBalanceOperationType
+}

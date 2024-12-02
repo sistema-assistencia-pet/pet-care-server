@@ -1,4 +1,5 @@
 import { activateOne } from './activateOne'
+import { configureVoucher } from './configureVoucher'
 import { createOne } from './createOne'
 import { deleteOne } from './deleteOne'
 import { distributeBalance } from './distributeBalance'
@@ -10,6 +11,7 @@ import { updateOne } from './updateOne'
 
 const clientServices = {
   activateOne,
+  configureVoucher,
   createOne,
   deleteOne,
   distributeBalance,

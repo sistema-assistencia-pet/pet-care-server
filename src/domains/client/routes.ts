@@ -55,6 +55,16 @@ clientRouter.post(
   clientControllers.distributeBalance
 )
 
+// Configurar voucher para o cliente
+clientRouter.post(
+  '/:id/configure-voucher',
+  verifyAccessToken,
+  checkIfIsMaster,
+  validateUuidParam,
+  clientMiddlewares.configureVoucherPayloadValidation,
+  clientControllers.configureVoucher
+)
+
 // Ativar cliente
 clientRouter.patch(
   '/:id/activate',
