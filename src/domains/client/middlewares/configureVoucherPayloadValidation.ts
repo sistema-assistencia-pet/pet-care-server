@@ -10,8 +10,8 @@ export async function configureVoucherPayloadValidation (req: Request, _res: Res
         invalid_type_error: 'O campo Id do Voucher ("voucherId") deve ser uma string.',
         required_error: 'O campo Id do Voucher ("voucherId") é obrigatório.'
       })
-      .length(14, {
-        message: 'O campo Id do Voucher ("voucherId") deve ter 14 caracteres.'
+      .uuid({
+        message: 'O campo Id do Voucher ("voucherId") deve ser um UUID válido.'
       }),
 
     rechargeAmountInCents: z

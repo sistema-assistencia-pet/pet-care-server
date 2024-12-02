@@ -45,10 +45,10 @@ async function allocateBalanceToVoucher (
 
 async function deallocateBalanceFromVoucher (configureVoucherData: ConfigureVoucherData): Promise<void> {
   const INSUFICIENT_VOUCHER_BALANCE = 'Saldo do voucher insuficiente.'
-  const VOUCHER_CONFIGURED_FOR_CLIENT_NOT_FOUND = 'Voucher configurado para o cliente não encontrado.'
+  const CLIENT_VOUCHER_SETTINGS_NOT_FOUND = 'Configurações do voucher para este cliente não encontrada.'
 
   const voucherSettingsByClientList = await voucherSettingsByClientRepositories.findMany({ clientId: configureVoucherData.clientId, voucherId: configureVoucherData.voucherId })
-  if (voucherSettingsByClientList.length === 0) throw new BadRequestError(VOUCHER_CONFIGURED_FOR_CLIENT_NOT_FOUND)
+  if (voucherSettingsByClientList.length === 0) throw new BadRequestError(CLIENT_VOUCHER_SETTINGS_NOT_FOUND)
 
   const voucherSettingsByClient = voucherSettingsByClientList[0]
 

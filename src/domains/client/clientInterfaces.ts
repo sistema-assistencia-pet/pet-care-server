@@ -45,3 +45,8 @@ export interface ConfigureVoucherData {
   watingTimeInDays?: VoucherSettingsByClient['watingTimeInDays']
   voucherBalanceOperationType: voucherBalanceOperationType
 }
+
+export interface RemoveVoucherConfigurationData {
+  clientId: Client['id']
+  voucherId: Voucher['id']
+}

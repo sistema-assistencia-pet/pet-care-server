@@ -2,5 +2,6 @@ export enum clientBalanceTransactionType {
   RECHARGE = 'recarga_de_saldo',
   REMAINDER_REFUND = 'devolução_de_centavos_remancescentes',
   USAGE = 'consumo_de_saldo',
-  VOUCHER_REFUND = 'devolução_de_saldo_do_voucher'
+  VOUCHER_REFUND = 'devolução_de_saldo_do_voucher',
+  DISABLED_VOUCHER_REFUND = 'devolução_de_saldo_de_voucher_desabilitado'
 }

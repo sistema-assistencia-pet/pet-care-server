@@ -65,6 +65,16 @@ clientRouter.post(
   clientControllers.configureVoucher
 )
 
+// Remover configuração do voucher para o cliente
+clientRouter.post(
+  '/:id/remove-voucher-configuration',
+  verifyAccessToken,
+  checkIfIsMaster,
+  validateUuidParam,
+  clientMiddlewares.removeVoucherConfigurationPayloadValidation,
+  clientControllers.removeVoucherConfiguration
+)
+
 // Ativar cliente
 clientRouter.patch(
   '/:id/activate',

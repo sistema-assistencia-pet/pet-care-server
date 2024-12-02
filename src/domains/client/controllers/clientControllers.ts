@@ -7,6 +7,7 @@ import { findMany } from './findMany'
 import { findOneById } from './findOneById'
 import { inactivateOne } from './inactivateOne'
 import { rechargeBalance } from './rechargeBalance'
+import { removeVoucherConfiguration } from './removeVoucherConfiguration'
 import { updateOne } from './updateOne'
 
 const clientControllers = {
@@ -19,6 +20,7 @@ const clientControllers = {
   findOneById,
   inactivateOne,
   rechargeBalance,
+  removeVoucherConfiguration,
   updateOne
 }
 
