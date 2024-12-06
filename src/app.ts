@@ -18,7 +18,7 @@ dotenv.config()
 import { authRouter } from './domains/auth/routes'
 import { categoryRouter } from './domains/category/routes'
 import { cityRouter } from './domains/city/routes'
-// import { clientRouter } from './domains/client/routes'
+import { clientRouter } from './domains/client/routes'
 import { memberRouter } from './domains/member/routes'
 import { partnerRouter } from './domains/partner/routes'
 import { stateRouter } from './domains/state/routes'
@@ -40,7 +40,7 @@ app.use('/api/files', express.static(resolve(__dirname, '../public')))
 app.use('/api/auth', authRouter)
 app.use('/api/category', categoryRouter)
 app.use('/api/city', cityRouter)
-// app.use('/api/client', clientRouter)
+app.use('/api/client', clientRouter)
 app.use('/api/member', memberRouter)
 app.use('/api/partner', partnerRouter)
 app.use('/api/state', stateRouter)

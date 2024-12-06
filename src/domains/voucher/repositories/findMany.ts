@@ -3,6 +3,7 @@ import type { FindManyVouchersParams, VoucherToBeReturnedInFindMany } from '../v
 import prismaClient from '../../../database/connection'
 
 export async function findMany ({ skip, take, where }: FindManyVouchersParams): Promise<VoucherToBeReturnedInFindMany[]> {
+  logger.debug(where)
   try {
     const vouchers = await prismaClient.voucher.findMany({
       where,
@@ -13,6 +14,12 @@ export async function findMany ({ skip, take, where }: FindManyVouchersParams): 
         title: true,
         description: true,
         rules: true,
+        value: true,
+        voucherSettingsByClients: {
+          select: {
+            reservedBalanceInCents: true
+          }
+        },
         partner: {
           select: {
             id: true,

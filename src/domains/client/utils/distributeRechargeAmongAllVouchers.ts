@@ -23,7 +23,7 @@ export async function distributeRechargeAmongAllVouchers (clientBalanceRechargeD
         clientId: clientBalanceRechargeData.clientId,
         voucherId: voucher.id,
         reservedBalanceInCents: rechargeAmountPerVoucher,
-        watingTimeInDays: clientBalanceRechargeData.watingTimeInDays ?? waitingTimeInDays.DEFAULT
+        waitingTimeInDays: clientBalanceRechargeData.waitingTimeInDays ?? waitingTimeInDays.DEFAULT
       })
     }
 

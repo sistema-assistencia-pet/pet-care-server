@@ -8,7 +8,7 @@ import { waitingTimeInDays } from '../../../enums/waitingTimeInDays'
 
 export async function distributeRechargeAmongClientCurrentVouchers (clientBalanceRechargeData: ClientBalanceRechargeData): Promise<void> {
   try {
-    const clientCurrentVouchers = await voucherSettingsByClientRepositories.findMany({ clientId: clientBalanceRechargeData.clientId })
+    const clientCurrentVouchers = await voucherSettingsByClientRepositories.findMany({ where: { clientId: clientBalanceRechargeData.clientId } })
 
     if (clientCurrentVouchers.length === 0) throw new BadRequestError('O cliente não possui vouchers configurados.')
 
@@ -21,7 +21,7 @@ export async function distributeRechargeAmongClientCurrentVouchers (clientBalanc
         clientId: clientBalanceRechargeData.clientId,
         voucherId: voucher.voucherId,
         reservedBalanceInCents: rechargeAmountPerVoucher,
-        watingTimeInDays: clientBalanceRechargeData.watingTimeInDays ?? waitingTimeInDays.DEFAULT
+        waitingTimeInDays: clientBalanceRechargeData.waitingTimeInDays ?? waitingTimeInDays.DEFAULT
       })
     }
 

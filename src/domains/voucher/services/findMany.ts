@@ -1,16 +1,14 @@
-import { type Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 
-import type { AccessTokenData, FindManyResponse } from '../../../interfaces'
+import type { FindManyResponse } from '../../../interfaces'
 import { NotFoundError } from '../../../errors'
 import { voucherRepositories } from '../repositories/voucherRepositories'
 import type {
   FindManyVouchersQueryParams,
   VoucherToBeReturnedInFindMany
 } from '../voucherInterfaces'
-import { role } from '../../../enums/role'
 
 export async function findMany (
-  accessTokenData: AccessTokenData,
   { skip, take, ...queryParams }: FindManyVouchersQueryParams
 ): Promise<FindManyResponse<VoucherToBeReturnedInFindMany>> {
   const VOUCHERS_NOT_FOUND = 'Nenhum voucher encontrado.'
@@ -42,8 +40,6 @@ export async function findMany (
       }
     }
   })
-
-  if (accessTokenData.roleId === role.MEMBER) where.OR?.push({ voucherSettingsByClients: { some: { clientId: accessTokenData.clientId } } })
 
   if (where.OR?.length === 0) delete where.OR
 

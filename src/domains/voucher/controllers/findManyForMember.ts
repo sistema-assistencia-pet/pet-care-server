@@ -2,10 +2,11 @@
 import { HttpStatusCode } from 'axios'
 import { type Request, type Response } from 'express'
 
+import type { AccessTokenData } from '../../../interfaces'
 import type { FindManyVouchersQueryParams } from '../voucherInterfaces'
 import { voucherServices } from '../services/voucherServices'
 
-export async function findMany (req: Request, res: Response): Promise<Response> {
+export async function findManyForMember (req: Request, res: Response): Promise<Response> {
   const VOUCHER_FOUND = 'Vouchers recuperados com sucesso.'
 
   const queryParams: FindManyVouchersQueryParams = {
@@ -19,7 +20,13 @@ export async function findMany (req: Request, res: Response): Promise<Response> 
     take: req.query.take ? parseInt(req.query.take as string) : undefined
   }
 
-  const { items: voucher, totalCount } = await voucherServices.findMany(queryParams)
+  const accessTokenData: AccessTokenData = {
+    id: req.headers['request-user-id'] as string,
+    clientId: req.headers['request-user-client-id'] as string,
+    roleId: JSON.parse(req.headers['request-user-role-id'] as string)
+  }
+
+  const { items: voucher, totalCount } = await voucherServices.findManyForMember(accessTokenData, queryParams)
 
   res.setHeader('x-total-count', totalCount.toString())
 

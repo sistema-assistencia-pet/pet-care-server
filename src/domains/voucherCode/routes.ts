@@ -19,9 +19,9 @@ voucherCodeRouter.post(
   voucherCodeControllers.createOne
 )
 
-// Criar associados a partir de um arquivo CSV
+// Criar códigos de voucher a partir de um arquivo CSV
 voucherCodeRouter.post(
-  '/:voucherId/create-voucher-codes-in-bulk',
+  '/:voucherId/create-in-bulk',
   verifyAccessToken,
   checkIfIsMaster,
   voucherCodeMiddlewares.createManyPayloadValidation,
@@ -38,7 +38,7 @@ voucherCodeRouter.get(
   voucherCodeControllers.findMany
 )
 
-// Excluir voucher
+// Excluir código de voucher
 voucherCodeRouter.patch(
   '/:id/delete',
   verifyAccessToken,

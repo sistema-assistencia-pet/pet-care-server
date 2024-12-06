@@ -5,6 +5,7 @@ import prismaClient from '../../../database/connection'
 
 export async function findMany (where: Prisma.VoucherCodeWhereInput): Promise<VoucherCode[]> {
   try {
+    logger.debug(where)
     const voucherCodes = await prismaClient.voucherCode.findMany({ where })
 
     return voucherCodes

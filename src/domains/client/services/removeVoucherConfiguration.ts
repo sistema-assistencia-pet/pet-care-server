@@ -9,8 +9,10 @@ export async function removeVoucherConfiguration (removeVoucherConfigurationData
   const CLIENT_VOUCHER_SETTINGS_NOT_FOUND = 'Configurações do voucher para este cliente não encontrada.'
 
   const voucherSettingsByClientList = await voucherSettingsByClientRepositories.findMany({
-    clientId: removeVoucherConfigurationData.clientId,
-    voucherId: removeVoucherConfigurationData.voucherId
+    where: {
+      clientId: removeVoucherConfigurationData.clientId,
+      voucherId: removeVoucherConfigurationData.voucherId
+    }
   })
   if (voucherSettingsByClientList.length === 0) throw new BadRequestError(CLIENT_VOUCHER_SETTINGS_NOT_FOUND)
 

@@ -36,7 +36,7 @@ async function allocateBalanceToVoucher (
     clientId: configureVoucherData.clientId,
     voucherId: configureVoucherData.voucherId,
     reservedBalanceInCents: configureVoucherData.rechargeAmountInCents,
-    watingTimeInDays: configureVoucherData.watingTimeInDays ?? waitingTimeInDays.DEFAULT
+    waitingTimeInDays: configureVoucherData.waitingTimeInDays ?? waitingTimeInDays.DEFAULT
   }
 
   // Registra configuração de voucher para o cliente
@@ -47,7 +47,7 @@ async function deallocateBalanceFromVoucher (configureVoucherData: ConfigureVouc
   const INSUFICIENT_VOUCHER_BALANCE = 'Saldo do voucher insuficiente.'
   const CLIENT_VOUCHER_SETTINGS_NOT_FOUND = 'Configurações do voucher para este cliente não encontrada.'
 
-  const voucherSettingsByClientList = await voucherSettingsByClientRepositories.findMany({ clientId: configureVoucherData.clientId, voucherId: configureVoucherData.voucherId })
+  const voucherSettingsByClientList = await voucherSettingsByClientRepositories.findMany({ where: { clientId: configureVoucherData.clientId, voucherId: configureVoucherData.voucherId } })
   if (voucherSettingsByClientList.length === 0) throw new BadRequestError(CLIENT_VOUCHER_SETTINGS_NOT_FOUND)
 
   const voucherSettingsByClient = voucherSettingsByClientList[0]
@@ -59,7 +59,7 @@ async function deallocateBalanceFromVoucher (configureVoucherData: ConfigureVouc
 
   const voucherSettingsByClientToBeUpdated: VoucherSettingsByClientToBeUpdated = {
     reservedBalanceInCents: { decrement: configureVoucherData.rechargeAmountInCents },
-    watingTimeInDays: configureVoucherData.watingTimeInDays ?? waitingTimeInDays.DEFAULT
+    waitingTimeInDays: configureVoucherData.waitingTimeInDays ?? waitingTimeInDays.DEFAULT
   }
 
   // Desaloca saldo do voucher

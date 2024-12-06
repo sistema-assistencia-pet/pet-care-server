@@ -1,4 +1,4 @@
-import type { Address, Client } from '@prisma/client'
+import type { Address, Client, Prisma } from '@prisma/client'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
 import { BadRequestError, DatabaseError } from '../../../errors'
@@ -7,19 +7,22 @@ import prismaClient from '../../../database/connection'
 import { prismaError } from '../../../enums/prismaError'
 
 export async function createOne (
-  { address, ...clientToBeCreated }: ClientToBeCreated,
+  { managerCpf, managerPassword, address, ...clientToBeCreated }: ClientToBeCreated,
   addressId: Address['id'] | null
 ): Promise<Pick<Client, 'id'>> {
   const CLIENT_ALREADY_EXISTS = 'Cliente (CNPJ) já cadastrado.'
 
+  const data: Prisma.ClientCreateInput = { ...clientToBeCreated }
+
+  if (address !== null && addressId !== null && address.cityId !== null && address.stateId !== null) {
+    data.address = { connect: { id: addressId } }
+    data.city = { connect: { id: address.cityId } }
+    data.state = { connect: { id: address.stateId } }
+  }
+
   try {
     const client = await prismaClient.client.create({
-      data: {
-        addressId,
-        cityId: address === null ? null : address.cityId,
-        stateId: address === null ? null : address.stateId,
-        ...clientToBeCreated
-      },
+      data,
       select: { id: true }
     })
 

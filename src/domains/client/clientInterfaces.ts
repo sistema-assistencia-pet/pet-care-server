@@ -33,7 +33,7 @@ export interface ClientBalanceRechargeData {
   clientId: Client['id']
   rechargeAmountInCents: ClientBalanceTransaction['amountInCents']
   balanceDistributionSetting: balanceDistributionSetting
-  watingTimeInDays?: VoucherSettingsByClient['watingTimeInDays']
+  waitingTimeInDays?: VoucherSettingsByClient['waitingTimeInDays']
 }
 
 export type ClientBalanceDistributionData = Omit<ClientBalanceRechargeData, 'rechargeAmountInCents'>
@@ -42,7 +42,7 @@ export interface ConfigureVoucherData {
   clientId: Client['id']
   voucherId: Voucher['id']
   rechargeAmountInCents: ClientBalanceTransaction['amountInCents']
-  watingTimeInDays?: VoucherSettingsByClient['watingTimeInDays']
+  waitingTimeInDays?: VoucherSettingsByClient['waitingTimeInDays']
   voucherBalanceOperationType: voucherBalanceOperationType
 }
 

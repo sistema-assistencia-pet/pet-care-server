@@ -27,9 +27,9 @@ export async function checkIfIsMasterOrClient (req: Request, _res: Response, nex
 export async function checkIfIsMasterOrClientOrMember (req: Request, _res: Response, next: NextFunction): Promise<void> {
   const isMaster = req.headers['request-user-role-id'] === JSON.stringify(role.MASTER)
   const isClientAdmin = req.headers['request-user-role-id'] === JSON.stringify(role.CLIENT_ADMIN)
-  const isPartnerAdmin = req.headers['request-user-role-id'] === JSON.stringify(role.PARTNER_ADMIN)
+  const isMember = req.headers['request-user-role-id'] === JSON.stringify(role.MEMBER)
 
-  if (!isMaster && !isClientAdmin && !isPartnerAdmin) throw new ForbiddenError()
+  if (!isMaster && !isClientAdmin && !isMember) throw new ForbiddenError()
 
   next()
 }

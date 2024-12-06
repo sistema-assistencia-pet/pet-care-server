@@ -1,10 +1,51 @@
-import type { Prisma, VoucherSettingsByClient } from '@prisma/client'
 import { DatabaseError } from '../../../errors'
+import type { FindManyVoucherSettingsByClientParams, VoucherSettingsByClientToBeReturnedInFindMany } from '../voucherSettingsByClientInterfaces'
 import prismaClient from '../../../database/connection'
 
-export async function findMany (where: Partial<Prisma.VoucherSettingsByClientWhereUniqueInput>): Promise<VoucherSettingsByClient[]> {
+export async function findMany ({ skip, take, where }: FindManyVoucherSettingsByClientParams): Promise<VoucherSettingsByClientToBeReturnedInFindMany[]> {
   try {
-    return await prismaClient.voucherSettingsByClient.findMany({ where })
+    return await prismaClient.voucherSettingsByClient.findMany({
+      where,
+      take,
+      skip,
+      select: {
+        reservedBalanceInCents: true,
+        waitingTimeInDays: true,
+        voucher: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            rules: true,
+            value: true,
+            partner: {
+              select: {
+                id: true,
+                fantasyName: true,
+                category: {
+                  select: {
+                    id: true,
+                    name: true
+                  }
+                },
+                city: {
+                  select: {
+                    id: true,
+                    name: true
+                  }
+                },
+                state: {
+                  select: {
+                    id: true,
+                    name: true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    })
   } catch (error) {
     throw new DatabaseError(error)
   }

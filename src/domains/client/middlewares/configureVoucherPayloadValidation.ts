@@ -20,13 +20,13 @@ export async function configureVoucherPayloadValidation (req: Request, _res: Res
         required_error: 'O campo Valor da Recarga em Centavos ("rechargeAmountInCents") é obrigatório.'
       }),
 
-    watingTimeInDays: z
+    waitingTimeInDays: z
       .number({
-        invalid_type_error: 'O campo Tempo de Espera em Dias ("watingTimeInDays") deve ser um number.',
-        required_error: 'O campo Tempo de Espera em Dias ("watingTimeInDays") é obrigatório.'
+        invalid_type_error: 'O campo Tempo de Espera em Dias ("waitingTimeInDays") deve ser um number.',
+        required_error: 'O campo Tempo de Espera em Dias ("waitingTimeInDays") é obrigatório.'
       })
       .gte(0, {
-        message: 'O campo Tempo de Espera em Dias ("watingTimeInDays") deve ser maior ou igual a 0.'
+        message: 'O campo Tempo de Espera em Dias ("waitingTimeInDays") deve ser maior ou igual a 0.'
       })
       .optional()
   })
@@ -35,7 +35,7 @@ export async function configureVoucherPayloadValidation (req: Request, _res: Res
     configureVoucherPayloadSchema.parse({
       voucherId: req.body.voucherId,
       rechargeAmountInCents: req.body.rechargeAmountInCents,
-      watingTimeInDays: req.body.watingTimeInDays
+      waitingTimeInDays: req.body.waitingTimeInDays
     })
   } catch (error) {
     if (error instanceof z.ZodError) {

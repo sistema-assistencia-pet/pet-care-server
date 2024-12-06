@@ -345,7 +345,7 @@ model VoucherSettingsByClient {
   clientId               String   @map("id_cliente")
   voucherId              String   @map("id_voucher")
   reservedBalanceInCents Float    @default(0) @map("saldo_reservado_em_centavos")
-  watingTimeInDays       Int      @default(0) @map("tempo_de_espera_em_dias")
+  waitingTimeInDays       Int      @default(0) @map("tempo_de_espera_em_dias")
   createdAt              DateTime @default(now()) @map("data_de_criacao")
   updatedAt              DateTime @default(now()) @updatedAt @map("data_de_atualizacao")
 

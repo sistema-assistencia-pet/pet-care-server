@@ -10,7 +10,7 @@ export async function distributeBalance (req: Request, res: Response): Promise<R
   const clientBalanceDistributionData: ClientBalanceDistributionData = {
     clientId: req.params.id,
     balanceDistributionSetting: req.body.balanceDistributionSetting,
-    watingTimeInDays: req.body.watingTimeInDays
+    waitingTimeInDays: req.body.waitingTimeInDays
   }
 
   await clientServices.distributeBalance(clientBalanceDistributionData)

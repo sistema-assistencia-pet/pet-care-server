@@ -23,7 +23,7 @@ memberRouter.post(
 
 // Criar associados a partir de um arquivo CSV
 memberRouter.post(
-  '/:clientId/create-members-in-bulk',
+  '/:clientId/create-in-bulk',
   verifyAccessToken,
   checkIfIsMasterOrClient,
   memberMiddlewares.checkIfIsSameClientId,

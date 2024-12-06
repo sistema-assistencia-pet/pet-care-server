@@ -11,7 +11,7 @@ export async function upsertOne (data: VoucherSettingsByClientToBeCreated): Prom
     await prismaClient.voucherSettingsByClient.upsert({
       where: { clientId_voucherId: { clientId: data.clientId, voucherId: data.voucherId } },
       create: data,
-      update: { reservedBalanceInCents: { increment: data.reservedBalanceInCents }, watingTimeInDays: data.watingTimeInDays }
+      update: { reservedBalanceInCents: { increment: data.reservedBalanceInCents }, waitingTimeInDays: data.waitingTimeInDays }
     })
   } catch (error) {
     if (

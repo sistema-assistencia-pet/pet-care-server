@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { checkIfIsMaster, checkIfIsMasterOrClientOrMember } from '../../middlewares/authorization.middleware'
+import { checkIfIsMaster, checkIfIsMasterOrClient, checkIfIsMasterOrClientOrMember } from '../../middlewares/authorization.middleware'
 import { validateUuidParam } from '../../middlewares/validateUuidParam.middleware'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
 import { voucherControllers } from './controllers/voucherControllers'
@@ -17,6 +17,15 @@ voucherRouter.post(
   voucherControllers.createOne
 )
 
+// Listar vouchers para associados (precisa estar acima do findOneById)
+voucherRouter.get(
+  '/member',
+  verifyAccessToken,
+  checkIfIsMasterOrClientOrMember,
+  voucherMiddlewares.findManyQueryParamsValidation,
+  voucherControllers.findManyForMember
+)
+
 // Detalhes de um voucher
 voucherRouter.get(
   '/:id',
@@ -30,7 +39,7 @@ voucherRouter.get(
 voucherRouter.get(
   '/',
   verifyAccessToken,
-  checkIfIsMasterOrClientOrMember,
+  checkIfIsMasterOrClient,
   voucherMiddlewares.findManyQueryParamsValidation,
   voucherControllers.findMany
 )

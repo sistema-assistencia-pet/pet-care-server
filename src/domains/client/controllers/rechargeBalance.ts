@@ -11,7 +11,7 @@ export async function rechargeBalance (req: Request, res: Response): Promise<Res
     clientId: req.params.id,
     rechargeAmountInCents: req.body.rechargeAmountInCents,
     balanceDistributionSetting: req.body.balanceDistributionSetting,
-    watingTimeInDays: req.body.watingTimeInDays
+    waitingTimeInDays: req.body.waitingTimeInDays
   }
 
   await clientServices.rechargeBalance(clientBalanceRechargeData)

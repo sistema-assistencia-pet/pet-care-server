@@ -1,4 +1,4 @@
-import type { Category, City, MemberVoucherWaitingLine, Partner, Prisma, State, Voucher } from '@prisma/client'
+import type { Category, City, MemberVoucherWaitingLine, Partner, Prisma, State, Voucher, VoucherSettingsByClient } from '@prisma/client'
 
 import type { PartnerMinData } from '../partner/partnerInterfaces'
 import type { StatusToBeReturned } from '../status/statusInterfaces'
@@ -11,7 +11,8 @@ export type VoucherToBeReturnedByDb = Omit<Voucher, 'partnerId' | 'statusId'> & 
 
 export type VoucherToBeReturned = Omit<VoucherToBeReturnedByDb, 'memberVoucherWaitingLines'> & { waitingUntil: MemberVoucherWaitingLine['waitingUntil'] | null }
 
-export type VoucherToBeReturnedInFindMany = Pick<VoucherToBeReturned, 'id' | 'title' | 'description' | 'rules'>
+export type VoucherToBeReturnedInFindMany = Pick<VoucherToBeReturned, 'id' | 'title' | 'description' | 'rules' | 'value'>
+& { voucherSettingsByClients: Array<Pick<VoucherSettingsByClient, 'reservedBalanceInCents'>> }
 & {
   partner: Pick<Partner, 'id' | 'fantasyName'>
   & { category: Pick<Category, 'id' | 'name'> }
