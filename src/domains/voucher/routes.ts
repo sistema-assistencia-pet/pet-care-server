@@ -1,6 +1,11 @@
 import { Router } from 'express'
 
-import { checkIfIsMaster, checkIfIsMasterOrClient, checkIfIsMasterOrClientOrMember } from '../../middlewares/authorization.middleware'
+import {
+  checkIfIsMaster,
+  checkIfIsMasterOrClient,
+  checkIfIsMasterOrClientOrMember,
+  checkIfIsMember
+} from '../../middlewares/authorization.middleware'
 import { validateUuidParam } from '../../middlewares/validateUuidParam.middleware'
 import { verifyAccessToken } from '../../middlewares/authentication.middleware'
 import { voucherControllers } from './controllers/voucherControllers'
@@ -48,7 +53,7 @@ voucherRouter.get(
 voucherRouter.post(
   '/:id/redeem',
   verifyAccessToken,
-  checkIfIsMasterOrClientOrMember,
+  checkIfIsMember,
   validateUuidParam,
   voucherControllers.redeemOne
 )

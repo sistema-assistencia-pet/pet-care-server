@@ -1,3 +1,4 @@
+import { validateOne } from './validateOne'
 import { createMany } from './createMany'
 import { createOne } from './createOne'
 import { deleteOne } from './deleteOne'
@@ -7,7 +8,8 @@ const voucherCodeServices = {
   createMany,
   createOne,
   deleteOne,
-  findMany
+  findMany,
+  validateOne
 }
 
 export { voucherCodeServices }
