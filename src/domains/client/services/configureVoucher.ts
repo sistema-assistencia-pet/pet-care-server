@@ -8,7 +8,7 @@ import { voucherBalanceOperationType } from '../../../enums/voucherBalanceOperat
 import { voucherRepositories } from '../../voucher/repositories/voucherRepositories'
 import { voucherSettingsByClientRepositories } from '../../voucherSettingsByClient/repositories/voucherSettingsByClientRepositories'
 import type { VoucherSettingsByClientToBeCreated, VoucherSettingsByClientToBeUpdated } from '../../voucherSettingsByClient/voucherSettingsByClientInterfaces'
-import { waitingTimeInDays } from '../../../enums/waitingTimeInDays'
+import { waitingTimeInHours } from '../../../enums/waitingTimeInHours'
 
 async function allocateBalanceToVoucher (
   configureVoucherData: ConfigureVoucherData,
@@ -36,7 +36,7 @@ async function allocateBalanceToVoucher (
     clientId: configureVoucherData.clientId,
     voucherId: configureVoucherData.voucherId,
     reservedBalanceInCents: configureVoucherData.rechargeAmountInCents,
-    waitingTimeInDays: configureVoucherData.waitingTimeInDays ?? waitingTimeInDays.DEFAULT
+    waitingTimeInHours: configureVoucherData.waitingTimeInHours ?? waitingTimeInHours.DEFAULT
   }
 
   // Registra configuração de voucher para o cliente
@@ -59,7 +59,7 @@ async function deallocateBalanceFromVoucher (configureVoucherData: ConfigureVouc
 
   const voucherSettingsByClientToBeUpdated: VoucherSettingsByClientToBeUpdated = {
     reservedBalanceInCents: { decrement: configureVoucherData.rechargeAmountInCents },
-    waitingTimeInDays: configureVoucherData.waitingTimeInDays ?? waitingTimeInDays.DEFAULT
+    waitingTimeInHours: configureVoucherData.waitingTimeInHours ?? waitingTimeInHours.DEFAULT
   }
 
   // Desaloca saldo do voucher

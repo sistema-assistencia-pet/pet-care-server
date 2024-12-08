@@ -12,7 +12,7 @@ export async function configureVoucher (req: Request, res: Response): Promise<Re
     clientId: req.params.id,
     voucherId: req.body.voucherId,
     rechargeAmountInCents: Math.abs(req.body.rechargeAmountInCents as number),
-    waitingTimeInDays: req.body.waitingTimeInDays,
+    waitingTimeInHours: req.body.waitingTimeInHours,
     voucherBalanceOperationType: (req.body.rechargeAmountInCents > 0)
       ? voucherBalanceOperationType.ALLOCATE
       : voucherBalanceOperationType.DEALLOCATE

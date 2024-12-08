@@ -4,7 +4,7 @@ import { clientBalanceTransactionRepositories } from '../../clientBalanceTransac
 import { clientBalanceTransactionType } from '../../../enums/clientBalanceTransactionType'
 import { clientRepositories } from '../repositories/clientRepositories'
 import { voucherSettingsByClientRepositories } from '../../voucherSettingsByClient/repositories/voucherSettingsByClientRepositories'
-import { waitingTimeInDays } from '../../../enums/waitingTimeInDays'
+import { waitingTimeInHours } from '../../../enums/waitingTimeInHours'
 
 export async function distributeRechargeAmongClientCurrentVouchers (clientBalanceRechargeData: ClientBalanceRechargeData): Promise<void> {
   try {
@@ -19,9 +19,9 @@ export async function distributeRechargeAmongClientCurrentVouchers (clientBalanc
     for (const voucher of clientCurrentVouchers) {
       await voucherSettingsByClientRepositories.upsertOne({
         clientId: clientBalanceRechargeData.clientId,
-        voucherId: voucher.voucherId,
+        voucherId: voucher.voucher.id,
         reservedBalanceInCents: rechargeAmountPerVoucher,
-        waitingTimeInDays: clientBalanceRechargeData.waitingTimeInDays ?? waitingTimeInDays.DEFAULT
+        waitingTimeInHours: clientBalanceRechargeData.waitingTimeInHours ?? waitingTimeInHours.DEFAULT
       })
     }
 

@@ -5,6 +5,7 @@ import { findMany } from './findMany'
 import { findManyForMember } from './findManyForMember'
 import { findOneById } from './findOneById'
 import { inactivateOne } from './inactivateOne'
+import { redeemOne } from './redeemOne'
 import { updateOne } from './updateOne'
 
 const voucherServices = {
@@ -15,6 +16,7 @@ const voucherServices = {
   findManyForMember,
   findOneById,
   inactivateOne,
+  redeemOne,
   updateOne
 }
 

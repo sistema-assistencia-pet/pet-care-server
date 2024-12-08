@@ -10,7 +10,7 @@ export async function findMany ({ skip, take, where }: FindManyVoucherSettingsBy
       skip,
       select: {
         reservedBalanceInCents: true,
-        waitingTimeInDays: true,
+        waitingTimeInHours: true,
         voucher: {
           select: {
             id: true,

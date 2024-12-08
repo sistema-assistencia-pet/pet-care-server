@@ -3,7 +3,7 @@ import type { VoucherToBeReturnedInFindMany } from '../voucher/voucherInterfaces
 
 export type VoucherSettingsByClientToBeCreated = Omit<VoucherSettingsByClient, 'createdAt' | 'updatedAt'>
 
-export type VoucherSettingsByClientToBeUpdated = Pick<Prisma.VoucherSettingsByClientUncheckedUpdateInput, 'reservedBalanceInCents' | 'waitingTimeInDays'>
+export type VoucherSettingsByClientToBeUpdated = Pick<Prisma.VoucherSettingsByClientUncheckedUpdateInput, 'reservedBalanceInCents' | 'waitingTimeInHours'>
 
 export interface FindManyVoucherSettingsByClientParams {
   skip?: number
@@ -11,5 +11,5 @@ export interface FindManyVoucherSettingsByClientParams {
   where: Partial<Prisma.VoucherSettingsByClientWhereInput>
 }
 
-export type VoucherSettingsByClientToBeReturnedInFindMany = Pick<VoucherSettingsByClient, 'reservedBalanceInCents' | 'waitingTimeInDays'>
+export type VoucherSettingsByClientToBeReturnedInFindMany = Pick<VoucherSettingsByClient, 'reservedBalanceInCents' | 'waitingTimeInHours'>
 & { voucher: Omit<VoucherToBeReturnedInFindMany, 'voucherSettingsByClients'> }

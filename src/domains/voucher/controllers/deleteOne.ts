@@ -4,7 +4,7 @@ import { type Request, type Response } from 'express'
 import { voucherServices } from '../services/voucherServices'
 
 export async function deleteOne (req: Request, res: Response): Promise<Response> {
-  const VOUCHER_SUCCESSFULLY_DELETED = 'Estabelecimento excluído com sucesso.'
+  const VOUCHER_SUCCESSFULLY_DELETED = 'Voucher excluído com sucesso.'
 
   const voucherId = req.params.id
 

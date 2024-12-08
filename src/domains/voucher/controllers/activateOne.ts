@@ -4,7 +4,7 @@ import { type Request, type Response } from 'express'
 import { voucherServices } from '../services/voucherServices'
 
 export async function activateOne (req: Request, res: Response): Promise<Response> {
-  const VOUCHER_SUCCESSFULLY_ACTIVATED = 'Estabelecimento ativado com sucesso.'
+  const VOUCHER_SUCCESSFULLY_ACTIVATED = 'Voucher ativado com sucesso.'
 
   const voucherId = req.params.id
 

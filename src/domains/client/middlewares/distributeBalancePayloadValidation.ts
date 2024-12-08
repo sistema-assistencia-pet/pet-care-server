@@ -17,13 +17,13 @@ export async function distributeBalancePayloadValidation (req: Request, _res: Re
         message: 'O campo Configuração de Distribuição do Saldo ("balanceDistributionSetting") deve ser 2 ou 3.'
       }),
 
-    waitingTimeInDays: z
+    waitingTimeInHours: z
       .number({
-        invalid_type_error: 'O campo Tempo de Espera em Dias ("waitingTimeInDays") deve ser um number.',
-        required_error: 'O campo Tempo de Espera em Dias ("waitingTimeInDays") é obrigatório.'
+        invalid_type_error: 'O campo Tempo de Espera em Dias ("waitingTimeInHours") deve ser um number.',
+        required_error: 'O campo Tempo de Espera em Dias ("waitingTimeInHours") é obrigatório.'
       })
       .gte(0, {
-        message: 'O campo Tempo de Espera em Dias ("waitingTimeInDays") deve ser maior ou igual a 0.'
+        message: 'O campo Tempo de Espera em Dias ("waitingTimeInHours") deve ser maior ou igual a 0.'
       })
       .optional()
 
@@ -32,7 +32,7 @@ export async function distributeBalancePayloadValidation (req: Request, _res: Re
   try {
     distributeBalancePayloadSchema.parse({
       balanceDistributionSetting: req.body.balanceDistributionSetting,
-      waitingTimeInDays: req.body.waitingTimeInDays
+      waitingTimeInHours: req.body.waitingTimeInHours
     })
   } catch (error) {
     if (error instanceof z.ZodError) {

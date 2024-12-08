@@ -4,7 +4,7 @@ import { type Request, type Response } from 'express'
 import { voucherServices } from '../services/voucherServices'
 
 export async function inactivateOne (req: Request, res: Response): Promise<Response> {
-  const VOUCHER_SUCCESSFULLY_INACTIVATED = 'Estabelecimento inativado com sucesso.'
+  const VOUCHER_SUCCESSFULLY_INACTIVATED = 'Voucher inativado com sucesso.'
 
   const voucherId = req.params.id
 

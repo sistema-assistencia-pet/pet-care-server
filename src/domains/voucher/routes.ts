@@ -44,6 +44,15 @@ voucherRouter.get(
   voucherControllers.findMany
 )
 
+// Resgatar voucher
+voucherRouter.post(
+  '/:id/redeem',
+  verifyAccessToken,
+  checkIfIsMasterOrClientOrMember,
+  validateUuidParam,
+  voucherControllers.redeemOne
+)
+
 // Ativar voucher
 voucherRouter.patch(
   '/:id/activate',

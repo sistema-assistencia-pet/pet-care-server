@@ -6,7 +6,7 @@ import { InternalServerError } from '../../../errors'
 import { status } from '../../../enums/status'
 import { voucherRepositories } from '../../voucher/repositories/voucherRepositories'
 import { voucherSettingsByClientRepositories } from '../../voucherSettingsByClient/repositories/voucherSettingsByClientRepositories'
-import { waitingTimeInDays } from '../../../enums/waitingTimeInDays'
+import { waitingTimeInHours } from '../../../enums/waitingTimeInHours'
 
 export async function distributeRechargeAmongAllVouchers (clientBalanceRechargeData: ClientBalanceRechargeData): Promise<void> {
   try {
@@ -23,7 +23,7 @@ export async function distributeRechargeAmongAllVouchers (clientBalanceRechargeD
         clientId: clientBalanceRechargeData.clientId,
         voucherId: voucher.id,
         reservedBalanceInCents: rechargeAmountPerVoucher,
-        waitingTimeInDays: clientBalanceRechargeData.waitingTimeInDays ?? waitingTimeInDays.DEFAULT
+        waitingTimeInHours: clientBalanceRechargeData.waitingTimeInHours ?? waitingTimeInHours.DEFAULT
       })
     }
 
