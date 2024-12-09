@@ -24,7 +24,6 @@ model User {
   status                 Status                  @relation(fields: [statusId], references: [id])
   client                 Client?                 @relation(fields: [clientId], references: [id])
   userResetPasswordCodes UserResetPasswordCode[]
-  voucherRedemptions     VoucherRedemption[]
 
   @@index(name)
   @@map("usuario")
@@ -310,25 +309,23 @@ model VoucherCode {
 }
 
 model VoucherRedemption {
-  id                        String    @id @default(uuid())
-  memberId                  String    @map("id_associado")
-  clientId                  String    @map("id_cliente")
-  voucherCodeId             Int       @unique @map("id_codigo_de_voucher")
-  voucherId                 String    @map("id_voucher")
-  partnerId                 String    @map("id_parceiro")
-  wasValidated              Boolean   @default(false) @map("foi_validado")
-  partnerUserWhoValidatedId String?   @map("id_usuario_do_parceiro_que_validou")
-  validatedAt               DateTime? @map("data_da_validacao")
-  createdAt                 DateTime  @default(now()) @map("data_de_criacao")
-  updatedAt                 DateTime  @default(now()) @updatedAt @map("data_de_atualizacao")
+  id            String    @id @default(uuid())
+  memberId      String    @map("id_associado")
+  clientId      String    @map("id_cliente")
+  voucherCodeId Int       @unique @map("id_codigo_de_voucher")
+  voucherId     String    @map("id_voucher")
+  partnerId     String    @map("id_parceiro")
+  wasValidated  Boolean   @default(false) @map("foi_validado")
+  validatedAt   DateTime? @map("data_da_validacao")
+  createdAt     DateTime  @default(now()) @map("data_de_criacao")
+  updatedAt     DateTime  @default(now()) @updatedAt @map("data_de_atualizacao")
 
   // Relation
-  member                  Member      @relation(fields: [memberId], references: [id])
-  client                  Client      @relation(fields: [clientId], references: [id])
-  voucherCode             VoucherCode @relation(fields: [voucherCodeId], references: [id])
-  voucher                 Voucher     @relation(fields: [voucherId], references: [id])
-  partner                 Partner     @relation(fields: [partnerId], references: [id])
-  partnerUserWhoValidated User?       @relation(fields: [partnerUserWhoValidatedId], references: [id])
+  member      Member      @relation(fields: [memberId], references: [id])
+  client      Client      @relation(fields: [clientId], references: [id])
+  voucherCode VoucherCode @relation(fields: [voucherCodeId], references: [id])
+  voucher     Voucher     @relation(fields: [voucherId], references: [id])
+  partner     Partner     @relation(fields: [partnerId], references: [id])
 
   @@map("resgate_de_voucher")
 }

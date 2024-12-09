@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
+import bcrypt from 'bcrypt'
 import type { Partner } from '@prisma/client'
 
 import { addressRepositories } from '../../address/repositories/addressRepositories'
@@ -36,6 +37,12 @@ export async function updateOne (
       currentPartner.id,
       { addressId, cityId: newAddress.cityId, stateId: newAddress.stateId }
     )
+  }
+
+  if (partnerToBeUpdated.password) {
+    const encryptedPassword = await bcrypt.hash(partnerToBeUpdated.password, 10)
+
+    updatedPartnerWithoutAddress.password = encryptedPassword
   }
 
   const id = await partnerRepositories.updateOne(partnerId, updatedPartnerWithoutAddress)

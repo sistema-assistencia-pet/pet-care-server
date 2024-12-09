@@ -49,7 +49,7 @@ export async function checkIfIsMasterOrClientOrPartner (req: Request, _res: Resp
 // Verifica se é usuário associado (MEMBER)
 // Middleware criado para o endpoint de resgate de voucher
 export async function checkIfIsMember (req: Request, _res: Response, next: NextFunction): Promise<void> {
-  const isMaster = req.headers['request-user-role-id'] === JSON.stringify(role.MASTER)
+  const isMaster = req.headers['request-user-role-id'] === JSON.stringify(role.MEMBER)
 
   if (!isMaster) throw new ForbiddenError()
 

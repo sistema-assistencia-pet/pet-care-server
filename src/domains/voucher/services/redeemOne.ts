@@ -8,11 +8,11 @@ import { voucherCodeRepositories } from '../../voucherCode/repositories/voucherC
 import { voucherRedemptionRepositories } from '../../voucherRedemption/repositories/voucherRedemptionRepositories'
 import { memberVoucherWaitingLineRepositories } from '../../memberVoucherWaitingLine/repositories/memberVoucherWaitingLineRepositories'
 
-export async function redeemOne (accessTokenData: AccessTokenData, id: string): Promise<VoucherCode['id']> {
+export async function redeemOne (accessTokenData: AccessTokenData, id: string): Promise<VoucherCode['code']> {
   const CLIENT_VOUCHER_SETTINGS_NOT_FOUND = 'Configurações do voucher para este cliente não encontrada.'
   const VOUCHER_NOT_FOUND = 'Voucher não encontrado.'
   const VOUCHER_UNAVAILABLE = 'Voucher indisponível.'
-  const VOUCHER_UNAVAILABLE_UNTIL = 'Voucher indisponível no momento. É neessário aguardar até PLACEHOLDER.'
+  const VOUCHER_UNAVAILABLE_UNTIL = 'Voucher indisponível no momento. É necessário aguardar até PLACEHOLDER.'
   const TODAY = new Date()
 
   // Verifica se voucher existe e está ativo
@@ -36,7 +36,7 @@ export async function redeemOne (accessTokenData: AccessTokenData, id: string): 
   const memberVoucherWaitingLine = await memberVoucherWaitingLineRepositories.findOne({ memberId: accessTokenData.id, voucherId: voucher.id })
   if (memberVoucherWaitingLine !== null) {
     if (memberVoucherWaitingLine.waitingUntil > TODAY) {
-      throw new BadRequestError(VOUCHER_UNAVAILABLE_UNTIL.replace('PLACEHOLDER', memberVoucherWaitingLine.waitingUntil.toISOString()))
+      throw new BadRequestError(VOUCHER_UNAVAILABLE_UNTIL.replace('PLACEHOLDER', memberVoucherWaitingLine.waitingUntil.toLocaleString('pt-BR')))
     }
   }
 
@@ -73,5 +73,5 @@ export async function redeemOne (accessTokenData: AccessTokenData, id: string): 
     waitingUntil: targetDate
   })
 
-  return voucherCode.id
+  return voucherCode.code
 }

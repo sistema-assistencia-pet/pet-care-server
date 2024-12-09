@@ -15,7 +15,7 @@ export async function redeemOne (req: Request, res: Response): Promise<Response>
     roleId: JSON.parse(req.headers['request-user-role-id'] as string)
   }
 
-  await voucherServices.redeemOne(accessTokenData, voucherId)
+  const voucherCode = await voucherServices.redeemOne(accessTokenData, voucherId)
 
-  return res.status(HttpStatusCode.Ok).json({ message: VOUCHER_SUCCESSFULLY_ACTIVATED })
+  return res.status(HttpStatusCode.Ok).json({ message: VOUCHER_SUCCESSFULLY_ACTIVATED, voucherCode })
 }

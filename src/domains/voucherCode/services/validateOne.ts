@@ -25,7 +25,6 @@ export async function validateOne (accessTokenData: AccessTokenData, validateVou
     voucherRedemption.id,
     {
       wasValidated: true,
-      partnerUserWhoValidatedId: accessTokenData.id,
       validatedAt: new Date()
     }
   )
