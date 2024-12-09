@@ -1,5 +1,3 @@
-import * as bcrypt from 'bcrypt'
-
 import { generateAccessToken } from '../../../utils/generateAccessToken'
 import type { IPartnerLoginResponse } from '../authInterfaces'
 import { partnerRepositories } from '../../partner/repositories/partnerRepositories'
@@ -17,7 +15,7 @@ export async function loginPartner (cnpj: string, password: string): Promise<IPa
     throw new UnauthorizedError(BAD_CREDENTIALS)
   }
 
-  const isPasswordValid = await bcrypt.compare(password, partner.password)
+  const isPasswordValid = password === partner.password
 
   if (!isPasswordValid) throw new UnauthorizedError(BAD_CREDENTIALS)
 

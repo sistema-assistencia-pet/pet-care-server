@@ -1,5 +1,4 @@
 import type { Address, Partner } from '@prisma/client'
-import bcrypt from 'bcrypt'
 
 import { addressRepositories } from '../../address/repositories/addressRepositories'
 import { BadRequestError } from '../../../errors'
@@ -21,10 +20,6 @@ export async function createOne (partnerToBeCreated: PartnerToBeCreated): Promis
     const address = await addressRepositories.createOne(partnerToBeCreated.address)
     addressId = address.id
   }
-
-  const encryptedPassword = await bcrypt.hash(partnerToBeCreated.password, 10)
-
-  partnerToBeCreated.password = encryptedPassword
 
   const { id } = await partnerRepositories.createOne(partnerToBeCreated, addressId)
 
