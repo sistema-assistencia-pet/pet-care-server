@@ -1,4 +1,4 @@
-import type { City } from '@prisma/client'
+import type { City, Prisma } from '@prisma/client'
 
 export type CityToBeReturned = Omit<City, 'createdAt' | 'updatedAt'>
 
@@ -11,4 +11,10 @@ export interface FindManyCitiesQueryParams {
   skip?: number
   stateId?: number
   take?: number
+}
+
+export interface FindManyCitiesParams {
+  skip?: number
+  take?: number
+  where: Partial<Prisma.CityWhereInput>
 }

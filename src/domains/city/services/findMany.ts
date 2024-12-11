@@ -5,7 +5,7 @@ import type { FindManyCitiesQueryParams } from '../cityInterfaces'
 import type { FindManyResponse } from '../../../interfaces'
 import { NotFoundError } from '../../../errors'
 
-export async function findMany (queryParams: FindManyCitiesQueryParams): Promise<FindManyResponse<State>> {
+export async function findMany ({ skip, take, ...queryParams }: FindManyCitiesQueryParams): Promise<FindManyResponse<State>> {
   const CITIES_LIST_NOT_FOUND = 'Nenhuma cidade encontrada.'
 
   const where: Prisma.CityWhereInput = { OR: [] }
@@ -25,9 +25,11 @@ export async function findMany (queryParams: FindManyCitiesQueryParams): Promise
 
   if (where.OR?.length === 0) delete where.OR
 
-  const cities = await cityRepositories.findMany(where)
+  const cities = await cityRepositories.findMany({ skip, take, where })
 
   if (cities.length === 0) throw new NotFoundError(CITIES_LIST_NOT_FOUND)
 
-  return { items: cities, totalCount: cities.length }
+  const totalCount = await cityRepositories.count(where)
+
+  return { items: cities, totalCount }
 }

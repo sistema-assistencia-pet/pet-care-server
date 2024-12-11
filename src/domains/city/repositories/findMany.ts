@@ -1,13 +1,13 @@
-import type { Prisma } from '@prisma/client'
-
-import type { CityToBeReturned } from '../cityInterfaces'
+import type { CityToBeReturned, FindManyCitiesParams } from '../cityInterfaces'
 import { DatabaseError } from '../../../errors'
 import prismaClient from '../../../database/connection'
 
-export async function findMany (where: Partial<Prisma.CityWhereInput>): Promise<CityToBeReturned[]> {
+export async function findMany ({ skip, take, where }: FindManyCitiesParams): Promise<CityToBeReturned[]> {
   try {
     const city = await prismaClient.city.findMany({
       where,
+      skip,
+      take,
       select: {
         id: true,
         name: true,
