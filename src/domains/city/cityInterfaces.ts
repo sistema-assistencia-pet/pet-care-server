@@ -8,5 +8,7 @@ export type CityToBeUpdated = Partial<City>
 
 export interface FindManyCitiesQueryParams {
   searchInput?: string
+  skip?: number
   stateId?: number
+  take?: number
 }

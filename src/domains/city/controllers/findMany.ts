@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { HttpStatusCode } from 'axios'
 import type { Request, Response } from 'express'
 
@@ -9,8 +10,9 @@ export async function findMany (req: Request, res: Response): Promise<Response> 
 
   const queryParams: FindManyCitiesQueryParams = {
     searchInput: req.query['search-input'] as string | undefined,
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    stateId: req.query['state-id'] ? parseInt(req.query['state-id'] as string) : undefined
+    skip: req.query.skip ? parseInt(req.query.skip as string) : undefined,
+    stateId: req.query['state-id'] ? parseInt(req.query['state-id'] as string) : undefined,
+    take: req.query.take ? parseInt(req.query.take as string) : undefined
   }
 
   const { items: cities, totalCount } = await cityServices.findMany(queryParams)
