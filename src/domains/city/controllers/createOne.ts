@@ -9,7 +9,7 @@ export async function createOne (req: Request, res: Response): Promise<Response>
 
   const cityToBeCreated: CityToBeCreated = {
     name: req.body.name,
-    stateId: req.body.stateId
+    stateId: parseInt(req.body.stateId as string)
   }
 
   const cityId = await cityServices.createOne(cityToBeCreated)

@@ -17,11 +17,11 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
         required_error: 'O campo Id do Estado ("stateId") é obrigatório.'
       })
   })
-
+  console.log(req.body)
   try {
     createOnePayloadSchema.parse({
       name: req.body.name,
-      stateId: req.body.stateId
+      stateId: typeof req.body.stateId === 'string' ? parseInt(req.body.stateId as string) : undefined
     })
   } catch (error) {
     if (error instanceof z.ZodError) {

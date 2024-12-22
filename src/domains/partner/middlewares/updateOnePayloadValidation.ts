@@ -148,13 +148,6 @@ export async function updateOnePayloadValidation (req: Request, _res: Response, 
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (req.body.address) {
     const updateAddressPayloadSchema = z.object({
-      id: z
-        .number({
-          invalid_type_error: 'O campo Id ("id") deve ser um number.',
-          required_error: 'O campo Id ("id") é obrigatório.'
-        })
-        .optional(),
-
       cep: z
         .string({
           invalid_type_error: 'O campo CEP ("cep") deve ser uma string.',
@@ -213,7 +206,6 @@ export async function updateOnePayloadValidation (req: Request, _res: Response, 
 
     try {
       updateAddressPayloadSchema.parse({
-        id: req.body.address.id,
         cep: req.body.address.cep,
         street: req.body.address.street,
         number: req.body.address.number,
@@ -230,7 +222,7 @@ export async function updateOnePayloadValidation (req: Request, _res: Response, 
       throw new GenericError(error)
     }
 
-    const cities = await cityRepositories.findMany({ id: req.body.address.cityId })
+    const cities = await cityRepositories.findMany({ where: { id: req.body.address.cityId } })
 
     if (cities.length === 0) {
       throw new BadRequestError('Cidade não encontrada.')

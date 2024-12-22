@@ -9,9 +9,7 @@ export type PartnerToBeCreated = Omit<Partner, 'id' | 'roleId' | 'addressId' | '
 
 export type PartnerToBeReturned = Omit<Partner, 'stateId' | 'cityId' | 'addressId' | 'categoryId' | 'statusId'> & { category: CategoryToBeReturned } & { address: AddressToBeReturned | null } & { status: StatusToBeReturned }
 
-export type PartnerToBeReturnedWithoutPassword = Omit<PartnerToBeReturned, 'password'>
-
-export type PartnerToBeReturnedInFindMany = Pick<PartnerToBeReturnedWithoutPassword, 'id' | 'cnpj' | 'fantasyName' | 'category' | 'isOnline' | 'createdAt'> & { city: Omit<CityToBeReturned, 'stateId'> | null } & { state: State | null }
+export type PartnerToBeReturnedInFindMany = Pick<PartnerToBeReturned, 'id' | 'cnpj' | 'fantasyName' | 'category' | 'isOnline' | 'createdAt'> & { city: Omit<CityToBeReturned, 'stateId'> | null } & { state: State | null }
 
 export type PartnerToBeUpdated = Partial<PartnerToBeCreated>
 export interface FindManyPartnersQueryParams {
