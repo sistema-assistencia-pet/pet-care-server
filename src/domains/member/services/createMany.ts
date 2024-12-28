@@ -54,6 +54,8 @@ export async function createMany (clientId: string, fileBuffer: Buffer): Promise
           (error.code === prismaError.ALREADY_EXITS)
         ) {
           logger.error(`O associado de CPF ${row.cpf} não foi cadastrado: esse CPF já existe no banco de dados.`)
+        } else {
+          logger.error({ row, error }, 'Erro ao cadastrar associado.')
         }
       }
     })
