@@ -38,8 +38,7 @@ export async function createOnePayloadValidation (req: Request, _res: Response, 
       })
       .email({
         message: 'O campo E-mail ("email") deve ser um e-mail válido.'
-      })
-      .optional(),
+      }),
 
     name: z
       .string({
@@ -159,7 +158,7 @@ export async function createOnePayloadValidation (req: Request, _res: Response, 
     }
   }
 
-  const cities = await cityRepositories.findMany({ id: req.body.address.cityId })
+  const cities = await cityRepositories.findMany({ where: { id: req.body.address.cityId } })
 
   if (cities.length === 0) {
     throw new BadRequestError('Cidade não encontrada.')
