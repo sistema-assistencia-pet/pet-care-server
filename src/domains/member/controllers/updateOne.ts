@@ -30,5 +30,5 @@ export async function updateOne (req: Request, res: Response): Promise<Response>
 
   const memberIdReturned = await memberServices.updateOne(memberId, memberToBeUpdated)
 
-  return res.status(HttpStatusCode.NoContent).json({ message: MEMBER_SUCCESSFULLY_UPDATED, memberId: memberIdReturned })
+  return res.status(HttpStatusCode.Ok).json({ message: MEMBER_SUCCESSFULLY_UPDATED, memberId: memberIdReturned })
 }
