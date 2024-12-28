@@ -213,7 +213,7 @@ export async function createOnePayloadValidation (req: Request, _res: Response, 
     throw new GenericError(error)
   }
 
-  const cities = await cityRepositories.findMany({ id: req.body.address.cityId })
+  const cities = await cityRepositories.findMany({ where: { id: req.body.address.cityId } })
 
   if (cities.length === 0) {
     throw new BadRequestError('Cidade não encontrada.')
