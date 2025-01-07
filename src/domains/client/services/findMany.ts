@@ -16,9 +16,9 @@ export async function findMany (
     if (value !== undefined && value !== null) {
       switch (key) {
         case 'searchInput':
-          Object.assign(where, { cnpj: { contains: value } })
-          Object.assign(where, { fantasyName: { contains: value } })
-          Object.assign(where, { segment: { contains: value } })
+          where.OR?.push({ cnpj: { contains: value as string } })
+          where.OR?.push({ fantasyName: { contains: value as string } })
+          where.OR?.push({ segment: { contains: value as string } })
           break
         default:
           Object.assign(where, { [key]: value })
