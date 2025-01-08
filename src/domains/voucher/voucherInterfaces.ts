@@ -12,7 +12,7 @@ export type VoucherToBeReturnedByDb = Omit<Voucher, 'partnerId' | 'statusId'> & 
 export type VoucherToBeReturned = Omit<VoucherToBeReturnedByDb, 'memberVoucherWaitingLines'> & { waitingUntil: MemberVoucherWaitingLine['waitingUntil'] | null }
 
 export type VoucherToBeReturnedInFindMany = Pick<VoucherToBeReturned, 'id' | 'title' | 'description' | 'rules' | 'value'>
-& { voucherSettingsByClients: Array<Pick<VoucherSettingsByClient, 'reservedBalanceInCents'>> }
+& { voucherSettingsByClients: Array<Pick<VoucherSettingsByClient, 'reservedBalanceInCents' | 'clientId'>> }
 & {
   partner: Pick<Partner, 'id' | 'fantasyName'>
   & { category: Pick<Category, 'id' | 'name'> }

@@ -47,7 +47,22 @@ export async function findMany (
 
   if (vouchers.length === 0) throw new NotFoundError(VOUCHERS_NOT_FOUND)
 
+  let vouchersWithSettingsFiltered: VoucherToBeReturnedInFindMany[] = []
+
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+  if (queryParams.clientId) { // Se há clientId no filtro da requisição, é necessário filtrar configurações
+    vouchersWithSettingsFiltered = vouchers.map((voucher) => {
+      voucher.voucherSettingsByClients = voucher.voucherSettingsByClients?.filter(
+        (voucherSetting) => voucherSetting.clientId === queryParams.clientId
+      )
+
+      return voucher
+    })
+  } else { // Se não há clientId no filtro da requisição, não é necessário filtrar configurações
+    vouchersWithSettingsFiltered = vouchers
+  }
+
   const totalCount = await voucherRepositories.count(where)
 
-  return { items: vouchers, totalCount }
+  return { items: vouchersWithSettingsFiltered, totalCount }
 }

@@ -17,6 +17,7 @@ export async function findMany ({ skip, take, where }: FindManyVouchersParams): 
         value: true,
         voucherSettingsByClients: {
           select: {
+            clientId: true,
             reservedBalanceInCents: true
           }
         },
