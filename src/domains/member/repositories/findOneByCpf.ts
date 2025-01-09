@@ -6,7 +6,7 @@ import { status } from '../../../enums/status'
 export async function findOneByCpf (cpf: string): Promise<MemberWithClientData | null> {
   try {
     const member = await prismaClient.member.findUnique({
-      where: { cpf, statusId: status.ACTIVE },
+      where: { cpf, statusId: status.ACTIVE, client: { statusId: status.ACTIVE } },
       include: {
         client: {
           select: {
