@@ -19,9 +19,9 @@ export async function findMany (req: Request, res: Response): Promise<Response> 
     take: req.query.take ? parseInt(req.query.take as string) : undefined
   }
 
-  const { items: voucher, totalCount } = await voucherServices.findMany(queryParams)
+  const { items: vouchers, totalCount } = await voucherServices.findMany(queryParams)
 
   res.setHeader('x-total-count', totalCount.toString())
 
-  return res.status(HttpStatusCode.Ok).json({ message: VOUCHER_FOUND, voucher })
+  return res.status(HttpStatusCode.Ok).json({ message: VOUCHER_FOUND, vouchers })
 }
