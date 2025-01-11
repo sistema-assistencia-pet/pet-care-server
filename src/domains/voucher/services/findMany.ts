@@ -1,14 +1,18 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import type { Prisma } from '@prisma/client'
 
-import type { FindManyResponse } from '../../../interfaces'
+import type { AccessTokenData, FindManyResponse } from '../../../interfaces'
 import { NotFoundError } from '../../../errors'
 import { voucherRepositories } from '../repositories/voucherRepositories'
 import type {
   FindManyVouchersQueryParams,
   VoucherToBeReturnedInFindMany
 } from '../voucherInterfaces'
+import { role } from '../../../enums/role'
 
 export async function findMany (
+  accessTokenData: AccessTokenData,
   { skip, take, ...queryParams }: FindManyVouchersQueryParams
 ): Promise<FindManyResponse<VoucherToBeReturnedInFindMany>> {
   const VOUCHERS_NOT_FOUND = 'Nenhum voucher encontrado.'
@@ -49,11 +53,13 @@ export async function findMany (
 
   let vouchersWithSettingsFiltered: VoucherToBeReturnedInFindMany[] = []
 
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-  if (queryParams.clientId) { // Se há clientId no filtro da requisição, é necessário filtrar configurações
+  if (
+    (queryParams.clientId) || // Se há clientId no filtro da requisição, é necessário filtrar configurações
+    (accessTokenData.roleId === role.CLIENT_ADMIN) // Se o usuário da requisição for admin de cliente, é necessário filtrar configurações
+  ) {
     vouchersWithSettingsFiltered = vouchers.map((voucher) => {
       voucher.voucherSettingsByClients = voucher.voucherSettingsByClients?.filter(
-        (voucherSetting) => voucherSetting.clientId === queryParams.clientId
+        (voucherSetting) => voucherSetting.clientId === (queryParams.clientId || accessTokenData.clientId)
       )
 
       return voucher

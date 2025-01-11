@@ -7,26 +7,30 @@ import type { VoucherToBeReturned, VoucherToBeReturnedByDb } from '../voucherInt
 import { role } from '../../../enums/role'
 
 function formatVoucherDetails (voucher: VoucherToBeReturnedByDb): VoucherToBeReturned {
+  const memberVoucherWaitingLines = voucher.memberVoucherWaitingLines
+
+  delete voucher.memberVoucherWaitingLines
+
   return {
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    waitingUntil: voucher.memberVoucherWaitingLines?.length
-      ? voucher.memberVoucherWaitingLines[0].waitingUntil
+    waitingUntil: memberVoucherWaitingLines?.length
+      ? memberVoucherWaitingLines[0].waitingUntil
       : null,
     ...voucher
   }
 }
 
 export async function findOneById (accessTokenData: AccessTokenData, id: Voucher['id']): Promise<VoucherToBeReturned> {
-  const VOUCHER_NOT_FOUND = 'Estabelecimento não encontrado.'
+  const VOUCHER_NOT_FOUND = 'Voucher não encontrado.'
 
   const where: Prisma.VoucherWhereInput = {}
 
-  if (accessTokenData.roleId === role.CLIENT_ADMIN) {
-    Object.assign(
-      where,
-      { voucherSettingsByClients: { some: { clientId: accessTokenData.clientId } } }
-    )
-  }
+  // if (accessTokenData.roleId === role.CLIENT_ADMIN) {
+  //   Object.assign(
+  //     where,
+  //     { voucherSettingsByClients: { some: { clientId: accessTokenData.clientId } } }
+  //   )
+  // }
 
   const shouldReturnFullData = accessTokenData.roleId === role.MEMBER // Se for membro deve retornar tempo de espera
 

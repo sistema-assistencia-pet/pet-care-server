@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { checkIfIsMaster } from '../../middlewares/authorization.middleware'
+import { checkIfIsMaster, checkIfIsMasterOrClient } from '../../middlewares/authorization.middleware'
 import { clientControllers } from './controllers/clientControllers'
 import { clientMiddlewares } from './middlewares/clientMiddlewares'
 import { validateUuidParam } from '../../middlewares/validateUuidParam.middleware'
@@ -21,7 +21,8 @@ clientRouter.post(
 clientRouter.get(
   '/:id',
   verifyAccessToken,
-  checkIfIsMaster,
+  checkIfIsMasterOrClient,
+  clientMiddlewares.findOneByIdAuthorization,
   validateUuidParam,
   clientControllers.findOneById
 )
@@ -59,7 +60,7 @@ clientRouter.post(
 clientRouter.post(
   '/:id/configure-voucher',
   verifyAccessToken,
-  checkIfIsMaster,
+  checkIfIsMasterOrClient,
   validateUuidParam,
   clientMiddlewares.configureVoucherPayloadValidation,
   clientControllers.configureVoucher
@@ -69,7 +70,7 @@ clientRouter.post(
 clientRouter.post(
   '/:id/remove-voucher-configuration',
   verifyAccessToken,
-  checkIfIsMaster,
+  checkIfIsMasterOrClient,
   validateUuidParam,
   clientMiddlewares.removeVoucherConfigurationPayloadValidation,
   clientControllers.removeVoucherConfiguration

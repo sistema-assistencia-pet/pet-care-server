@@ -17,7 +17,7 @@ export function createOnePayloadValidation (req: Request, _res: Response, next: 
         required_error: 'O campo Id do Estado ("stateId") é obrigatório.'
       })
   })
-  console.log(req.body)
+
   try {
     createOnePayloadSchema.parse({
       name: req.body.name,

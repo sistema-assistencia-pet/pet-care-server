@@ -17,9 +17,9 @@ export async function findMany (req: Request, res: Response): Promise<Response> 
     wasRedeemed
   }
 
-  const { items: voucher, totalCount } = await voucherCodeServices.findMany(queryParams)
+  const { items: voucherCodes, totalCount } = await voucherCodeServices.findMany(queryParams)
 
   res.setHeader('x-total-count', totalCount.toString())
 
-  return res.status(HttpStatusCode.Ok).json({ message: VOUCHER_CODES_FOUND, voucher })
+  return res.status(HttpStatusCode.Ok).json({ message: VOUCHER_CODES_FOUND, voucherCodes })
 }

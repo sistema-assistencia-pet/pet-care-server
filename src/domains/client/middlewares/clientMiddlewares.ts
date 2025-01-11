@@ -2,6 +2,7 @@ import { configureVoucherPayloadValidation } from './configureVoucherPayloadVali
 import { createOnePayloadValidation } from './createOnePayloadValidation'
 import { distributeBalancePayloadValidation } from './distributeBalancePayloadValidation'
 import { findManyQueryParamsValidation } from './findManyQueryParamsValidation'
+import { findOneByIdAuthorization } from './findOneByIdAuthorizationMiddleware'
 import { rechargeBalancePayloadValidation } from './rechargeBalancePayloadValidation'
 import { removeVoucherConfigurationPayloadValidation } from './removeVoucherConfigurationPayloadValidation'
 import { updateOnePayloadValidation } from './updateOnePayloadValidation'
@@ -11,6 +12,7 @@ const clientMiddlewares = {
   createOnePayloadValidation,
   distributeBalancePayloadValidation,
   findManyQueryParamsValidation,
+  findOneByIdAuthorization,
   rechargeBalancePayloadValidation,
   removeVoucherConfigurationPayloadValidation,
   updateOnePayloadValidation

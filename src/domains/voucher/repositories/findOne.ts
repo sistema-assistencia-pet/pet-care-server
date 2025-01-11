@@ -32,7 +32,25 @@ export async function findOne (
           select: {
             id: true,
             cnpj: true,
-            fantasyName: true
+            fantasyName: true,
+            category: {
+              select: {
+                id: true,
+                name: true
+              }
+            },
+            city: {
+              select: {
+                id: true,
+                name: true
+              }
+            },
+            state: {
+              select: {
+                id: true,
+                name: true
+              }
+            }
           }
         },
         memberVoucherWaitingLines: fullInfo

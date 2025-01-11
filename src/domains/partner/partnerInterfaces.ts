@@ -36,4 +36,4 @@ export interface FindManyPartnersParams {
   where: Partial<Prisma.PartnerWhereInput>
 }
 
-export type PartnerMinData = Pick<Partner, 'id' | 'cnpj' | 'fantasyName'>
+export type PartnerMinData = Pick<Partner, 'id' | 'cnpj' | 'fantasyName'> & { city: Omit<CityToBeReturned, 'stateId'> | null } & { state: State | null, category: CategoryToBeReturned }
