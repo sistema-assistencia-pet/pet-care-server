@@ -28,16 +28,16 @@ export async function findMany (
           where.OR?.push({ title: { contains: value as string } })
           break
         case 'clientId':
-          where.OR?.push({ voucherSettingsByClients: { some: { clientId: value as string } } })
+          Object.assign(where, { voucherSettingsByClients: { some: { clientId: value as string } } })
           break
         case 'partnerCategoryId':
-          where.OR?.push({ partner: { categoryId: value as number } })
+          Object.assign(where, { partner: { categoryId: value as number } })
           break
         case 'partnerCityId':
-          where.OR?.push({ partner: { cityId: value as number } })
+          Object.assign(where, { partner: { cityId: value as number } })
           break
         case 'partnerStateId':
-          where.OR?.push({ partner: { stateId: value as number } })
+          Object.assign(where, { partner: { stateId: value as number } })
           break
         default:
           Object.assign(where, { [key]: value })

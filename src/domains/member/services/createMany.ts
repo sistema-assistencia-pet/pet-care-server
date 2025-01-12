@@ -24,17 +24,30 @@ export async function createMany (clientId: string, fileBuffer: Buffer): Promise
     .pipe(csv())
     .on('data', async (row) => {
       try {
-        const addressToBeCreated: AddressToBeCreated = {
-          cep: row.address_cep,
-          street: row.address_street,
-          number: row.address_number,
-          complement: row.address_complement,
-          neighborhood: row.address_neighborhood,
-          cityId: row.address_cityId,
-          stateId: row.address_stateId
-        }
+        let addressId: number | null = null
 
-        const { id: addressId } = await addressRepositories.createOne(addressToBeCreated)
+        if ([
+          row.address_cep,
+          row.address_street,
+          row.address_number,
+          row.address_complement,
+          row.address_neighborhood,
+          row.address_cityId,
+          row.address_stateId
+        ].some((value) => value !== '')) {
+          const addressToBeCreated: AddressToBeCreated = {
+            cep: row.address_cep === '' ? null : row.address_cep,
+            street: row.address_street === '' ? null : row.address_street,
+            number: row.address_number === '' ? null : row.address_number,
+            complement: row.address_complement === '' ? null : row.address_complement,
+            neighborhood: row.address_neighborhood === '' ? null : row.address_neighborhood,
+            cityId: row.address_cityId === '' ? null : parseInt(row.address_cityId as string),
+            stateId: row.address_stateId === '' ? null : parseInt(row.address_stateId as string)
+          }
+
+          const address = await addressRepositories.createOne(addressToBeCreated)
+          addressId = address.id
+        }
 
         const memberToBeCreated: MemberToBeCreatedInBulk = {
           birthDate: row.data_de_nascimento,

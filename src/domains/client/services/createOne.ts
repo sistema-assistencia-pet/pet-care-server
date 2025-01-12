@@ -1,4 +1,5 @@
 import type { Address, Client } from '@prisma/client'
+import bcrypt from 'bcrypt'
 
 import { addressRepositories } from '../../address/repositories/addressRepositories'
 import { BadRequestError, InternalServerError } from '../../../errors'
@@ -35,11 +36,13 @@ export async function createOne (clientToBeCreated: ClientToBeCreated): Promise<
 
   const { id: clientId } = await clientRepositories.createOne(clientToBeCreated, addressId)
 
+  const encryptedPassword = await bcrypt.hash(clientToBeCreated.managerPassword, 10)
+
   const managerUserToBeCreated: UserToBeCreated = {
     name: clientToBeCreated.managerName,
     cpf: clientToBeCreated.managerCpf,
     email: clientToBeCreated.managerEmail,
-    password: clientToBeCreated.managerPassword,
+    password: encryptedPassword,
     roleId: role.CLIENT_ADMIN,
     clientId
   }

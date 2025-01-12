@@ -8,13 +8,13 @@ import { NotFoundError } from '../../../errors'
 export async function findMany ({ skip, take, ...queryParams }: FindManyCitiesQueryParams): Promise<FindManyResponse<State>> {
   const CITIES_LIST_NOT_FOUND = 'Nenhuma cidade encontrada.'
 
-  const where: Prisma.CityWhereInput = { OR: [] }
+  const where: Prisma.CityWhereInput = {}
 
   Object.entries(queryParams).forEach(([key, value]) => {
     if (value !== undefined && value !== null) {
       switch (key) {
         case 'searchInput':
-          where.OR?.push({ name: { contains: value as string } })
+          Object.assign(where, { name: { contains: value as string } })
           break
         default:
           Object.assign(where, { [key]: value })
