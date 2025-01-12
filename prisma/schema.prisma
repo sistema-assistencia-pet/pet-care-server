@@ -291,7 +291,7 @@ model Voucher {
 
 model VoucherCode {
   id           Int      @id @default(autoincrement())
-  code         String   @map("codigo")
+  code         String   @unique @map("codigo")
   voucherId    String   @map("id_voucher")
   wasRedeemed  Boolean  @default(false) @map("foi_resgatado")
   wasValidated Boolean  @default(false) @map("foi_validado")
@@ -304,7 +304,6 @@ model VoucherCode {
   voucher            Voucher            @relation(fields: [voucherId], references: [id])
   voucherRedemptions VoucherRedemption?
 
-  @@unique([code, voucherId])
   @@map("codigo_de_voucher")
 }
 
