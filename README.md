@@ -10,6 +10,7 @@ npm i
 npx prisma migrate dev
 npm run seed
 npm run dev
+
 # or
 yarn, pnpm or bun alternatives
 
