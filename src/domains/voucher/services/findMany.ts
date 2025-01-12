@@ -25,6 +25,7 @@ export async function findMany (
         case 'searchInput':
           where.OR?.push({ partner: { fantasyName: { contains: value as string } } })
           where.OR?.push({ partner: { category: { name: { contains: value as string } } } })
+          where.OR?.push({ title: { contains: value as string } })
           break
         case 'clientId':
           where.OR?.push({ voucherSettingsByClients: { some: { clientId: value as string } } })

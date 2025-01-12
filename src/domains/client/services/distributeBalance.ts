@@ -12,7 +12,7 @@ export async function distributeBalance (clientBalanceDistributionData: ClientBa
   const CLIENT_NOT_FOUND = 'Cliente não encontrado.'
   const CLIENT_WITHOUT_AVAILABLE_BALANCE = 'Cliente sem saldo disponível.'
 
-  const client = await clientRepositories.findOne({ id: clientBalanceDistributionData.clientId }, false, { statusId: status.ACTIVE })
+  const client = await clientRepositories.findOne({ id: clientBalanceDistributionData.clientId }, true, { statusId: status.ACTIVE })
 
   if (client === null) throw new NotFoundError(CLIENT_NOT_FOUND)
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
