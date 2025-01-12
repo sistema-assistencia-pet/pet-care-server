@@ -28,7 +28,7 @@ export async function findMany (
     }
   })
 
-  if (accessTokenData.roleId === role.CLIENT_ADMIN) where.OR?.push({ clientId: accessTokenData.clientId })
+  if (accessTokenData.roleId === role.CLIENT_ADMIN) Object.assign(where, { clientId: accessTokenData.clientId })
 
   if (where.OR?.length === 0) delete where.OR
 
