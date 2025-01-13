@@ -50,7 +50,7 @@ voucherCodeRouter.patch(
 
 // Validar código de voucher
 voucherCodeRouter.post(
-  '/:code/validate',
+  '/validate',
   verifyAccessToken,
   checkIfIsMasterOrClientOrPartner,
   validateOnePayloadValidation,
