@@ -34,6 +34,11 @@ app.use(express.json())
 app.use(helmet())
 app.use(httpLogger)
 
+app.use((_req, res, next) => {
+  res.setHeader('Cache-Control', 'no-store')
+  next()
+})
+
 // Serve static files from /public folder
 app.use('/api/files', express.static(resolve(__dirname, '../public')))
 
