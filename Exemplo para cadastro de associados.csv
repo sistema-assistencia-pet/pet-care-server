@@ -1,0 +1,5 @@
+data_de_nascimento,cpf,email,nome,telefone,address_cep,address_street,address_number,address_complement,address_neighborhood,address_cityId,address_stateId
+2000-01-01,11122233344,exemplo1@exemplo.com,nome do associado 1,21999887766,12345678,rua do associado,123,A,bairro dele,1,1
+2000-01-02,11122233345,exemplo2@exemplo.com,nome do associado 2,21999887766,87654321,rua dois,,,,,
+2000-01-03,11122233346,exemplo3@exemplo.com,nome do associado 3,21999887766,,,,,,,
+2000-01-04,11122233347,exemplo4@exemplo.com,nome do associado 4,21999887766,,,,,,,
