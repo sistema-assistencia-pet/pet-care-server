@@ -8,21 +8,21 @@ import { UnauthorizedError } from '../errors'
 export const verifyAccessToken = async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
   const INVALID_ACCESS_TOKEN = 'Token de acesso inválido.'
 
-  const JWT_SECRET = getEnvironmentVariable('JWT_SECRET')
-  const JWT_ISSUER = getEnvironmentVariable('JWT_ISSUER')
-  const JWT_AUDIENCE = getEnvironmentVariable('JWT_AUDIENCE')
+  const GIFT2ME_JWT_SECRET = getEnvironmentVariable('GIFT2ME_JWT_SECRET')
+  const GIFT2ME_JWT_ISSUER = getEnvironmentVariable('GIFT2ME_JWT_ISSUER')
+  const GIFT2ME_JWT_AUDIENCE = getEnvironmentVariable('GIFT2ME_JWT_AUDIENCE')
 
   const accessToken = req.headers.authorization?.split('Bearer ')[1]
 
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (!accessToken) throw new UnauthorizedError(INVALID_ACCESS_TOKEN)
 
-  const secretKey = createSecretKey(JWT_SECRET, 'utf8')
+  const secretKey = createSecretKey(GIFT2ME_JWT_SECRET, 'utf8')
 
   try {
     const { payload } = await jwtVerify(accessToken, secretKey, {
-      issuer: JWT_ISSUER,
-      audience: JWT_AUDIENCE
+      issuer: GIFT2ME_JWT_ISSUER,
+      audience: GIFT2ME_JWT_AUDIENCE
     })
 
     if (
