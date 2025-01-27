@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("GIFT2ME_DB_URL")
+  url      = env("EXCLUSIVEPASS_DB_URL")
 }
 
 model User {

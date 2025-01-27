@@ -8,14 +8,14 @@ import type { PartnerToBeReturned } from '../partnerInterfaces'
 import { role } from '../../../enums/role'
 
 function formatPartnerImages (partner: PartnerToBeReturned): PartnerToBeReturned {
-  const GIFT2ME_API_BASE_URL = getEnvironmentVariable('GIFT2ME_API_BASE_URL')
+  const EXCLUSIVEPASS_API_BASE_URL = getEnvironmentVariable('EXCLUSIVEPASS_API_BASE_URL')
 
   partner.image = partner.image !== null
-    ? `${GIFT2ME_API_BASE_URL}/api/files/${partner.image}`
+    ? `${EXCLUSIVEPASS_API_BASE_URL}/api/files/${partner.image}`
     : partner.image
 
   partner.logo = partner.logo !== null
-    ? `${GIFT2ME_API_BASE_URL}/api/files/${partner.logo}`
+    ? `${EXCLUSIVEPASS_API_BASE_URL}/api/files/${partner.logo}`
     : partner.logo
 
   return partner
