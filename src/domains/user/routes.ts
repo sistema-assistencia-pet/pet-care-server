@@ -19,11 +19,11 @@ userRouter.post(
 )
 
 // Criar usuário sem validações
-userRouter.post(
-  '/unvalidated',
-  userMiddlewares.createOnePayloadValidation,
-  userControllers.createOne
-)
+// userRouter.post(
+//   '/unvalidated',
+//   userMiddlewares.createOnePayloadValidation,
+//   userControllers.createOne
+// )
 
 // Detalhes de um usuário
 userRouter.get(
