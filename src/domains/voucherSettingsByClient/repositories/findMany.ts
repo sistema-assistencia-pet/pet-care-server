@@ -22,6 +22,8 @@ export async function findMany ({ skip, take, where }: FindManyVoucherSettingsBy
               select: {
                 id: true,
                 fantasyName: true,
+                logo: true,
+                image: true,
                 category: {
                   select: {
                     id: true,
