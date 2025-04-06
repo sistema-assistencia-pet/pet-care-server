@@ -58,6 +58,17 @@ voucherRouter.post(
   voucherControllers.redeemOne
 )
 
+// Resgatar voucher por usuário MASTER
+voucherRouter.post(
+  '/:id/redeem-by-master',
+  verifyAccessToken,
+  checkIfIsMaster,
+  validateUuidParam,
+  voucherMiddlewares.redeemOneByMasterPayloadValidation,
+  voucherMiddlewares.replaceResquestData,
+  voucherControllers.redeemOne
+)
+
 // Ativar voucher
 voucherRouter.patch(
   '/:id/activate',

@@ -120,6 +120,22 @@ async function seedCity (): Promise<void> {
   }
 }
 
+async function seedMasterClient (): Promise<void> {
+  try {
+    await prisma.client.create({
+      data: {
+        cnpj: '00000000000000',
+        managerEmail: 'master@email.com',
+        managerName: 'Master Admin',
+        fantasyName: 'Master Client',
+        corporateName: 'Master Client'
+      }
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 async function main (): Promise<void> {
   console.log('Populating database...')
   await seedStatus()
@@ -127,6 +143,7 @@ async function main (): Promise<void> {
   await seedCategory()
   await seedState()
   await seedCity()
+  await seedMasterClient()
   console.log('Database populated!')
 }
 

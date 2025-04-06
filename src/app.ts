@@ -6,11 +6,11 @@ import helmet from 'helmet'
 import { HttpStatusCode } from 'axios'
 import { resolve } from 'node:path'
 
-import { apiName } from './apiConfig'
+import { API_NAME } from './apiConfig'
 import { errorMiddleware } from './middlewares/error.middleware'
 import { httpLogger } from './logger'
 
-const API_RUNNING = `API ${apiName} em execução.`
+const API_RUNNING = `API ${API_NAME} em execução.`
 const URL_NOT_FOUND = 'URL não encontrada. Por favor, verifique a URL da requisição e tente novamente.'
 
 dotenv.config()

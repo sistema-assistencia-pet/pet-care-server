@@ -4,13 +4,17 @@ import { clientRepositories } from '../repositories/clientRepositories'
 import type { ClientToBeReturnedInFindMany, FindManyClientsQueryParams } from '../clientInterfaces'
 import { NotFoundError } from '../../../errors'
 import type { FindManyResponse } from '../../../interfaces'
+import { MASTER_CLIENT_CNPJ } from '../../../apiConfig'
 
 export async function findMany (
   { skip, take, ...queryParams }: FindManyClientsQueryParams
 ): Promise<FindManyResponse<ClientToBeReturnedInFindMany>> {
   const CLIENTS_NOT_FOUND = 'Nenhum cliente encontrado.'
 
-  const where: Prisma.ClientWhereInput = { OR: [] }
+  const where: Prisma.ClientWhereInput = {
+    cnpj: { not: MASTER_CLIENT_CNPJ },
+    OR: []
+  }
 
   Object.entries(queryParams).forEach(([key, value]) => {
     if (value !== undefined && value !== null) {

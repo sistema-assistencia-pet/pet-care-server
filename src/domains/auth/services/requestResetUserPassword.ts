@@ -3,7 +3,7 @@ import { randomBytes } from 'node:crypto'
 
 import { userRepositories } from '../../user/repositories/userRepositories'
 import { sendEmail } from '../../../utils/mailer'
-import { systemName } from '../../../apiConfig'
+import { SYSTEM_NAME } from '../../../apiConfig'
 import { UnauthorizedError } from '../../../errors'
 import { status } from '../../../enums/status'
 
@@ -18,7 +18,7 @@ export async function generateResetPasswordCode (userId: string): Promise<string
 }
 
 export async function sendResetPasswordCode (email: string, resetPasswordCode: string, name: string): Promise<void> {
-  const SUBJECT = `${systemName} - Redefina sua senha!`
+  const SUBJECT = `${SYSTEM_NAME} - Redefina sua senha!`
   const BODY = `Olá, ${name}! Seu código de acesso é: ${resetPasswordCode}. Utilize-o para redefinir sua senha.`
 
   const mailSent = await sendEmail(SUBJECT, BODY, email)
