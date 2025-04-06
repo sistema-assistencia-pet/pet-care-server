@@ -1,5 +1,5 @@
-# vouchers-server
-REST API for vouchers management system project.
+# pet-care-server
+REST API for pet care management system project.
 
 ## Getting Started
 
@@ -14,4 +14,4 @@ npm run dev
 # or
 yarn, pnpm or bun alternatives
 
-API will be available in [http://localhost:4000](http://localhost:4000).
+API will be available in [http://localhost:8000](http://localhost:8000).

@@ -1,7 +1,7 @@
 {
-  "name": "vouchers-server",
+  "name": "pet-care-server",
   "version": "1.0.0",
-  "description": "Vouchers management system REST API",
+  "description": "Pet Care management system REST API",
   "main": "./build/server",
   "scripts": {
     "build": "tsc -p .",

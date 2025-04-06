@@ -8,21 +8,21 @@ import { UnauthorizedError } from '../errors'
 export const verifyAccessToken = async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
   const INVALID_ACCESS_TOKEN = 'Token de acesso inválido.'
 
-  const EXCLUSIVEPASS_JWT_SECRET = getEnvironmentVariable('EXCLUSIVEPASS_JWT_SECRET')
-  const EXCLUSIVEPASS_JWT_ISSUER = getEnvironmentVariable('EXCLUSIVEPASS_JWT_ISSUER')
-  const EXCLUSIVEPASS_JWT_AUDIENCE = getEnvironmentVariable('EXCLUSIVEPASS_JWT_AUDIENCE')
+  const PET_CARE_JWT_SECRET = getEnvironmentVariable('PET_CARE_JWT_SECRET')
+  const PET_CARE_JWT_ISSUER = getEnvironmentVariable('PET_CARE_JWT_ISSUER')
+  const PET_CARE_JWT_AUDIENCE = getEnvironmentVariable('PET_CARE_JWT_AUDIENCE')
 
   const accessToken = req.headers.authorization?.split('Bearer ')[1]
 
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (!accessToken) throw new UnauthorizedError(INVALID_ACCESS_TOKEN)
 
-  const secretKey = createSecretKey(EXCLUSIVEPASS_JWT_SECRET, 'utf8')
+  const secretKey = createSecretKey(PET_CARE_JWT_SECRET, 'utf8')
 
   try {
     const { payload } = await jwtVerify(accessToken, secretKey, {
-      issuer: EXCLUSIVEPASS_JWT_ISSUER,
-      audience: EXCLUSIVEPASS_JWT_AUDIENCE
+      issuer: PET_CARE_JWT_ISSUER,
+      audience: PET_CARE_JWT_AUDIENCE
     })
 
     if (

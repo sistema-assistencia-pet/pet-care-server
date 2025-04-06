@@ -1,2 +1,2 @@
-export const systemName = 'Vouchers'
-export const apiName = 'vouchers-server'
+export const systemName = 'Pet Care'
+export const apiName = 'pet-care-server'

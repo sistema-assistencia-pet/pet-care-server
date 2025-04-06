@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("EXCLUSIVEPASS_DB_URL")
+  url      = env("PET_CARE_DB_URL")
 }
 
 model User {
