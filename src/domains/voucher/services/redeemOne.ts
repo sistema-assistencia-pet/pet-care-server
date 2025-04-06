@@ -7,6 +7,7 @@ import type { VoucherCode } from '@prisma/client'
 import { voucherCodeRepositories } from '../../voucherCode/repositories/voucherCodeRepositories'
 import { voucherRedemptionRepositories } from '../../voucherRedemption/repositories/voucherRedemptionRepositories'
 import { memberVoucherWaitingLineRepositories } from '../../memberVoucherWaitingLine/repositories/memberVoucherWaitingLineRepositories'
+import { generateVoucherCode } from '../../voucherCode/utils/generateVoucherCode'
 
 export async function redeemOne (accessTokenData: AccessTokenData, id: string): Promise<VoucherCode['code']> {
   const CLIENT_VOUCHER_SETTINGS_NOT_FOUND = 'Configurações do voucher para este cliente não encontrada.'
@@ -27,10 +28,6 @@ export async function redeemOne (accessTokenData: AccessTokenData, id: string): 
   const voucherSettingsByClient = voucherSettingsByClientList[0]
   if (voucherSettingsByClient.reservedBalanceInCents < voucher.value) throw new BadRequestError(VOUCHER_UNAVAILABLE)
 
-  // Verifica se há códigos disponíveis
-  const voucherCodes = await voucherCodeRepositories.findMany({ voucherId: voucher.id, wasRedeemed: false })
-  if (voucherCodes.length === 0) throw new BadRequestError(VOUCHER_UNAVAILABLE)
-
   // Verifica se o associado resgatou o voucher recentemente
   // e está aguardando o tempo de espera para usá-lo novamente
   const memberVoucherWaitingLine = await memberVoucherWaitingLineRepositories.findOne({ memberId: accessTokenData.id, voucherId: voucher.id })
@@ -40,11 +37,16 @@ export async function redeemOne (accessTokenData: AccessTokenData, id: string): 
     }
   }
 
-  // Seleciona o primeiro código disponível
-  const voucherCode = voucherCodes[0]
+  // Gera um novo código do voucher
+  const voucherCode = generateVoucherCode()
 
-  // Atualiza código para o estado de resgatado
-  await voucherCodeRepositories.updateOne(voucherCode.id, { wasRedeemed: true })
+  // Cadastra o código do voucher
+  // e marca como resgatado
+  const voucherCodeId = await voucherCodeRepositories.createOne({
+    code: voucherCode,
+    voucherId: voucher.id,
+    wasRedeemed: true
+  })
 
   // Atualiza saldo reservado para o voucher nas configurações do cliente
   await voucherSettingsByClientRepositories.updateOne(
@@ -58,7 +60,7 @@ export async function redeemOne (accessTokenData: AccessTokenData, id: string): 
     clientId: accessTokenData.clientId,
     memberId: accessTokenData.id,
     partnerId: voucher.partner.id,
-    voucherCodeId: voucherCode.id,
+    voucherCodeId,
     voucherId: voucher.id
   })
 
@@ -73,5 +75,5 @@ export async function redeemOne (accessTokenData: AccessTokenData, id: string): 
     waitingUntil: targetDate
   })
 
-  return voucherCode.code
+  return voucherCode
 }
