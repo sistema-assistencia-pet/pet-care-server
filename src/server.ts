@@ -6,7 +6,7 @@ import { API_NAME } from './apiConfig'
 
 dotenv.config()
 
-const DEFAULT_SERVER_PORT = 8000
+const DEFAULT_SERVER_PORT = 8100
 // eslint-disable-next-line @typescript-eslint/dot-notation
 const SERVER_PORT = process.env['SERVER_PORT'] ?? DEFAULT_SERVER_PORT
 

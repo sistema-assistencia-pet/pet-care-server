@@ -43,6 +43,13 @@ export async function redeemOne (accessTokenData: AccessTokenData, id: string): 
         throw new BadRequestError(VOUCHER_UNAVAILABLE_UNTIL.replace('PLACEHOLDER', memberVoucherWaitingLine.waitingUntil.toLocaleString('pt-BR')))
       }
     }
+
+    // Verifica se o associado já resgatou 2 vouchers dentro dos últimos 12 meses
+    const voucherRedemptionCount = await voucherRedemptionRepositories.count({
+      memberId: accessTokenData.id,
+      createdAt: { gte: new Date(new Date().setFullYear(new Date().getFullYear() - 1)) }
+    })
+    if (voucherRedemptionCount >= 2) throw new BadRequestError('Associado já resgatou 2 vouchers dentro dos últimos 12 meses.')
   }
 
   // Gera um novo código do voucher
